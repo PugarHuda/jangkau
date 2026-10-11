@@ -1,0 +1,6 @@
+neatlogs[openai]
+openai
+playwright
+axe-playwright-python
+pillow
+pytest

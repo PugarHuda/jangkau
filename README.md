@@ -47,7 +47,7 @@ attribute is to delete the image. Jangkau catches that and reverts it.
 ```bash
 uv venv && uv pip install -r requirements.txt
 .venv/Scripts/python -m playwright install chromium   # macOS/Linux: .venv/bin/python
-cp .env.example .env    # fill in the LiteLLM proxy + neatlogs key
+cp .env.example .env    # LITELLM_API_KEY from neatlogs.com/hackathon/models + NEATLOGS_API_KEY
 
 python jangkau.py demo_site/index.html                  # verified agent (v2)
 JANGKAU_VERSION=v1 python jangkau.py demo_site/index.html --no-verify   # baseline, no checks

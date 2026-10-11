@@ -12,7 +12,8 @@ from pathlib import Path
 for line in Path(".env").read_text().splitlines() if Path(".env").exists() else []:
     if "=" in line and not line.lstrip().startswith("#"):
         k, v = line.split("=", 1)
-        os.environ.setdefault(k.strip(), v.strip())
+        if v.strip():
+            os.environ.setdefault(k.strip(), v.strip())
 
 import neatlogs  # must init before importing openai so calls get traced
 
@@ -29,14 +30,16 @@ from PIL import Image, ImageChops  # noqa: E402
 from playwright.sync_api import sync_playwright  # noqa: E402
 from axe_playwright_python.sync_playwright import Axe  # noqa: E402
 
-MODEL = os.getenv("JANGKAU_MODEL", "claude-sonnet")
+MODEL = os.getenv("JANGKAU_MODEL", "claude-sonnet-4.6")
 IMPACT = {"critical": 0, "serious": 1, "moderate": 2, "minor": 3}
 MAX_ATTEMPTS = 3
 # ponytail: one global threshold; per-rule thresholds if contrast fixes keep tripping it
 VISUAL_LIMIT = 0.35
 CONTENT_TAGS = "a,button,input,select,textarea,img,h1,h2,h3,label,li"
 
-llm = OpenAI()  # reads OPENAI_BASE_URL / OPENAI_API_KEY (the LiteLLM proxy)
+llm = OpenAI(base_url=os.getenv("LITELLM_BASE_URL", "https://litellm.vision.aivar.app/v1"),
+             api_key=os.getenv("LITELLM_API_KEY")
+             or sys.exit("set LITELLM_API_KEY in .env (claim it at https://neatlogs.com/hackathon/models)"))
 axe = Axe()
 usage = {"prompt_tokens": 0, "completion_tokens": 0, "llm_calls": 0}
 

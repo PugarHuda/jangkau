@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jangkau: websites that reach everyone</title>
+<meta name="description" content="Jangkau is an AI agent that fixes accessibility problems on a web page and proves every fix. 47 WCAG failures to 0, for about $0.06 a page.">
+<meta property="og:title" content="Jangkau: websites that reach everyone">
+<meta property="og:description" content="An AI agent that fixes accessibility problems and proves every fix. 47 WCAG failures to 0, about $0.06 a page.">
+<meta property="og:image" content="https://pugarhuda.github.io/jangkau/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&family=Atkinson+Hyperlegible+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f5f7fa;
+    --ink: #14213d;
+    --soft: #4a5570;
+    --faint: #c4cad6;
+    --focus: #ffd60a;
+    --pass: #1b6e45;
+    --fail: #a4231b;
+    --line: #dde2ea;
+    --panel: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0f1626; --ink: #eef1f6; --soft: #aeb7c9; --faint: #2b3447;
+      --pass: #5fd39a; --fail: #ff8a80; --line: #253049; --panel: #161f33;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1626; --ink: #eef1f6; --soft: #aeb7c9; --faint: #2b3447;
+    --pass: #5fd39a; --fail: #ff8a80; --line: #253049; --panel: #161f33;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font: 400 1.125rem/1.6 "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  }
+  a { color: inherit; text-underline-offset: .2em; }
+  :focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; background: var(--focus); color: #14213d; padding: .5rem 1rem; z-index: 9; }
+
+  /* top bar */
+  .bar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 0; }
+  .logo { font-weight: 800; font-size: 1.25rem; letter-spacing: -.01em; text-decoration: none; display: flex; align-items: center; gap: .55rem; }
+  .logo svg { flex: none; }
+  .bar nav a { margin-left: 1.5rem; color: var(--soft); text-decoration: none; }
+  .bar nav a:hover { color: var(--ink); text-decoration: underline; }
+
+  /* hero: the headline itself fails contrast, then gets fixed */
+  .hero { padding: 5rem 0 4rem; }
+  .hero h1 {
+    font-size: clamp(2.75rem, 8vw, 6rem); line-height: .98; letter-spacing: -.035em;
+    font-weight: 800; margin: 0; max-width: 13ch; color: var(--faint);
+    transition: color 1.4s cubic-bezier(.6,0,.2,1);
+  }
+  .hero.fixed h1 { color: var(--ink); }
+  .ratio {
+    display: inline-flex; align-items: center; gap: .6rem; margin-top: 1.75rem;
+    padding: .45rem .9rem; border: 2px solid var(--fail); color: var(--fail);
+    border-radius: 999px; font-weight: 700; font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .hero.fixed .ratio { border-color: var(--pass); color: var(--pass); }
+  .ratio b { font-weight: 800; min-width: 4.2ch; }
+  .lede { max-width: 36rem; font-size: 1.3rem; color: var(--soft); margin: 2rem 0 2.25rem; }
+  .lede strong { color: var(--ink); font-weight: 700; }
+  .cta { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .btn {
+    display: inline-block; padding: .85rem 1.4rem; border-radius: 10px; font-weight: 700;
+    text-decoration: none; border: 2px solid var(--ink);
+  }
+  .btn.primary { background: var(--focus); color: #14213d; border-color: var(--focus); }
+  .btn.primary:hover { border-color: var(--ink); }
+  .btn.ghost:hover { background: var(--ink); color: var(--paper); }
+
+  section { padding: 4.5rem 0; border-top: 1px solid var(--line); }
+  h2 { font-size: clamp(1.9rem, 4vw, 2.75rem); line-height: 1.1; letter-spacing: -.02em; margin: 0 0 1rem; max-width: 22ch; }
+  .sub { color: var(--soft); max-width: 40rem; margin: 0 0 2.25rem; }
+
+  /* before / after */
+  .toggle { display: inline-flex; border: 2px solid var(--ink); border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 1rem; }
+  .toggle button {
+    font: inherit; font-weight: 700; padding: .55rem 1.1rem; border: 0; border-radius: 8px;
+    background: transparent; color: var(--ink); cursor: pointer;
+  }
+  .toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .count { font-weight: 800; }
+  .frame { border: 2px solid var(--ink); border-radius: 14px; overflow: hidden; background: #fff; }
+  .frame iframe { display: block; width: 100%; height: 34rem; border: 0; }
+  .note { color: var(--soft); font-size: 1rem; margin-top: .75rem; }
+
+  /* the loop */
+  .loop { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; list-style: none; padding: 0; margin: 0; counter-reset: c; }
+  .loop li { counter-increment: c; border-top: 4px solid var(--ink); padding-top: 1rem; }
+  .loop li::before { content: counter(c); font-weight: 800; font-size: 2.25rem; line-height: 1; display: block; margin-bottom: .6rem; }
+  .loop h3 { margin: 0 0 .35rem; font-size: 1.2rem; }
+  .loop p { margin: 0; color: var(--soft); font-size: 1rem; }
+  .checks { margin-top: 2.5rem; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem 1.75rem; }
+  .checks h3 { margin: 0 0 .75rem; font-size: 1.2rem; }
+  .checks ul { margin: 0; padding-left: 1.2rem; display: grid; grid-template-columns: 1fr 1fr; gap: .4rem 2rem; }
+
+  /* iteration */
+  .runs { display: grid; gap: 1.1rem; max-width: 52rem; }
+  .run { display: grid; grid-template-columns: 3rem 1fr 7rem; gap: 1rem; align-items: center; }
+  .run .v { font-weight: 800; font-size: 1.25rem; }
+  .run .track { height: 2.4rem; background: var(--faint); border-radius: 8px; position: relative; overflow: hidden; }
+  .run .fill { position: absolute; inset: 0 auto 0 0; background: var(--ink); border-radius: 8px; }
+  .run.best .fill { background: var(--pass); }
+  .run .what { grid-column: 2 / 4; margin: -.6rem 0 0; color: var(--soft); font-size: 1rem; }
+  .run .left { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* numbers */
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .facts p { margin: 0; color: var(--soft); }
+  .facts strong { display: block; color: var(--ink); font-size: 2.5rem; line-height: 1.1; letter-spacing: -.02em; }
+
+  pre { font: 400 .95rem/1.6 "Atkinson Hyperlegible Mono", ui-monospace, monospace; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem 1.5rem; overflow-x: auto; }
+
+  footer { padding: 3rem 0 4rem; border-top: 1px solid var(--line); color: var(--soft); font-size: 1rem; }
+  footer p { margin: .25rem 0; }
+
+  @media (max-width: 860px) {
+    .loop { grid-template-columns: 1fr 1fr; }
+    .facts { grid-template-columns: 1fr; gap: 1.25rem; }
+    .checks ul { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding: 0 1rem; }
+    .bar nav a:not(:last-child) { display: none; }
+    .hero { padding: 3rem 0 3rem; }
+    .loop { grid-template-columns: 1fr; }
+    .run { grid-template-columns: 2.5rem 1fr 5.5rem; gap: .6rem; }
+    .frame iframe { height: 28rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero h1 { transition: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="bar">
+    <a class="logo" href="#top" aria-label="Jangkau home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="7" fill="none" stroke="#ffd60a" stroke-width="4"/><circle cx="14" cy="14" r="4.5" fill="currentColor"/></svg>
+      Jangkau
+    </a>
+    <nav aria-label="Main">
+      <a href="#proof">Proof</a>
+      <a href="#how">How it works</a>
+      <a href="https://github.com/PugarHuda/jangkau">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<main id="main">
+  <div class="wrap">
+    <div class="hero" id="top">
+      <h1 id="headline">Websites that reach everyone.</h1>
+      <p class="ratio" role="status" aria-live="polite"><span>Headline contrast</span> <b id="ratio">1.5:1</b> <span id="verdict">fails WCAG</span></p>
+      <p class="lede"><strong>Jangkau</strong> (Indonesian for <em>reach</em>) is an AI agent that fixes accessibility problems on a web page, then proves every fix before keeping it. It just did that to the headline above.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/PugarHuda/jangkau">Get the code on GitHub</a>
+        <a class="btn ghost" href="#proof">See before and after</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="proof">
+    <div class="wrap">
+      <h2>A batik shop, before and after Jangkau</h2>
+      <p class="sub">Same page, same design. A screen reader user could not tell the product photos apart, the form had no labels, and most of the text was too faint to read. Jangkau fixed all 47 failures in 71 seconds.</p>
+      <div class="toggle" role="group" aria-label="Choose version">
+        <button type="button" aria-pressed="true" data-src="before/toko.html">Before: <span class="count">47</span> failures</button>
+        <button type="button" aria-pressed="false" data-src="after/toko.html">After: <span class="count">0</span> failures</button>
+      </div>
+      <div class="frame">
+        <iframe id="shop" src="before/toko.html" title="Batik shop demo page, original version"></iframe>
+      </div>
+      <p class="note">Counts are failing elements reported by axe-core, the engine behind most accessibility audits.</p>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>It fixes one problem at a time, and checks its own work</h2>
+      <p class="sub">Most tools stop at a list of problems. Jangkau keeps going until the list is empty, and never trades one problem for another.</p>
+      <ol class="loop">
+        <li><h3>Audit</h3><p>Runs axe-core in a real browser and takes a screenshot of the page.</p></li>
+        <li><h3>Fix</h3><p>Starts with the most severe problem and asks the model for small, exact edits.</p></li>
+        <li><h3>Verify</h3><p>Audits again and compares the page against four checks.</p></li>
+        <li><h3>Keep or roll back</h3><p>A fix that passes is kept. One that fails is undone and retried with the reason.</p></li>
+      </ol>
+      <div class="checks">
+        <h3>A fix is kept only when</h3>
+        <ul>
+          <li>the problem it targets actually went down</li>
+          <li>no new problem appeared anywhere else</li>
+          <li>no image, link, button or text was deleted</li>
+          <li>the page still looks like the original</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Our first version made the page worse</h2>
+      <p class="sub">We traced every run, found why the agent got stuck, and fixed it three times. Failures left on the batik shop, out of 47:</p>
+      <div class="runs">
+        <div class="run"><span class="v">v1</span><div class="track" aria-hidden="true"><div class="fill" style="width:78.7%"></div></div><span class="left">10 left</span><p class="what">No checks. Fast, but it never knew when a fix broke something.</p></div>
+        <div class="run"><span class="v">v2</span><div class="track" aria-hidden="true"><div class="fill" style="width:72.3%"></div></div><span class="left">13 left</span><p class="what">Strict checks. It rejected correct fixes and quit on half-finished ones.</p></div>
+        <div class="run"><span class="v">v3</span><div class="track" aria-hidden="true"><div class="fill" style="width:97.9%"></div></div><span class="left">1 left</span><p class="what">Keeps partial progress and tolerates problems it will fix later.</p></div>
+        <div class="run best"><span class="v">v4</span><div class="track" aria-hidden="true"><div class="fill" style="width:100%"></div></div><span class="left">0 left</span><p class="what">Tells the model exactly which element broke, so the retry lands.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Cheap enough for every small business</h2>
+      <div class="facts">
+        <p><strong>$0.06</strong>model cost to fix the batik shop page</p>
+        <p><strong>1 in 6</strong>people worldwide live with a disability</p>
+        <p><strong>June 2025</strong>the European Accessibility Act became enforceable</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Run it on your own page</h2>
+<pre><code>git clone https://github.com/PugarHuda/jangkau
+cd jangkau &amp;&amp; uv venv &amp;&amp; uv pip install -r requirements.txt
+python -m playwright install chromium
+python jangkau.py path/to/your/page.html</code></pre>
+    </div>
+  </section>
+</main>
+
+<div class="wrap">
+  <footer>
+    <p>Built in 48 hours for <a href="https://neatlogs.com/hackathon">#neatHack</a> by team Ampun. Traced with neatlogs, built with Entire, business planned with cfo.ai.</p>
+    <p>This page was audited by Jangkau itself.</p>
+  </footer>
+</div>
+
+<script>
+  // Toggle the before/after frame.
+  const frame = document.getElementById('shop');
+  document.querySelectorAll('.toggle button').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.toggle button').forEach(b => b.setAttribute('aria-pressed', b === btn));
+    frame.src = btn.dataset.src;
+    frame.title = 'Batik shop demo page, ' + (btn.dataset.src.startsWith('after') ? 'fixed by Jangkau' : 'original version');
+  }));
+
+  // Hero: measure the headline's real contrast while it is being fixed.
+  const hero = document.querySelector('.hero'), h1 = document.getElementById('headline');
+  const out = document.getElementById('ratio'), verdict = document.getElementById('verdict');
+  const lum = rgb => rgb.map(v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; })
+                        .reduce((a, v, i) => a + v * [.2126, .7152, .0722][i], 0);
+  const rgb = s => s.match(/\d+(\.\d+)?/g).slice(0, 3).map(Number);
+  const bg = () => rgb(getComputedStyle(document.body).backgroundColor);
+  function measure() {
+    const a = lum(rgb(getComputedStyle(h1).color)), b = lum(bg());
+    const r = (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+    out.textContent = r.toFixed(1) + ':1';
+    verdict.textContent = r >= 4.5 ? 'passes WCAG' : 'fails WCAG';
+    return r;
+  }
+  measure();
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(() => {
+    hero.classList.add('fixed');
+    if (reduce) return measure();
+    const t0 = performance.now();
+    (function tick(t) { measure(); if (t - t0 < 1600) requestAnimationFrame(tick); else measure(); })(t0);
+  }, reduce ? 0 : 1100);
+</script>
+</body>
+</html>

@@ -190,6 +190,10 @@ def run(target: Path, out: Path, verify: bool) -> dict:
     else:
         shutil.copytree(target.parent, out, dirs_exist_ok=True)
         state = {"target": str(target), "version": VERSION, "verify": verify, "done": [], "results": []}
+    headers = {}
+    neatlogs.inject_trace_context(headers)  # traceparent = 00-<trace id>-<span id>-01
+    state["trace_id"] = headers.get("traceparent", "-").split("-")[1] if headers else "-"
+    log(f"neatlogs trace: {state['trace_id']}")
 
     with sync_playwright() as pw:
         page = pw.chromium.launch().new_page(viewport={"width": 1280, "height": 800})
@@ -230,7 +234,8 @@ def write_report(s: dict, path: Path):
                      for r in s["results"])
     path.write_text(f"""# Jangkau report ({s['version']}, verify={s['verify']})
 
-Target: `{s['target']}`
+Target: `{s['target']}`  
+neatlogs trace: `{s.get('trace_id', '-')}`
 
 | Metric | Value |
 |---|---|

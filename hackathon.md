@@ -47,7 +47,11 @@ Ampun (Pugar Huda Mantoro)
   nodes, a rule still waiting in the queue; (b) `color-contrast` 18 → 9 was marked fixed and the 9 left were never retried;
   (c) `page-has-heading-one` failed 3 times because the feedback only gave the rule name, not the broken heading.
 - Total LiteLLM spend so far: about $0.46 of $20.
-- Pending: NEATLOGS_API_KEY, then re-run v1 → v4 with traces exported for shareable before/after evidence.
+- Done: neatlogs connected (SDK Doctor `--probe`: PASS). `scripts/evidence.sh` re-ran v1 / v2 (commit 963a4dd) / v4
+  with export on and the same results: v1 10 left, v2 14 left, v4 0 left. Runs now record their neatlogs trace ID
+  (taken from `inject_trace_context`): v1 `002efc98d1c3610e269f95108e5371d4`, v4 `8ad9968fc9a602e0dad474b24842835f`.
+- Done: landing page live at https://jangkau-jet.vercel.app (axe: 0 violations after the hero fix animation).
+- Pending: confirm the traces in the dashboard and add share links; Entire checkpoint link + ID; cfo.ai model; tweets; demo video.
 
 ## Demo
 Pending.

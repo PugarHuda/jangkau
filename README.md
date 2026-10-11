@@ -60,10 +60,10 @@ python -m pytest -q
 
 | Claim | Evidence |
 |---|---|
-| The agent improved | v1 (`--no-verify`) vs v2 traces in neatlogs, filtered by tag `version:v1` / `version:v2`. Numbers in `runs/*/report.md`. _TODO: add links + table_ |
-| We used neatlogs | Every run is a `jangkau_run` workflow with `fix_rule` agent spans and `audit` / `apply_edits` / `visual_diff` tool spans. _TODO: trace links_ |
-| We used Entire | Checkpoints on the `entire/checkpoints/v1` branch. _TODO: entire-graph output_ |
+| The agent improved | Same page (`demo_site/toko.html`, 47 failing nodes), same model (claude-haiku), traced in neatlogs and filtered by tag `version:v1` / `version:v2` / `version:v4`. **v1** (no checks): 10 left, 14 LLM calls. **v2** (first verifier): 14 left, 18 calls. **v4**: **0 left**, 16 calls. Reports in `runs/ev-*/report.md`. Root causes are in [hackathon.md](hackathon.md) |
+| We used neatlogs | Each run is a `jangkau_run` workflow trace with `fix_rule` agent spans, `audit` / `apply_edits` / `visual_diff` tool spans and auto-captured LLM calls. Trace IDs: v1 `002efc98d1c3610e269f95108e5371d4`, v4 `8ad9968fc9a602e0dad474b24842835f`. SDK Doctor probe: PASS |
+| We used Entire | [Entire Graph impact + diff](docs/entire-graph.md) for the verifier changes. Checkpoints on `entire/checkpoints/v1`: _TODO link + ID_ |
 | We used cfo.ai | [BUSINESS.md](BUSINESS.md) + the cfo.ai model. _TODO: link/screenshot_ |
-| The agent recovers | A trace where an attempt was rejected and reverted (`attempt N rejected, reverting: ...`). _TODO: link_ |
+| The agent recovers | v4 trace `8ad9968f…`: a malformed JSON reply is retried, and a `page-has-heading-one` edit that broke `heading-order` is rejected, rolled back and fixed on the next attempt |
 | Built in public | _TODO: #neatHack tweets_ |
 | Code written during the hackathon | Commit history of this repo (Oct 10–12, 2026) |

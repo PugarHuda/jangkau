@@ -1,0 +1,116 @@
+{
+  "target": "demo_site\\toko.html",
+  "version": "v4",
+  "verify": true,
+  "done": [
+    "button-name",
+    "image-alt",
+    "label",
+    "aria-hidden-focus",
+    "color-contrast",
+    "document-title",
+    "frame-title",
+    "html-has-lang",
+    "heading-order",
+    "landmark-one-main",
+    "meta-viewport",
+    "page-has-heading-one",
+    "region"
+  ],
+  "results": [
+    {
+      "rule": "button-name",
+      "status": "fixed",
+      "attempts": 2
+    },
+    {
+      "rule": "image-alt",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "label",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "aria-hidden-focus",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "color-contrast",
+      "status": "fixed",
+      "attempts": 2
+    },
+    {
+      "rule": "document-title",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "frame-title",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "html-has-lang",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "heading-order",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "landmark-one-main",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "meta-viewport",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "page-has-heading-one",
+      "status": "fixed",
+      "attempts": 2
+    },
+    {
+      "rule": "region",
+      "status": "fixed",
+      "attempts": 1
+    }
+  ],
+  "baseline": {
+    "nodes": 47,
+    "by_rule": {
+      "aria-hidden-focus": 1,
+      "button-name": 1,
+      "color-contrast": 18,
+      "document-title": 1,
+      "frame-title": 1,
+      "heading-order": 1,
+      "html-has-lang": 1,
+      "image-alt": 6,
+      "label": 3,
+      "landmark-one-main": 1,
+      "link-name": 1,
+      "meta-viewport": 1,
+      "page-has-heading-one": 1,
+      "region": 10
+    }
+  },
+  "final": {
+    "nodes": 0,
+    "by_rule": {}
+  },
+  "seconds": 71.0,
+  "usage": {
+    "prompt_tokens": 33131,
+    "completion_tokens": 5060,
+    "llm_calls": 16
+  }
+}

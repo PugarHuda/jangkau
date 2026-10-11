@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style>
+  body { font-family: Georgia, serif; margin: 0; background: #f7f1e8; color: #2c2118; }
+  .top { background: #1f3a5f; color: #8aa0bd; padding: 6px 24px; font-size: 13px; }
+  .nav { display: flex; gap: 20px; padding: 16px 24px; background: #fff; border-bottom: 1px solid #e5dccd; }
+  .nav span { cursor: pointer; color: #b39b7d; }
+  .banner { background: #a33b20; color: #e88a6a; padding: 40px 24px; font-size: 28px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 24px; }
+  .item { background: #fff; padding: 12px; border: 1px solid #eadfcf; }
+  .item img { width: 100%; height: 160px; object-fit: cover; }
+  .old { color: #c8bba8; text-decoration: line-through; }
+  .new { color: #d9a441; font-weight: bold; }
+  .badge { background: #e6f4ea; color: #7fbf8f; font-size: 11px; padding: 2px 6px; }
+  table { margin: 24px; border-collapse: collapse; }
+  td { border: 1px solid #ddd; padding: 8px 12px; }
+  .fake-btn { display: inline-block; background: #1f3a5f; color: #fff; padding: 8px 14px; }
+  .muted { color: #bfb3a3; }
+</style>
+</head>
+<body>
+<div class="top">Gratis ongkir se-Indonesia untuk pembelian di atas Rp 300.000</div>
+<div class="nav">
+  <img src="logo.png" width="120" height="32">
+  <span onclick="location='#produk'">Produk</span>
+  <span onclick="location='#ukuran'">Panduan Ukuran</span>
+  <span onclick="location='#kontak'">Kontak</span>
+  <a href="#keranjang"><img src="ig.png" width="20" height="20"></a>
+</div>
+
+<div class="banner">Batik Tulis Pekalongan — Diskon 30%</div>
+
+<div class="grid" id="produk">
+  <div class="item">
+    <img src="kopi-susu.jpg">
+    <h3>Kemeja Parang</h3>
+    <span class="old">Rp 450.000</span> <span class="new">Rp 315.000</span>
+    <span class="badge">Stok ada</span>
+    <div class="fake-btn" onclick="add(1)">+ Keranjang</div>
+  </div>
+  <div class="item">
+    <img src="v60.jpg">
+    <h3>Kemeja Kawung</h3>
+    <span class="old">Rp 420.000</span> <span class="new">Rp 294.000</span>
+    <span class="badge">Stok ada</span>
+    <div class="fake-btn" onclick="add(2)">+ Keranjang</div>
+  </div>
+  <div class="item">
+    <img src="pisang.jpg">
+    <h3>Kain Mega Mendung</h3>
+    <span class="old">Rp 600.000</span> <span class="new">Rp 420.000</span>
+    <span class="badge">Sisa 2</span>
+    <div class="fake-btn" onclick="add(3)">+ Keranjang</div>
+  </div>
+  <div class="item">
+    <img src="kopi-susu.jpg">
+    <h3>Selendang Sogan</h3>
+    <span class="old">Rp 250.000</span> <span class="new">Rp 175.000</span>
+    <span class="badge">Stok ada</span>
+    <div class="fake-btn" onclick="add(4)">+ Keranjang</div>
+  </div>
+</div>
+
+<table id="ukuran">
+  <tr><td></td><td>Lingkar dada</td><td>Panjang</td></tr>
+  <tr><td>M</td><td>100 cm</td><td>70 cm</td></tr>
+  <tr><td>L</td><td>106 cm</td><td>72 cm</td></tr>
+  <tr><td>XL</td><td>112 cm</td><td>74 cm</td></tr>
+</table>
+
+<div id="kontak" style="padding:24px">
+  <h5>Hubungi kami</h5>
+  <input type="email" id="email">
+  <input type="text" id="email">
+  <textarea></textarea>
+  <div aria-hidden="true"><a href="https://wa.me/62812">WhatsApp</a></div>
+  <button aria-labelledby="nonexistent"></button>
+  <p class="muted">Kami membalas dalam 1×24 jam pada hari kerja.</p>
+  <iframe src="about:blank" width="300" height="120"></iframe>
+</div>
+<script>function add(i){}</script>
+</body>
+</html>

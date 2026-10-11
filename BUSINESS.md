@@ -15,18 +15,20 @@ which typically costs $1,000–5,000 per site.
 | Pro | $99 | 150 |
 | Agency | $299 | 600 |
 
-## Cost per page (estimate, replace with measured value)
-~10 rules × ~1.5 attempts × ~5k tokens ≈ 75k tokens per page
-→ about **$0.25 per page** on a Sonnet-class model, plus about $0.01 of compute.
+## Cost per page (measured)
+Measured run (v4, claude-haiku, toko.html, 47 → 0 failing nodes): 16 LLM calls,
+33.1k input + 5.1k output tokens ≈ **$0.06 per page** (Haiku list price $1/$5 per M tokens),
+plus about $0.01 of compute (one headless Chromium for about 70 s).
+Budget conservatively with **$0.10 per page** (bigger real-world pages, retries).
 
-| Plan | Revenue | Inference cost (full usage) | Gross margin |
+| Plan | Revenue | Inference cost (full usage, $0.10/page) | Gross margin |
 |---|---|---|---|
-| Starter | $29 | $6.50 | 78% |
-| Pro | $99 | $39 | 61% |
-| Agency | $299 | $156 | 48% |
+| Starter | $29 | $2.50 | 91% |
+| Pro | $99 | $15 | 85% |
+| Agency | $299 | $60 | 80% |
 
-Lever: route simple rules (lang, title, alt) to a cheap model such as Nova and keep
-the strong model for color contrast and layout. That should raise margins by 15–25 points.
+Risk: real sites are 10–50× larger than the demo pages. That needs chunking per section,
+and cost per page could grow 3–5×. Margins stay above 50% even at $0.50 per page on Pro.
 
 ## Scenarios for cfo.ai
 - **Base:** 100 paying customers after 12 months (70 Starter / 25 Pro / 5 Agency) ≈ $6.0k MRR

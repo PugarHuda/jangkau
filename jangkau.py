@@ -104,16 +104,18 @@ Rules:
 
 
 @span(kind="AGENT", name="fix_rule")
-def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: bool) -> dict:
-    feedback = ""
+def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: bool, done: list) -> dict:
+    """Fix one rule. Accepted edits are kept and the rule is retried until it is fully
+    resolved; rejected edits are rolled back. Returns fixed / partial / gave-up."""
+    rid, start_nodes, feedback = rule["id"], len(rule["nodes"]), ""
     for attempt in range(1, MAX_ATTEMPTS + 1):
         source = html.read_text(encoding="utf-8")
         nodes = "\n".join(f"- target {n['target']}: {n['html'][:300]}\n  {n['failureSummary'][:300]}"
                           for n in rule["nodes"][:15])
-        prompt = (f"Violation `{rule['id']}` ({rule['impact']}): {rule['help']}\n{rule['helpUrl']}\n"
+        prompt = (f"Violation `{rid}` ({rule['impact']}): {rule['help']}\n{rule['helpUrl']}\n"
                   f"Failing nodes:\n{nodes}\n\nFile `{html.name}`:\n```html\n{source}\n```")
         if feedback:
-            prompt += f"\n\nYour previous attempt was rejected: {feedback}\nTry a different fix."
+            prompt += f"\n\nFeedback on your previous attempt: {feedback}"
         try:
             resp = llm.chat.completions.create(
                 model=MODEL, temperature=0,
@@ -123,22 +125,30 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
                 usage["prompt_tokens"] += resp.usage.prompt_tokens
                 usage["completion_tokens"] += resp.usage.completion_tokens
             plan = parse_json(resp.choices[0].message.content or "")
-            html.write_text(apply_edits(source, plan.get("edits", [])), encoding="utf-8")
+            html.write_text(apply_edits(source, plan.get("edits", [])), encoding="utf-8", newline="\n")
         except Exception as e:  # bad JSON, non-unique find, API hiccup -> retry with feedback
-            feedback = f"{type(e).__name__}: {e}"
-            log(f"  attempt {attempt} failed before audit: {feedback}")
+            feedback = f"it failed with {type(e).__name__}: {e}. Try again."
+            log(f"  attempt {attempt} failed before audit: {e}")
             continue
 
         after = audit(page, html, work / "after.png")
         if not verify:
-            return {"rule": rule["id"], "status": "applied-unverified", "attempts": attempt, "after": after}
+            return {"rule": rid, "status": "applied-unverified", "attempts": attempt}
 
+        left = after["by_rule"].get(rid, 0)
         problems = []
-        if after["by_rule"].get(rule["id"], 0) >= before["by_rule"].get(rule["id"], 0):
-            problems.append(f"`{rule['id']}` still has {after['by_rule'].get(rule['id'], 0)} failing nodes")
-        new = {k: v for k, v in after["by_rule"].items() if v > before["by_rule"].get(k, 0)}
+        if left >= before["by_rule"].get(rid, 0):
+            problems.append(f"`{rid}` still has {left} failing nodes")
+        # Rules still waiting in the queue may grow (e.g. a new <label> outside a landmark
+        # adds a `region` node); they get fixed later. Regressions in finished rules or
+        # brand-new rules are real breakage.
+        new = {k: v for k, v in after["by_rule"].items()
+               if v > before["by_rule"].get(k, 0) and (k in done or k not in before["by_rule"])}
         if new:
-            problems.append(f"the edit introduced new violations: {new}")
+            detail = " | ".join(f"{v['id']}: {v['help']} at {v['nodes'][0]['html'][:150]} "
+                                f"({v['nodes'][0]['failureSummary'][:200]})"
+                                for v in after["violations"] if v["id"] in new)
+            problems.append(f"the edit introduced new violations {new}: {detail}")
         fb, fa = before["fingerprint"], after["fingerprint"]
         if fa["elements"] < fb["elements"] or fa["text"] < fb["text"] * 0.95:
             problems.append(f"content was removed (elements {fb['elements']}->{fa['elements']}, "
@@ -147,13 +157,22 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
         if vd > VISUAL_LIMIT:
             problems.append(f"the page changed visually too much ({vd:.0%} of pixels)")
 
-        if not problems:
-            return {"rule": rule["id"], "status": "fixed", "attempts": attempt,
-                    "visual_diff": round(vd, 3), "after": after}
-        feedback = "; ".join(problems)
-        log(f"  attempt {attempt} rejected, reverting: {feedback}")
-        html.write_text(source, encoding="utf-8")  # recovery: roll back the bad edit
-    return {"rule": rule["id"], "status": "gave-up", "attempts": MAX_ATTEMPTS, "last_error": feedback}
+        if problems:
+            feedback = "it was rejected and rolled back: " + "; ".join(problems) + ". Try a different fix."
+            log(f"  attempt {attempt} rejected, reverting: {'; '.join(problems)}")
+            html.write_text(source, encoding="utf-8", newline="\n")  # recovery: roll back the bad edit
+            continue
+        if left == 0:
+            return {"rule": rid, "status": "fixed", "attempts": attempt}
+        # partial progress: keep the edit, retry the remaining nodes
+        log(f"  attempt {attempt} accepted, {left} nodes left")
+        before = after
+        shutil.copy(work / "after.png", work / "before.png")
+        rule = next(v for v in after["violations"] if v["id"] == rid)
+        feedback = f"it was accepted, but {left} nodes still fail (listed above). Fix those too."
+    left = before["by_rule"].get(rid, 0)
+    return {"rule": rid, "status": "partial" if left < start_nodes else "gave-up",
+            "attempts": MAX_ATTEMPTS, "last_feedback": feedback}
 
 
 def log(msg: str):
@@ -189,8 +208,7 @@ def run(target: Path, out: Path, verify: bool) -> dict:
                 break
             rule = todo[0]
             log(f"fixing {rule['id']} ({rule['impact']}, {len(rule['nodes'])} nodes)")
-            result = fix_rule(page, html, out, rule, current, verify)
-            result.pop("after", None)
+            result = fix_rule(page, html, out, rule, current, verify, state["done"])
             log(f"  -> {result['status']} after {result['attempts']} attempt(s)")
             state["done"].append(rule["id"])
             state["results"].append(result)

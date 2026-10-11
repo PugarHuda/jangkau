@@ -29,7 +29,25 @@ Ampun (Pugar Huda Mantoro)
   bad JSON → retry → fixed; non-unique `find` → retry; an edit that deleted an image
   was caught by the content guard and reverted. Real-model runs are still pending.
 - Done: Entire enabled. Repo is public at https://github.com/PugarHuda/jangkau
-- Pending: claim the LiteLLM key, run v1 (`--no-verify`) and v2, then compare traces in neatlogs.
+- Done: LiteLLM key claimed. First real run on `index.html` (claude-sonnet-4.6): 25 → 0 nodes.
+  A real recovery happened: the first `select-name` fix added 6 `region` violations, was rejected and rolled back, then fixed on attempt 2.
+  However, v1 (`--no-verify`) also reached 0, so the page was too easy to show improvement.
+- Done: added a harder page `demo_site/toko.html` (batik shop): 47 failing nodes across 14 rules.
+  Real images added to the demo (missing images made Chrome collapse the cards).
+- Iteration, all on claude-haiku with toko.html (local run data in `runs/dbg-toko-*`, not exported to neatlogs yet):
+
+  | Version | Change | Nodes left | LLM calls | Tokens in/out | Time |
+  |---|---|---|---|---|---|
+  | v1 | no verification | 10 | 14 | 28.4k / 3.9k | 61s |
+  | v2 | verify + revert | 13 (worse) | 18 | 35.9k / 5.3k | 78s |
+  | v3 | allow growth in still-queued rules; keep partial progress and retry the rest | 1 | 18 | 36.9k / 5.3k | 81s |
+  | v4 | rejection feedback includes the broken node + axe failure summary | **0** | 16 | 33.1k / 5.1k | 71s |
+
+  Root causes found from run logs: (a) v2 rejected a correct `<label>` fix because it added `region`
+  nodes, a rule still waiting in the queue; (b) `color-contrast` 18 → 9 was marked fixed and the 9 left were never retried;
+  (c) `page-has-heading-one` failed 3 times because the feedback only gave the rule name, not the broken heading.
+- Total LiteLLM spend so far: about $0.46 of $20.
+- Pending: NEATLOGS_API_KEY, then re-run v1 → v4 with traces exported for shareable before/after evidence.
 
 ## Demo
 Pending.

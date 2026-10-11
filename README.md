@@ -2,7 +2,7 @@
 
 > *jangkau* (Indonesian): to reach. A web page should reach everyone.
 
-**Jangkau is an agent that makes a web page accessible, and proves every fix.** · [Live demo](https://pugarhuda.github.io/jangkau/)
+**Jangkau is an agent that makes a web page accessible, and proves every fix.** · [Live demo](https://jangkau-jet.vercel.app)
 It audits the page against WCAG with axe-core, fixes one violation at a time,
 and only keeps a fix when three independent checks pass. Otherwise it rolls the
 edit back and tries again with the reason it failed.

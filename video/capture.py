@@ -11,8 +11,8 @@ W, H = 1600, 900
 PAGES = [  # name, url, full page, wait ms
     ("shop-before", (ROOT / "demo_site" / "shop.html").as_uri(), True, 500),
     ("shop-after", (ROOT / "runs" / "video-shop" / "shop.html").as_uri(), True, 500),
-    ("landing", "https://jangkau-jet.vercel.app/", False, 3500),
-    ("landing-full", "https://jangkau-jet.vercel.app/", True, 3500),
+    ("landing", (ROOT / "site" / "index.html").as_uri(), False, 3500),
+    ("landing-full", (ROOT / "site" / "index.html").as_uri(), True, 3500),
     ("w3c-before", "https://www.w3.org/WAI/demos/bad/before/home.html", True, 1500),
     ("w3c-after", (ROOT / "runs" / "w3c-bad" / "index.html").as_uri(), True, 1500),
     ("freelancer-before", (ROOT / "runs" / "real-freelancer" / "baseline.png").as_uri(), False, 300),

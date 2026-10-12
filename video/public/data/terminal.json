@@ -1,130 +1,142 @@
 [
  {
-  "t": 2.28,
-  "text": "neatlogs trace: 848da8cc19d5cbe2fa3a4f1128f8237e"
+  "t": 3.37,
+  "text": "system prompt: jangkau-fixer-system@v1 (production)"
  },
  {
-  "t": 4.89,
+  "t": 3.37,
+  "text": "neatlogs trace: 6e973c4ea287802f9b46ba06eab7724b"
+ },
+ {
+  "t": 5.18,
   "text": "baseline: 47 failing nodes across 14 rules"
  },
  {
-  "t": 5.57,
+  "t": 5.98,
   "text": "fixing button-name (critical, 1 nodes)"
  },
  {
-  "t": 10.27,
+  "t": 13.01,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
-  "t": 11.0,
+  "t": 13.76,
   "text": "fixing image-alt (critical, 6 nodes)"
  },
  {
-  "t": 15.28,
+  "t": 18.02,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
-  "t": 16.01,
+  "t": 18.75,
   "text": "fixing label (critical, 3 nodes)"
  },
  {
-  "t": 19.4,
-  "text": "  -> fixed after 1 attempt(s)"
- },
- {
-  "t": 20.09,
-  "text": "fixing aria-hidden-focus (serious, 1 nodes)"
- },
- {
-  "t": 22.85,
+  "t": 22.82,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
   "t": 23.56,
+  "text": "fixing aria-hidden-focus (serious, 1 nodes)"
+ },
+ {
+  "t": 26.16,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 26.88,
   "text": "fixing color-contrast (serious, 18 nodes)"
  },
  {
-  "t": 37.56,
+  "t": 32.48,
   "text": "  attempt 1 accepted, 1 nodes left"
  },
  {
-  "t": 44.23,
+  "t": 42.07,
   "text": "  -> fixed after 2 attempt(s)"
  },
  {
-  "t": 44.93,
+  "t": 42.76,
   "text": "fixing document-title (serious, 1 nodes)"
  },
  {
-  "t": 47.22,
+  "t": 45.11,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
-  "t": 47.91,
+  "t": 45.78,
   "text": "fixing frame-title (serious, 1 nodes)"
  },
  {
-  "t": 50.17,
+  "t": 49.09,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
-  "t": 50.87,
+  "t": 49.81,
   "text": "fixing html-has-lang (serious, 1 nodes)"
  },
  {
-  "t": 53.0,
+  "t": 52.22,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
-  "t": 53.7,
+  "t": 52.92,
   "text": "fixing heading-order (moderate, 1 nodes)"
  },
  {
-  "t": 56.85,
+  "t": 56.08,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
-  "t": 57.54,
+  "t": 56.77,
   "text": "fixing landmark-one-main (moderate, 1 nodes)"
  },
  {
-  "t": 60.23,
+  "t": 59.59,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
-  "t": 60.92,
+  "t": 60.33,
   "text": "fixing meta-viewport (moderate, 1 nodes)"
  },
  {
-  "t": 63.61,
+  "t": 62.64,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
-  "t": 64.31,
+  "t": 63.36,
   "text": "fixing page-has-heading-one (moderate, 1 nodes)"
  },
  {
-  "t": 67.61,
-  "text": "  attempt 1 rejected, reverting: the edit introduced new violations {'heading-order': 1}: heading-order: Heading levels should only increase by one at <h3>Kemej"
+  "t": 66.67,
+  "text": "  attempt 1 rejected, reverting: the edit introduced new violations {'heading-order': 1}: heading-order: Heading levels should only increase by one at <h3>Paran"
  },
  {
-  "t": 67.61,
+  "t": 66.67,
   "text": "  Heading order invalid)"
  },
  {
-  "t": 73.98,
-  "text": "  -> fixed after 2 attempt(s)"
+  "t": 70.41,
+  "text": "  attempt 2 rejected, reverting: the edit introduced new violations {'heading-order': 1}: heading-order: Heading levels should only increase by one at <h3>Paran"
  },
  {
-  "t": 74.68,
+  "t": 70.41,
+  "text": "  Heading order invalid)"
+ },
+ {
+  "t": 78.35,
+  "text": "  -> fixed after 3 attempt(s)"
+ },
+ {
+  "t": 79.07,
   "text": "fixing region (moderate, 2 nodes)"
  },
  {
-  "t": 78.63,
+  "t": 83.59,
   "text": "  -> fixed after 1 attempt(s)"
  },
  {
-  "t": 80.57,
-  "text": "done: 47 -> 0 failing nodes. report: runs\\video-toko\\report.md"
+  "t": 85.47,
+  "text": "done: 47 -> 0 failing nodes. report: runs\\video-shop\\report.md"
  }
 ]

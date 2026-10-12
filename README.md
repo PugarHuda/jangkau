@@ -18,7 +18,8 @@ Built during [#neatHack](https://neatlogs.com/hackathon), Oct 10–12 2026.
 ```
 audit (axe-core + screenshot + content fingerprint)
   └─ for each violation, most severe first
-       ├─ LLM proposes find/replace edits
+       ├─ LLM proposes find/replace edits (contrast: on the site's own CSS rule
+       │    or design token, found through the CSSOM, not an inline override)
        ├─ apply  ── find not unique / bad JSON? ──► retry with the error
        ├─ re-audit + verify:
        │    1. the rule's failing nodes went down
@@ -27,11 +28,15 @@ audit (axe-core + screenshot + content fingerprint)
        │    4. no empty landmark was added (an empty <main> games axe)
        │    5. the page still looks the same (pixel diff ≤ 35%; edge diff
        │       for contrast fixes, so a recolour passes but a moved layout fails)
-       ├─ any check fails ──► revert, retry with the measured failure (max 3,
-       │                       the last attempt escalates to a stronger model)
+       ├─ any check fails ──► revert every file the edit touched, retry with the
+       │                       measured failure; two stuck attempts in a row escalate
+       │                       to a stronger model; partial progress earns another
+       │                       attempt (3 while stuck, 8 at most)
+       ├─ --max-cost reached ──► stop starting rules (least severe are left)
        └─ checkpoint state.json (an interrupted run resumes)
 final audit ──► report.md (before/after, tokens, time)
---pr ──► branch + commit the fixed page in its repo, open a PR with the report
+--pr ──► branch + commit the fixed page (and changed stylesheets), open a PR with the report
+--crawl N --fix ──► the same loop on every page under the start URL, one site report
 ```
 
 The content guard matters. The cheapest way for an LLM to "fix" a missing alt
@@ -58,10 +63,12 @@ JANGKAU_VERSION=v1 python jangkau.py demo_site/index.html --no-verify   # baseli
 python jangkau.py path/to/your/repo/index.html --pr    # fix a page in a git repo and open a PR (needs gh)
 python jangkau.py https://example.com --out runs/site    # fix a live page (snapshot + <base href>)
 python jangkau.py https://example.com/docs/ --crawl 20 --sarif site.sarif   # audit a whole section of a site
+python jangkau.py https://example.com/docs/ --crawl 5 --fix --max-cost 0.25   # fix a whole section, capped per page
 python jangkau.py page.html --max-cost 0.15   # stop once this page has cost $0.15 (gateway-reported)
 python jangkau.py --explain https://jangkau-jet.vercel.app/after/shop.html   # which agent run fixed this page?
 python jangkau.py --sync-prompt            # version the system prompt in the neatlogs prompt registry
 python jangkau.py page.html --audit-only --sarif a.sarif --fail-on serious   # CI gate, no model key needed
+entire jangkau <checkpoint-id>   # did an agent checkpoint make a page less accessible? (entire-plugin/)
 python -m pytest -q    # unit + Playwright E2E (landing page, CLI, SARIF schema)
 ```
 

@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QMP59HGZEJ33YFSKWA68J1",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "video/README.md",
+    "video/capture.py",
+    "video/public/data/alerts.json",
+    "video/public/data/terminal.json",
+    "video/public/shots/aria.json",
+    "video/public/shots/entire-repo.png",
+    "video/public/shots/entire.png",
+    "video/public/shots/gh-actions.png",
+    "video/public/shots/gh-pr.png",
+    "video/public/shots/gh-workflow.png",
+    "video/public/shots/landing-full.png",
+    "video/public/shots/nl-trace.png",
+    "video/public/shots/shop-after.png",
+    "video/public/shots/shop-before.png",
+    "video/public/shots/toko-after.png",
+    "video/public/shots/toko-before.png"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

@@ -86,3 +86,17 @@ def test_apply_valid_edits_keeps_good_edits_and_reports_bad_ones():
 def test_prompt_falls_back_to_local_without_a_key():
     import jangkau
     assert jangkau.load_prompt() == {"content": jangkau.SYSTEM, "ref": "local"}
+
+
+def test_report_shows_gateway_cost_and_budget_stop(tmp_path):
+    from jangkau import write_report
+    s = {"target": "p.html", "version": "t", "verify": True, "trace_id": "x", "results": [],
+         "baseline": {"nodes": 10, "by_rule": {"label": 4, "region": 6}}, "final": {"nodes": 6, "by_rule": {"region": 6}},
+         "violations": [], "seconds": 1.0,
+         "usage": {"llm_calls": 2, "prompt_tokens": 10, "completion_tokens": 5, "cost_usd": 0.0245,
+                   "by_model": {"claude-sonnet-4.6": {"calls": 2, "cost_usd": 0.0245}}},
+         "budget_stop": {"spent_usd": 0.0245, "max_usd": 0.02, "rules_left": ["region"]}}
+    write_report(s, tmp_path / "r.md")
+    r = (tmp_path / "r.md").read_text(encoding="utf-8")
+    assert "| Cost (reported by the LiteLLM gateway) | $0.0245 (claude-sonnet-4.6: 2 calls, $0.0245) |" in r
+    assert "| Budget stop | after $0.0245 of $0.02, not attempted: region |" in r

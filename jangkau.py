@@ -114,7 +114,8 @@ def crosscheck(page) -> dict:
             code: m.code.split('.').slice(3, 5).join('.'), msg: m.msg.slice(0, 200),
             html: (m.element.outerHTML || '').slice(0, 160)})))))""")
     return {"errors": len(items), "items": items}
-usage = {"prompt_tokens": 0, "completion_tokens": 0, "llm_calls": 0}
+usage = {"prompt_tokens": 0, "completion_tokens": 0, "llm_calls": 0, "cost_usd": 0.0, "by_model": {}}
+MAX_COST = None  # --max-cost: stop starting new rules once a page has cost this much (USD)
 
 
 # ---------- tools ----------
@@ -252,13 +253,25 @@ def to_sarif(violations: list, source: str, uri: str) -> dict:
                       "results": results}]}
 
 
+def new_page(pw):
+    """One browser page for every audit, snapshot and crawl. With VERCEL_AUTOMATION_BYPASS_SECRET set,
+    every request carries Vercel's protection-bypass header, so protected preview deployments can be
+    audited from CI (Vercel: Deployment Protection > Protection Bypass for Automation)."""
+    headers = {}
+    if os.getenv("VERCEL_AUTOMATION_BYPASS_SECRET"):
+        headers = {"x-vercel-protection-bypass": os.environ["VERCEL_AUTOMATION_BYPASS_SECRET"],
+                   "x-vercel-set-bypass-cookie": "true"}
+    return pw.chromium.launch().new_context(viewport={"width": 1280, "height": 800},
+                                            extra_http_headers=headers).new_page()
+
+
 @span(kind="TOOL", name="snapshot_url")
 def snapshot_url(url: str, out: Path) -> Path:
     """Save a live page as HTML with <base href> so its CSS, images and scripts still load from
     the original site. The agent then works on the saved copy."""
     out.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as pw:
-        page = pw.chromium.launch().new_page(viewport={"width": 1280, "height": 800})
+        page = new_page(pw)
         page.goto(url, wait_until="networkidle", timeout=60000)
         html, final_url = page.content(), page.url
     base = f'<base href="{final_url}">'
@@ -283,7 +296,7 @@ def discover_pages(start: str, limit: int) -> list:
     scope = urlparse(start).path.rsplit("/", 1)[0] + "/"
     queue, seen, pages = [urldefrag(start)[0]], {urldefrag(start)[0]}, []
     with sync_playwright() as pw:
-        page = pw.chromium.launch().new_page()
+        page = new_page(pw)
         while queue and len(pages) < limit:
             url = queue.pop(0)
             try:
@@ -366,7 +379,7 @@ def audit_only(target: Path, out: Path, sarif: "Path | None") -> dict:
     """Audit without fixing: no model key needed. Writes report.md and, optionally, SARIF."""
     out.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as pw:
-        page = pw.chromium.launch().new_page(viewport={"width": 1280, "height": 800})
+        page = new_page(pw)
         res = audit(page, target, out / "audit.png")
         cross = crosscheck(page)
     s = {"target": str(target), "version": VERSION, "verify": "audit-only", "results": [],
@@ -444,13 +457,21 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
             prompt += f"\n\nFeedback on your previous attempt: {feedback}"
         try:
             # escalate only when the cheap model is stuck: two failed or rejected attempts in a row
-            resp = llm().chat.completions.create(
-                model=ESCALATE_MODEL if stuck >= 2 else MODEL, temperature=0,
+            model = ESCALATE_MODEL if stuck >= 2 else MODEL
+            raw = llm().chat.completions.with_raw_response.create(
+                model=model, temperature=0,
                 messages=[{"role": "system", "content": PROMPT["content"]}, {"role": "user", "content": prompt}])
+            resp = raw.parse()
             usage["llm_calls"] += 1
             if resp.usage:
                 usage["prompt_tokens"] += resp.usage.prompt_tokens
                 usage["completion_tokens"] += resp.usage.completion_tokens
+            # the LiteLLM proxy reports what the call actually cost; no header (other gateways) = unknown
+            cost = float(raw.headers.get("x-litellm-response-cost") or 0)
+            usage["cost_usd"] += cost
+            m = usage["by_model"].setdefault(model, {"calls": 0, "cost_usd": 0.0})
+            m["calls"] += 1
+            m["cost_usd"] += cost
             plan = parse_json(resp.choices[0].message.content or "")
             patched, skipped = apply_valid_edits(source, plan.get("edits", []))
             if patched == source:
@@ -550,7 +571,7 @@ def run(target: Path, out: Path, verify: bool) -> dict:
     log(f"neatlogs trace: {state['trace_id']}")
 
     with sync_playwright() as pw:
-        page = pw.chromium.launch().new_page(viewport={"width": 1280, "height": 800})
+        page = new_page(pw)
         start = time.time()
         if "baseline" not in state:
             base = audit(page, html, out / "baseline.png")
@@ -566,6 +587,13 @@ def run(target: Path, out: Path, verify: bool) -> dict:
             todo = sorted((v for v in current["violations"] if v["id"] not in state["done"]),
                           key=lambda v: IMPACT.get(v["impact"], 9))
             if not todo:
+                break
+            if MAX_COST is not None and usage["cost_usd"] >= MAX_COST:
+                # fair use: rules are ordered by impact, so what's left is the least severe
+                state["budget_stop"] = {"spent_usd": round(usage["cost_usd"], 4), "max_usd": MAX_COST,
+                                        "rules_left": [v["id"] for v in todo]}
+                log(f"budget reached (${usage['cost_usd']:.4f} of ${MAX_COST}), leaving {len(todo)} rule(s)")
+                neatlogs.log("budget reached", level="warning", **state["budget_stop"])
                 break
             rule = todo[0]
             log(f"fixing {rule['id']} ({rule['impact']}, {len(rule['nodes'])} nodes)")
@@ -643,6 +671,8 @@ neatlogs trace: `{s.get('trace_id', '-')}`
 | Reduction | {(b - f) / b:.0%} |
 | LLM calls | {s['usage']['llm_calls']} |
 | Tokens (in/out) | {s['usage']['prompt_tokens']} / {s['usage']['completion_tokens']} |
+| Cost (reported by the LiteLLM gateway) | ${s['usage'].get('cost_usd', 0):.4f} ({', '.join(f"{k}: {v['calls']} calls, ${v['cost_usd']:.4f}" for k, v in s['usage'].get('by_model', {}).items()) or '-'}) |
+| Budget stop | {f"after ${s['budget_stop']['spent_usd']} of ${s['budget_stop']['max_usd']}, not attempted: {', '.join(s['budget_stop']['rules_left'])}" if s.get('budget_stop') else 'no'} |
 | Wall time | {s['seconds']}s |
 
 | Rule | Status | Attempts | Nodes |
@@ -692,12 +722,15 @@ if __name__ == "__main__":
                     help="exit 1 when a violation of this impact or worse remains (for CI)")
     ap.add_argument("--wait", type=int, default=0, metavar="MS",
                     help="wait this long after load before each audit (pages that animate into place)")
+    ap.add_argument("--max-cost", type=float, metavar="USD",
+                    help="stop starting new rules once this page has cost this much (fair-use cap)")
     ap.add_argument("--crawl", type=int, metavar="N",
                     help="audit up to N same-origin pages reachable from the URL (audit only, no fixing)")
     ap.add_argument("--sync-prompt", metavar="LABEL", nargs="?", const="production",
                     help="save the local system prompt to the neatlogs prompt registry under LABEL, then exit")
     a = ap.parse_args()
     SETTLE_MS = a.wait
+    MAX_COST = a.max_cost
     if a.sync_prompt:
         if not os.getenv("NEATLOGS_API_KEY"):
             sys.exit("--sync-prompt needs NEATLOGS_API_KEY")

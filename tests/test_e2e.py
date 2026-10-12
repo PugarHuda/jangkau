@@ -198,3 +198,36 @@ def test_crosscheck_reports_second_engine(tmp_path):
 def test_cli_requires_a_target_and_url_for_crawl():
     assert "target is required" in run_cli().stderr
     assert "--crawl needs an http(s) URL" in run_cli("demo_site/shop.html", "--crawl", "2").stderr
+
+
+def test_vercel_protection_bypass_header_reaches_the_server(tmp_path):
+    """A server that, like a protected Vercel preview, only serves the page to the bypass header."""
+    import http.server
+    import threading
+
+    class Protected(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            ok = self.headers.get("x-vercel-protection-bypass") == "s3cret"
+            body = (b'<html lang="en"><head><title>app</title></head><body><main><h1>app</h1></main></body></html>'
+                    if ok else b"<html><body><img src=x.png> Log in to Vercel</body></html>")
+            self.send_response(200)
+            self.send_header("content-type", "text/html")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *a):
+            pass
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Protected)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{server.server_port}/"
+    try:
+        locked = run_cli(url, "--audit-only", "--out", str(tmp_path / "a"))
+        env = {**ENV, "VERCEL_AUTOMATION_BYPASS_SECRET": "s3cret"}
+        opened = subprocess.run([sys.executable, str(ROOT / "jangkau.py"), url, "--audit-only", "--out", str(tmp_path / "b")],
+                                cwd=ROOT, env=env, capture_output=True, text=True, timeout=300)
+    finally:
+        server.shutdown()
+    assert "Log in to Vercel" in (tmp_path / "a" / "source" / "index.html").read_text(encoding="utf-8")
+    assert "<h1>app</h1>" in (tmp_path / "b" / "source" / "index.html").read_text(encoding="utf-8")
+    assert "audit: 0 failing elements" in opened.stdout, opened.stdout[-400:] + locked.stdout[-200:]

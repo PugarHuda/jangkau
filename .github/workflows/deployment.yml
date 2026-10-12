@@ -1,0 +1,57 @@
+name: Accessibility of the deployment
+
+# Runs when Vercel reports a finished deployment, so it audits the build that is actually live
+# (a push-time crawl races the deploy and audits the previous one).
+on: deployment_status
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  audit:
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    env:
+      # Vercel Pro: Deployment Protection > Protection Bypass for Automation. Needed for previews only.
+      VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+    steps:
+      - name: Pick the URL
+        id: url
+        env:
+          ENVIRONMENT: ${{ github.event.deployment.environment }}
+          DEPLOY_URL: ${{ github.event.deployment_status.environment_url }}
+        run: |
+          if [ "$ENVIRONMENT" = "Production" ]; then
+            echo "url=https://jangkau-jet.vercel.app/" >> "$GITHUB_OUTPUT"
+          elif [ -n "$VERCEL_AUTOMATION_BYPASS_SECRET" ]; then
+            echo "url=$DEPLOY_URL/" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Preview is behind Vercel Authentication; add VERCEL_AUTOMATION_BYPASS_SECRET to audit it"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.url.outputs.url
+        with:
+          ref: ${{ github.event.deployment.sha }}
+      - name: Crawl the deployment
+        id: audit
+        if: steps.url.outputs.url
+        uses: ./
+        with:
+          pages: ${{ steps.url.outputs.url }}
+          crawl: "5"
+          sarif: deployment.sarif
+          fail-on: serious
+          wait: "3500"
+      - name: Commit status
+        if: always() && steps.url.outputs.url
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.deployment.sha }}
+          OUTCOME: ${{ steps.audit.outcome }}
+          URL: ${{ steps.url.outputs.url }}
+        run: |
+          state=$([ "$OUTCOME" = "success" ] && echo success || echo failure)
+          gh api "repos/${{ github.repository }}/statuses/$SHA" -f state="$state" -f context="jangkau/accessibility" \
+            -f description="WCAG 2.x / EN 301 549 crawl of $URL: $OUTCOME" \
+            -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

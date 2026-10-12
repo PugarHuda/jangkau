@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Senja Coffee</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; background: #fffaf3; color: #3b2a1a; }
+  header { background: #6b3e1e; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+  header a { color: #ffffff; text-decoration: none; margin-left: 16px; }
+  .hero { padding: 48px 32px; }
+  .hero p { color: #6b5040; font-size: 18px; }
+  .menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 0 32px; }
+  .card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px #0002; }
+  .card img { width: 100%; height: 140px; object-fit: cover; background: #e8d9c8; }
+  .price { color: #7a5c3a; }
+  form { padding: 32px; display: flex; gap: 8px; }
+  input { padding: 8px; border: 1px solid #ccc; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  .icon-btn { width: 40px; height: 40px; background: #6b3e1e; border: 0; border-radius: 50%; }
+  footer { padding: 24px 32px; color: #5a4030; }
+</style>
+</head>
+<body>
+<header>
+  <img src="logo.png" width="120" height="32" alt="Senja Coffee">
+  <nav>
+    <a href="#menu">Menu</a>
+    <a href="#order">Order</a>
+    <a href="#">Location</a>
+  </nav>
+</header>
+
+<main>
+<div class="hero">
+  <h1>Senja Coffee</h1>
+  <h2>Local coffee from farmers in Gayo, Toraja and Kintamani</h2>
+  <p>Brewed slowly, enjoyed slowly. Open daily, 7 am to 10 pm.</p>
+</div>
+
+<div class="menu" id="menu">
+  <div class="card">
+    <img src="latte.jpg" alt="Palm sugar iced latte">
+    <h3>Palm sugar iced latte</h3>
+    <p class="price">$2.20</p>
+  </div>
+  <div class="card">
+    <img src="v60.jpg" alt="V60 Gayo pour-over coffee">
+    <h3>V60 Gayo</h3>
+    <p class="price">$2.80</p>
+  </div>
+  <div class="card">
+    <img src="banana.jpg" alt="Fried banana with cheese">
+    <h3>Fried banana with cheese</h3>
+    <p class="price">$1.80</p>
+  </div>
+</div>
+
+<form id="order">
+  <input type="text" placeholder="Name">
+  <input type="tel" placeholder="WhatsApp number">
+  <label for="drink-select" class="sr-only">Select drink</label>
+  <select id="drink-select">
+    <option>Palm sugar iced latte</option>
+    <option>V60 Gayo</option>
+  </select>
+  <button class="icon-btn" aria-label="Submit order"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h12M9 3l5 5-5 5" stroke="#fff" fill="none"/></svg></button>
+</form>
+</main>
+
+<footer>
+  <p>© 2026 Senja Coffee · 12 Braga Street, Bandung</p>
+  <a href="https://instagram.com"><img src="ig.png" width="24" height="24" alt="Senja Coffee on Instagram"></a>
+</footer>
+</body>
+</html>

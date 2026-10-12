@@ -18,25 +18,27 @@ which typically costs $1,000–5,000 per site.
 | Agency | $299 | 600 |
 
 ## Cost per page (measured)
-Measured run (v4, claude-haiku, shop.html, 47 → 0 failing nodes): 16 LLM calls,
-33.1k input + 5.1k output tokens ≈ **$0.06 per page** (Haiku list price $1/$5 per M tokens),
-plus about $0.01 of compute (one headless Chromium for about 70 s).
-Budget conservatively with **$0.10 per page** (bigger real-world pages, retries).
+Full fixing runs on four real pages, each with both models, cost as reported by the LiteLLM gateway
+on every call (`x-litellm-response-cost`), not estimated from token counts. Every run ends at 0 failing
+elements. Data: `runs/cost-bench/` (`python scripts/cost_bench.py`).
 
-| Plan | Revenue | Inference cost (full usage, $0.10/page) | Gross margin |
+| Page | Failing elements | Haiku (escalates to Sonnet when stuck) | Sonnet 4.6 throughout |
 |---|---|---|---|
-| Starter | $29 | $2.50 | 91% |
-| Pro | $99 | $15 | 85% |
-| Agency | $299 | $60 | 80% |
+| Coffee shop (demo) | 25 → 0 | $0.025 | $0.064 |
+| Batik shop (demo) | 47 → 0 | $0.059 | $0.174 |
+| StartBootstrap Freelancer | 33 → 0 | $0.115 | $0.234 |
+| W3C inaccessible demo (live) | 81 → 0 | $0.159 | $0.410 |
+| **Mean** | | **$0.090** | **$0.220** |
 
-Risk: real sites are 10–50× larger than the demo pages. That needs chunking per section,
-and cost per page could grow 3–5×. Margins stay above 50% even at $0.50 per page on Pro.
+Haiku is the default: same result, 2.5× cheaper. Plus about $0.01 of compute per page (headless Chromium
+for about a minute). `--max-cost` caps what one page may spend; rules run in impact order, so a capped
+page still gets its critical and serious fixes first.
 
-## Scenarios for cfo.ai
-- **Base:** 100 paying customers after 12 months (70 Starter / 25 Pro / 5 Agency) ≈ $6.0k MRR
-- **Growth:** 300 customers, same mix ≈ $18k MRR
-- Fixed costs: hosting $100/mo, tools $200/mo, founder salary $0 for the first 6 months
-- Runway: model it against $10k starting cash
+| Plan | Revenue | Inference cost (full usage, $0.09/page) | Gross margin |
+|---|---|---|---|
+| Starter | $29 | $2.25 | 92% |
+| Pro | $99 | $13.50 | 86% |
+| Agency | $299 | $54 | 82% |
 
 ## The cfo.ai model
 
@@ -48,15 +50,16 @@ sized so customers reach the month-12 target in each scenario.
 | | Base | Growth | Downside |
 |---|---|---|---|
 | New customers / month | 10.4 | 31 | 4.13 |
-| Cost per page | $0.10 | $0.10 | $0.50 |
+| Cost per page (measured) | $0.09 (Haiku mean) | $0.09 | $0.41 (worst page, Sonnet) |
 | Customers, month 12 | ~100 | ~300 | ~40 |
 | MRR, month 12 (Oct 2027) | $6.0k | $18.0k | $2.4k |
 | MRR, month 24 (Oct 2028) | $9.7k | $29.0k | $3.9k |
-| Gross margin | 82.8% | 82.8% | 26.2% |
+| Gross margin | 84.3% | 84.3% | 38.9% |
 | Lowest cash | $10k (never below start) | $10k | runs out **Aug 2027** |
-| Cash, Oct 2028 | $65k | $296k | −$37k |
+| Cash, Oct 2028 | $67k | $302k | −$29k |
 
-Base is cash-flow positive every month except May 2027 (−$88), when the founder salary starts.
-The downside teaches the pricing rule: at $0.50 per page an Agency customer who uses all 600 pages costs
-$300 on a $299 plan. If real-site cost per page rises, cap fair use or reprice Agency before
-growing. Delaying the salary only moves the cash-out date.
+Base is cash-flow positive every month except May 2027 (−$33), when the founder salary starts.
+The downside teaches the pricing rule: at $0.41 per page an Agency customer who uses all 600 pages costs
+$246 on a $299 plan, and with few customers the cash still runs out in Aug 2027. The product enforces the
+answer: Haiku by default and a per-page `--max-cost` cap keep pages out of the Sonnet worst case.
+Delaying the salary only moves the cash-out date.

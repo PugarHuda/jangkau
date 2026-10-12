@@ -60,7 +60,7 @@ from PIL import Image, ImageChops, ImageFilter  # noqa: E402
 from playwright.sync_api import sync_playwright  # noqa: E402
 from axe_playwright_python.sync_playwright import Axe  # noqa: E402
 
-MODEL = os.getenv("JANGKAU_MODEL", "claude-sonnet-4.6")
+MODEL = os.getenv("JANGKAU_MODEL", "claude-haiku")  # measured: same fixes as Sonnet on 4 real pages, 2.5x cheaper
 ESCALATE_MODEL = os.getenv("JANGKAU_ESCALATE_MODEL", "claude-sonnet-4.6")  # last attempt on a stuck rule
 IMPACT = {"critical": 0, "serious": 1, "moderate": 2, "minor": 3}
 MAX_ATTEMPTS = 3        # attempts per rule while stuck

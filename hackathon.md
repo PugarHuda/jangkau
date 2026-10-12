@@ -80,6 +80,9 @@ Ampun (Pugar Huda Mantoro)
   W3C `region` (4 nodes, table layout) is still open: a landmark-map prompt was tried, measured no better, and reverted.
 - Done: HTML_CodeSniffer cross-check in every report; custom axe rule `focus-not-removed` (F55) found by that cross-check;
   `--crawl N` site audits; system prompt in the neatlogs prompt registry with the version recorded per run. W3C v7: 81 → 0.
+- Done: real cost per run from the LiteLLM gateway; 8-run benchmark (4 real pages x 2 models, all to 0): Haiku mean $0.09,
+  Sonnet $0.22, worst $0.41. Default model switched to Haiku; cfo.ai Base/Downside cost per page now measured; `--max-cost` cap.
+  deployment.yml audits the live deployment on Vercel's deployment_status and posts a commit status.
 - Pending: confirm the traces in the dashboard and add share links; Entire checkpoint link + ID; cfo.ai model; tweets; demo video.
 
 ## Demo

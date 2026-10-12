@@ -1,0 +1,134 @@
+[
+ {
+  "page": "batik shop (demo)",
+  "model": "claude-haiku",
+  "before": 47,
+  "after": 0,
+  "llm_calls": 16,
+  "cost_usd": 0.0587,
+  "by_model": {
+   "claude-haiku": {
+    "calls": 16,
+    "cost_usd": 0.05874220000000001
+   }
+  },
+  "seconds": 76.9,
+  "trace": "983e56371da3b07e063406ab631f4f01"
+ },
+ {
+  "page": "coffee shop (demo)",
+  "model": "claude-haiku",
+  "before": 25,
+  "after": 0,
+  "llm_calls": 8,
+  "cost_usd": 0.0247,
+  "by_model": {
+   "claude-haiku": {
+    "calls": 8,
+    "cost_usd": 0.0247027
+   }
+  },
+  "seconds": 31.8,
+  "trace": "034e23f9d276e4c75149a4f8d411ef61"
+ },
+ {
+  "page": "StartBootstrap Freelancer",
+  "model": "claude-haiku",
+  "before": 33,
+  "after": 0,
+  "llm_calls": 8,
+  "cost_usd": 0.1147,
+  "by_model": {
+   "claude-haiku": {
+    "calls": 7,
+    "cost_usd": 0.0803594
+   },
+   "claude-sonnet-4.6": {
+    "calls": 1,
+    "cost_usd": 0.0343266
+   }
+  },
+  "seconds": 51.9,
+  "trace": "a854d7559edd93d4bc3d364ed3b2268b"
+ },
+ {
+  "page": "W3C inaccessible demo (live)",
+  "model": "claude-haiku",
+  "before": 81,
+  "after": 0,
+  "llm_calls": 10,
+  "cost_usd": 0.1594,
+  "by_model": {
+   "claude-haiku": {
+    "calls": 10,
+    "cost_usd": 0.15941090000000002
+   }
+  },
+  "seconds": 83.3,
+  "trace": "f90c03e670c60ff0b75c9f6981ca2cb4"
+ },
+ {
+  "page": "batik shop (demo)",
+  "model": "claude-sonnet-4.6",
+  "before": 47,
+  "after": 0,
+  "llm_calls": 15,
+  "cost_usd": 0.1737,
+  "by_model": {
+   "claude-sonnet-4.6": {
+    "calls": 15,
+    "cost_usd": 0.1737087
+   }
+  },
+  "seconds": 75.1,
+  "trace": "0beb9b0798d5eb52299f8e6cd2d3ca0c"
+ },
+ {
+  "page": "coffee shop (demo)",
+  "model": "claude-sonnet-4.6",
+  "before": 25,
+  "after": 0,
+  "llm_calls": 8,
+  "cost_usd": 0.0639,
+  "by_model": {
+   "claude-sonnet-4.6": {
+    "calls": 8,
+    "cost_usd": 0.0639012
+   }
+  },
+  "seconds": 23.4,
+  "trace": "930cb11f63cd3047ada41ebc1daf9853"
+ },
+ {
+  "page": "StartBootstrap Freelancer",
+  "model": "claude-sonnet-4.6",
+  "before": 33,
+  "after": 0,
+  "llm_calls": 7,
+  "cost_usd": 0.2343,
+  "by_model": {
+   "claude-sonnet-4.6": {
+    "calls": 7,
+    "cost_usd": 0.23425380000000004
+   }
+  },
+  "seconds": 48.7,
+  "trace": "433d7f800c3fd3efbabdf373cda2809c"
+ },
+ {
+  "page": "W3C inaccessible demo (live)",
+  "model": "claude-sonnet-4.6",
+  "before": 81,
+  "after": 0,
+  "llm_calls": 10,
+  "cost_usd": 0.4102,
+  "by_model": {
+   "claude-sonnet-4.6": {
+    "calls": 10,
+    "cost_usd": 0.41015369999999995
+   }
+  },
+  "seconds": 67.3,
+  "trace": "17bb40687b09e89b17a8bfb24de0037f"
+ }
+]

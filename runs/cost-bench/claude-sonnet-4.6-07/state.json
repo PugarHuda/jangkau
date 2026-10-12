@@ -1,0 +1,460 @@
+{
+  "target": "runs\\cost-bench\\claude-sonnet-4.6-07\\source\\index.html",
+  "version": "v8-bench",
+  "verify": true,
+  "done": [
+    "image-alt",
+    "select-name",
+    "color-contrast",
+    "html-has-lang",
+    "link-name",
+    "focus-not-removed",
+    "landmark-one-main",
+    "region"
+  ],
+  "results": [
+    {
+      "rule": "image-alt",
+      "status": "fixed",
+      "attempts": 3
+    },
+    {
+      "rule": "select-name",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "color-contrast",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "html-has-lang",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "link-name",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "focus-not-removed",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "landmark-one-main",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "region",
+      "status": "fixed",
+      "attempts": 1
+    }
+  ],
+  "prompt": "jangkau-fixer-system@v1 (production)",
+  "trace_id": "17bb40687b09e89b17a8bfb24de0037f",
+  "crosscheck": {
+    "before": {
+      "errors": 41,
+      "items": [
+        {
+          "code": "3_1_1.H57",
+          "msg": "The html element should have a lang or xml:lang attribute which describes the language of the document.",
+          "html": "<html><head><base href=\"https://www.w3.org/WAI/demos/bad/before/home.html\">\n<title>Welcome to CityLights! [Inaccessible Home Page]</title>    <style>\n      #mai"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/border_left_top.gif\" width=\"10px\" height=\"10px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/border_top.gif\" height=\"10px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/border_right_top.gif\" width=\"10px\" height=\"10px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/border_left.gif\" width=\"10px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/top_logo_next_end.gif\" width=\"24px\" height=\"86px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/top_weather.gif\" width=\"128px\" height=\"86px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/top_logo_next_start.gif\" width=\"22px\" height=\"86px\">"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "This select element does not have a name available to an accessibility API. Valid names are: label element, title undefined, aria-label undefined, aria-labelledby undefined.",
+          "html": "<select onchange=\"location.href = this.value;\">\n            <option selected=\"\">QUICKMENU ----&gt;\n            </option><option value=\"../offsite.html\">Broadcas"
+        },
+        {
+          "code": "1_3_1.F68",
+          "msg": "This form field should be labelled in some way. Use the label element (either with a \"for\" attribute or wrapped around the form field), or \"title\", \"aria-label\" or \"aria-labelledby\" attributes as appr",
+          "html": "<select onchange=\"location.href = this.value;\">\n            <option selected=\"\">QUICKMENU ----&gt;\n            </option><option value=\"../offsite.html\">Broadcas"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/mark.gif\" width=\"158px\" height=\"7px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\".img/marker2_w.gif\" width=\"78px\" height=\"1px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/marker2_t.gif\" width=\"1\" height=\"30px\">"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"javascript:location.href='home.html';\" onfocus=\"blur();\"><img name=\"nav_home\" src=\"./img/nav_home.gif\" width=\"88\" height=\"27\" hspace=\"15\" border=\"0px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"javascript:location.href='news.html';\" onfocus=\"blur();\"><img src=\"./img/nav_news.gif\" name=\"nav_news\" width=\"90\" height=\"21\" hspace=\"12\" border=\"0px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"javascript:location.href='tickets.html';\" onfocus=\"blur();\"><img name=\"nav_facts\" src=\"./img/nav_facts.gif\" width=\"105\" height=\"23\" hspace=\"9\" border=\""
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"javascript:location.href='survey.html';\" onfocus=\"blur();\"><img src=\"./img/nav_survey.gif\" name=\"nav_survey\" width=\"107\" height=\"32\" hspace=\"8\" border="
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/blank_5x5.gif\" width=\"20px\" height=\"5px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/headline_middle.gif\" width=\"23\" height=\"24\" align=\"absmiddle\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/headline_middle.gif\" width=\"23\" height=\"24\" align=\"absmiddle\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/headline_middle.gif\" width=\"23\" height=\"24\" align=\"absmiddle\">"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"news.html\" onfocus=\"blur();\"><img src=\"./img/morearrow.gif\" width=\"48\" height=\"10\" alt=\"\" border=\"0\" onmouseover=\"this.src='./img/morearrow_a.gif'\" onm"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"news.html\" onfocus=\"blur();\"><img src=\"./img/morearrow.gif\" width=\"48\" height=\"10\" alt=\"\" border=\"0\" onmouseover=\"this.src='./img/morearrow_a.gif'\" onm"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"news.html\" onfocus=\"blur();\"><img src=\"./img/morearrow.gif\" width=\"48\" height=\"10\" alt=\"\" border=\"0\" onmouseover=\"this.src='./img/morearrow_a.gif'\" onm"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/blank_5x5.gif\" width=\"20px\" height=\"5px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/marker2_t.gif\" width=\"1px\" height=\"30px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 3.88:1. Recommendation:  change text col",
+          "html": "<b>Free Penguins</b>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/teaser_right1.jpg\" width=\"150px\" height=\"106px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/marker2_w.gif\" width=\"78px\" height=\"1px\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 3.88:1. Recommendation:  change text col",
+          "html": "<b>More City Parks</b>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/teaser_right2.jpg\" width=\"150px\" height=\"154px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/border_right.gif\" width=\"10px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/border_bottom_left.gif\" width=\"10px\" height=\"10px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/border_bottom.gif\" height=\"10px\">"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"./img/border_bottom_right.gif\" width=\"10px\" height=\"10px\">"
+        }
+      ]
+    },
+    "after": {
+      "errors": 3,
+      "items": [
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"news.html\" aria-label=\"Read more about heat wave linked to temperatures\"><img src=\"./img/morearrow.gif\" width=\"48\" height=\"10\" alt=\"\" border=\"0\" onmous"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"news.html\" aria-label=\"Read more about man gets nine months in violin case\"><img src=\"./img/morearrow.gif\" width=\"48\" height=\"10\" alt=\"\" border=\"0\" onm"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"news.html\" aria-label=\"Read more about lack of brains hinders research\"><img src=\"./img/morearrow.gif\" width=\"48\" height=\"10\" alt=\"\" border=\"0\" onmouse"
+        }
+      ]
+    }
+  },
+  "baseline": {
+    "nodes": 81,
+    "by_rule": {
+      "color-contrast": 2,
+      "html-has-lang": 1,
+      "image-alt": 33,
+      "landmark-one-main": 1,
+      "link-name": 7,
+      "region": 22,
+      "select-name": 1,
+      "focus-not-removed": 14
+    }
+  },
+  "violations": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "html-has-lang",
+      "impact": "serious",
+      "help": "<html> element must have a lang attribute",
+      "tags": [
+        "cat.language",
+        "wcag2a",
+        "wcag311",
+        "TTv5",
+        "TT11.a",
+        "EN-301-549",
+        "EN-9.3.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-8.3.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "help": "Images must have alternative text",
+      "tags": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag111",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT7.a",
+        "TT7.b",
+        "EN-301-549",
+        "EN-9.1.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-1.1.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "landmark-one-main",
+      "impact": "moderate",
+      "help": "Document should have one main landmark",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "help": "Links must have discernible text",
+      "tags": [
+        "cat.name-role-value",
+        "wcag2a",
+        "wcag244",
+        "wcag412",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT6.a",
+        "EN-301-549",
+        "EN-9.2.4.4",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-6.2.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "help": "All page content should be contained by landmarks",
+      "tags": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "select-name",
+      "impact": "critical",
+      "help": "Select element must have an accessible name",
+      "tags": [
+        "cat.forms",
+        "wcag2a",
+        "wcag412",
+        "section508",
+        "section508.22.n",
+        "TTv5",
+        "TT5.c",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-11.1.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "focus-not-removed",
+      "impact": "serious",
+      "help": "Elements must not remove focus when focused (WCAG failure F55)",
+      "tags": [
+        "cat.keyboard",
+        "wcag2a",
+        "wcag211",
+        "wcag2aa",
+        "wcag247",
+        "EN-301-549",
+        "EN-9.2.1.1",
+        "EN-9.2.4.7"
+      ],
+      "nodes": []
+    }
+  ],
+  "final": {
+    "nodes": 0,
+    "by_rule": {}
+  },
+  "seconds": 67.3,
+  "usage": {
+    "prompt_tokens": 91999,
+    "completion_tokens": 6458,
+    "llm_calls": 10,
+    "cost_usd": 0.41015369999999995,
+    "by_model": {
+      "claude-sonnet-4.6": {
+        "calls": 10,
+        "cost_usd": 0.41015369999999995
+      }
+    }
+  }
+}

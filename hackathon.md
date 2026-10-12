@@ -10,10 +10,11 @@ Ampun (Pugar Huda Mantoro)
 
 ## Stack
 - Python 3.12, Playwright (Chromium), axe-core via `axe-playwright-python`, Pillow
-- LLM: neatHack LiteLLM proxy (`claude-sonnet-4.6` by default)
+- LLM: neatHack LiteLLM proxy (`claude-haiku` by default, escalating to `claude-sonnet-4.6` when stuck)
 - neatlogs: `neatlogs` Python SDK (OpenAI auto-instrumentation plus WORKFLOW/AGENT/TOOL spans)
 - Entire: CLI 0.11.4, `entire enable --agent claude-code`
-- cfo.ai: business model (pending), inputs in `BUSINESS.md`
+- cfo.ai: 24-month model built through the cfo.ai MCP server, cost per page measured (https://cfo.ai/s/eaPiXgVJ6eZosuDO)
+- Vercel (landing page, deploy-triggered accessibility audit), GitHub Actions + code scanning (SARIF)
 
 ## Build log
 
@@ -27,7 +28,7 @@ Ampun (Pugar Huda Mantoro)
 - Done: tests run, `pytest`: 3 passed (edit application, ambiguous-match rejection, JSON parsing).
 - Done: smoke run with a scripted fake LLM (not a real model). It exercised these paths:
   bad JSON → retry → fixed; non-unique `find` → retry; an edit that deleted an image
-  was caught by the content guard and reverted. Real-model runs are still pending.
+  was caught by the content guard and reverted. (Real-model runs followed the same day, below.)
 - Done: Entire enabled. Repo is public at https://github.com/PugarHuda/jangkau
 - Done: LiteLLM key claimed. First real run on `index.html` (claude-sonnet-4.6): 25 → 0 nodes.
   A real recovery happened: the first `select-name` fix added 6 `region` violations, was rejected and rolled back, then fixed on attempt 2.
@@ -85,10 +86,12 @@ Ampun (Pugar Huda Mantoro)
   deployment.yml audits the live deployment on Vercel's deployment_status and posts a commit status.
 - Done: provenance across tools: fixed pages stamped with the neatlogs trace and prompt version, `--pr` commits carry
   Jangkau-Trace / Jangkau-Prompt / Jangkau-Result trailers (like Entire-Checkpoint), `--explain` reads the stamp from a file or URL.
-- Pending: confirm the traces in the dashboard and add share links; Entire checkpoint link + ID; cfo.ai model; tweets; demo video.
+- Done: traces confirmed in the dashboard (screenshots in docs/img), Entire checkpoint `01M4PZ7CYXWQQTTBCQ1QKJ075N`, cfo.ai model, demo video.
+- Left: #neatHack tweets and the submission quote tweet.
 
 ## Demo
-Pending.
+Video (1:59, English, captions burned in, `video/jangkau-demo.srt` for platforms that take captions): built with Remotion from
+real captures, script in `docs/demo-script.md`, sources in `video/`. Live site: https://jangkau-jet.vercel.app
 
 ## Known limitations and next steps
 - Fixing is one page per run; `--crawl` audits many pages but does not fix them.
@@ -99,9 +102,9 @@ Pending.
 Confirmed requirements (from https://neatlogs.com/hackathon and the organiser email):
 - [ ] Quote tweet of the official neatlogs post: team, name, project, public repo, demo
       (Mon 12 Oct, 7:00–11:55 PM IST; final cutoff on Discord)
-- [ ] neatlogs trace links/screenshots, plus before/after runs with the numbers
-- [ ] Entire checkpoint link + checkpoint ID (`https://entire.io/gh/PugarHuda/jangkau/commit/<sha>`)
-- [ ] cfo.ai business plan (pricing, costs, revenue, runway)
-- [ ] A run showing failure and recovery
+- [x] neatlogs trace links/screenshots, plus before/after runs with the numbers (README evidence table, docs/incidents.md)
+- [x] Entire checkpoint link + checkpoint ID (`https://entire.io/gh/PugarHuda/jangkau/commit/<sha>`)
+- [x] cfo.ai business plan (pricing, costs, revenue, runway)
+- [x] A run showing failure and recovery
 - [ ] #neatHack build-in-public posts
 - [x] Public repo with commits dated during the hackathon

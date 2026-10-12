@@ -106,5 +106,5 @@ Confirmed requirements (from https://neatlogs.com/hackathon and the organiser em
 - [x] cfo.ai business plan (pricing, costs, revenue, runway)
 - [x] A run showing failure and recovery
 - [ ] #neatHack build-in-public posts (the submission post is one; a separate build-log post is drafted)
-- [ ] Submission form at https://neatlogs.com/submission
+- [x] Submission form at https://neatlogs.com/submission (submitted Oct 12)
 - [x] Public repo with commits dated during the hackathon

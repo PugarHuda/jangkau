@@ -1,4 +1,4 @@
-<html><head><base href="https://www.w3.org/WAI/demos/bad/before/home.html">
+<html lang="en"><head><base href="https://www.w3.org/WAI/demos/bad/before/home.html">
 <title>Welcome to CityLights! [Inaccessible Home Page]</title>    <style>
       #main * {
         color: #000000;
@@ -143,12 +143,12 @@
     <script src="../js/onload.js" type="text/javascript"></script>
   </head>
   <body text="#000000" bgcolor="#D7D7CD" leftmargin="0px" topmargin="0px" marginwidth="0px" marginheight="0px" link="#226C8E" vlink="#226C8E" alink="#226C8E">
-    <div id="meta-header">
+    <header id="meta-header">
       <p id="skipnav"><a href="#page">Skip to inaccessible demo page</a></p>
       <p id="logos"><a href="https://www.w3.org/" title="W3C Home"><img alt="W3C logo" src="../img/w3c.png" height="48" width="72"></a><a href="https://www.w3.org/WAI/" title="WAI Home"><img alt="Web Accessibility Initiative (WAI) logo" src="../img/wai.png" height="48"></a></p>
       <h1><span class="subhead">Inaccessible Home Page</span><span class="hidden"> -</span> Before and After Demonstration</h1>
       <p class="subline">Improving a Web site using Web Content Accessibility Guidelines (WCAG) 2.0</p>
-      <div id="mnav" class="inaccessible">
+      <nav id="mnav" class="inaccessible">
         <ul>
           <li class="first"><a href="../Overview.html">Overview</a></li>
           <li class="current first"><span class="hidden">Current location: </span>Home
@@ -163,27 +163,28 @@
           <li><a href="template.html">Template</a></li>
         </ul>
       </div>
-    </div>
+    </header>
     <div id="page">
     <p class="skip" id="startcontent">Demo starts here</p>
     <table width="100%" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="#D7D7CD"><tbody><tr valign="MIDDLE"><td width="100%" align="CENTER">
     <table width="800px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="WHITE">
       <tbody><tr height="10px">
-        <td width="10px" background="./img/border_left_top.gif"><img src="./img/border_left_top.gif" width="10px" height="10px"></td>
-        <td width="780px" background="./img/border_top.gif"><img src="./img/border_top.gif" height="10px"></td>
-        <td width="10px" background="./img/border_right_top.gif"><img src="./img/border_right_top.gif" width="10px" height="10px"></td>
+        <td width="10px" background="./img/border_left_top.gif"><img src="./img/border_left_top.gif" width="10px" height="10px" alt=""></td>
+        <td width="780px" background="./img/border_top.gif"><img src="./img/border_top.gif" height="10px" alt=""></td>
+        <td width="10px" background="./img/border_right_top.gif"><img src="./img/border_right_top.gif" width="10px" height="10px" alt=""></td>
       </tr>
       <tr>
-        <td width="10px" background="./img/border_left.gif"><img src="./img/border_left.gif" width="10px"></td>
+        <td width="10px" background="./img/border_left.gif"><img src="./img/border_left.gif" width="10px" alt=""></td>
         <td width="780px" align="CENTER">
     <table width="780px" height="144px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="WHITE">
       <tbody><tr height="86px">
         <td width="443px" background="./img/top_logo_next.gif" valign="MIDDLE"><div><a href="home.html"><img src="./img/top_logo.gif" width="443px" height="86px" alt="Red dot with a white letter 'C' that symbolizes a moon crescent as well as the sun. This logo is followed by a black banner that says 'CITYLIGHTS' which is the name of this online portal. Finally, the slogan of the portal, 'your access to the city', follows in a turquoise green handwriting style and with a slight slant across the top banner."></a></div></td>
-        <td width="24px" valign="MIDDLE"><img src="./img/top_logo_next_end.gif" width="24px" height="86px"></td>
-        <td width="128px" valign="MIDDLE"><img src="./img/top_weather.gif" width="128px" height="86px"></td>
-        <td width="22px" valign="MIDDLE"><img src="./img/top_logo_next_start.gif" width="22px" height="86px"></td>
+        <td width="24px" valign="MIDDLE"><img src="./img/top_logo_next_end.gif" width="24px" height="86px" alt=""></td>
+        <td width="128px" valign="MIDDLE"><img src="./img/top_weather.gif" width="128px" height="86px" alt="Weather information"></td>
+        <td width="22px" valign="MIDDLE"><img src="./img/top_logo_next_start.gif" width="22px" height="86px" alt=""></td>
         <td width="163px" background="./img/top_logo_next.gif" align="CENTER" valign="MIDDLE">
-          <select onchange="location.href = this.value;">
+          <label for="quickmenu">Quick Menu</label>
+          <select id="quickmenu" onchange="location.href = this.value;">
             <option selected="">QUICKMENU ----&gt;
             </option><option value="../offsite.html">Broadcasting
             </option><option value="../offsite.html">Education
@@ -204,7 +205,7 @@
         </td>
       </tr>
       <tr height="7px">
-        <td width="780px" background="./img/mark.gif" colspan="5"><img src="./img/mark.gif" width="158px" height="7px"></td>
+        <td width="780px" background="./img/mark.gif" colspan="5"><img src="./img/mark.gif" width="158px" height="7px" alt=""></td>
       </tr>
       <tr height="25px">
         <td colspan="5">
@@ -229,7 +230,7 @@
         </td>
       </tr>
       <tr height="1px">
-        <td width="780px" background="./img/marker2_w.gif" colspan="5"><img src=".img/marker2_w.gif" width="78px" height="1px"></td>
+        <td width="780px" background="./img/marker2_w.gif" colspan="5"><img src=".img/marker2_w.gif" width="78px" height="1px" alt=""></td>
       </tr>
       <tr height="25px">
         <td colspan="5">&nbsp;</td>
@@ -240,45 +241,45 @@
         <td width="155px" bgcolor="#E4E4E4" valign="TOP">
           <table width="155px" border="0px" cellspacing="0px" cellpadding="0px">
             <tbody><tr height="1px">
-              <td width="155px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
-              <td width="1px" background="./img/marker2_t.gif" rowspan="9" valign="TOP"><img src="./img/marker2_t.gif" width="1" height="30px"></td>
+              <td width="155px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px" alt=""></td>
+              <td width="1px" background="./img/marker2_t.gif" rowspan="9" valign="TOP"><img src="./img/marker2_t.gif" width="1" height="30px" alt=""></td>
             </tr>
             <tr height="34px">
-              <td width="154px" bgcolor="#EDEDED" id="home" onmouseover="switchImage('nav_home', './img/nav_home2.gif'); ChangeColor('home','#FFF')" onmouseout="switchImage('nav_home', './img/nav_home.gif'); ChangeColor('home','#EDEDED')"><a href="javascript:location.href='home.html';" onfocus="blur();"><img name="nav_home" src="./img/nav_home.gif" width="88" height="27" hspace="15" border="0px"></a></td>
+              <td width="154px" bgcolor="#EDEDED" id="home" onmouseover="switchImage('nav_home', './img/nav_home2.gif'); ChangeColor('home','#FFF')" onmouseout="switchImage('nav_home', './img/nav_home.gif'); ChangeColor('home','#EDEDED')"><a href="javascript:location.href='home.html';" onfocus="blur();"><img name="nav_home" src="./img/nav_home.gif" width="88" height="27" hspace="15" border="0px" alt="Home"></a></td>
             </tr>
             <tr height="1px">
-              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px" alt=""></td>
             </tr>
             <tr height="34px">
-              <td width="154px" bgcolor="#EDEDED" id="news" onmouseover="switchImage('nav_news', './img/nav_news2.gif'); ChangeColor('news','#FFF')" onmouseout="switchImage('nav_news', './img/nav_news.gif'); ChangeColor('news','#EDEDED')"><a href="javascript:location.href='news.html';" onfocus="blur();"><img src="./img/nav_news.gif" name="nav_news" width="90" height="21" hspace="12" border="0px"></a></td>
+              <td width="154px" bgcolor="#EDEDED" id="news" onmouseover="switchImage('nav_news', './img/nav_news2.gif'); ChangeColor('news','#FFF')" onmouseout="switchImage('nav_news', './img/nav_news.gif'); ChangeColor('news','#EDEDED')"><a href="javascript:location.href='news.html';" onfocus="blur();"><img src="./img/nav_news.gif" name="nav_news" width="90" height="21" hspace="12" border="0px" alt="News"></a></td>
             </tr>
             <tr height="1px">
-              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px" alt=""></td>
             </tr>
             <tr height="34px">
-              <td width="154px" bgcolor="#EDEDED" id="tickets" onmouseover="switchImage('nav_facts', './img/nav_facts2.gif'); ChangeColor('tickets','#FFF')" onmouseout="switchImage('nav_facts', './img/nav_facts.gif'); ChangeColor('tickets','#EDEDED')"><a href="javascript:location.href='tickets.html';" onfocus="blur();"><img name="nav_facts" src="./img/nav_facts.gif" width="105" height="23" hspace="9" border="0px"></a></td>
+              <td width="154px" bgcolor="#EDEDED" id="tickets" onmouseover="switchImage('nav_facts', './img/nav_facts2.gif'); ChangeColor('tickets','#FFF')" onmouseout="switchImage('nav_facts', './img/nav_facts.gif'); ChangeColor('tickets','#EDEDED')"><a href="javascript:location.href='tickets.html';" onfocus="blur();"><img name="nav_facts" src="./img/nav_facts.gif" width="105" height="23" hspace="9" border="0px" alt="Tickets"></a></td>
             </tr>
             <tr height="1px">
-              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px" alt=""></td>
             </tr>
             <tr height="34px">
-              <td width="154px" bgcolor="#EDEDED" id="survey" onmouseover="switchImage('nav_survey', './img/nav_survey2.gif'); ChangeColor('survey','#FFF')" onmouseout="switchImage('nav_survey', './img/nav_survey.gif'); ChangeColor('survey','#EDEDED')"><a href="javascript:location.href='survey.html';" onfocus="blur();"><img src="./img/nav_survey.gif" name="nav_survey" width="107" height="32" hspace="8" border="0px"></a></td>
+              <td width="154px" bgcolor="#EDEDED" id="survey" onmouseover="switchImage('nav_survey', './img/nav_survey2.gif'); ChangeColor('survey','#FFF')" onmouseout="switchImage('nav_survey', './img/nav_survey.gif'); ChangeColor('survey','#EDEDED')"><a href="javascript:location.href='survey.html';" onfocus="blur();"><img src="./img/nav_survey.gif" name="nav_survey" width="107" height="32" hspace="8" border="0px" alt="Survey"></a></td>
             </tr>
             <tr height="1px">
-              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px" alt=""></td>
             </tr>
           </tbody></table>
         </td>
-        <td width="20px"><img src="./img/blank_5x5.gif" width="20px" height="5px"></td>
-        <td width="434px" height="600px" valign="TOP" id="main">
+        <td width="20px"><img src="./img/blank_5x5.gif" width="20px" height="5px" alt=""></td>
+        <td width="434px" height="600px" valign="TOP"><main id="main">
           <p class="headline">Welcome to CityLights</p>
           <p>Citylights is the new portal for visitors and residents. Find out what's on, book tickets, and get the latest news.</p>
           <div id="content">
             <div class="midwidth"><div></div></div>
             <div class="newsbar">
-              <div class="newsheadline"><img src="./img/headline_middle.gif" width="23" height="24" align="absmiddle"> <a href="news.html" onfocus="blur();">Heat wave linked to temperatures</a></div>
-              <div class="newsheadline"><img src="./img/headline_middle.gif" width="23" height="24" align="absmiddle"> <a href="news.html" onfocus="blur();">Man Gets Nine Months in Violin Case</a></div>
-              <div class="newsheadline"><img src="./img/headline_middle.gif" width="23" height="24" align="absmiddle"> <a href="news.html" onfocus="blur();">Lack of brains hinders research</a></div>
+              <div class="newsheadline"><img src="./img/headline_middle.gif" width="23" height="24" align="absmiddle" alt=""> <a href="news.html" onfocus="blur();">Heat wave linked to temperatures</a></div>
+              <div class="newsheadline"><img src="./img/headline_middle.gif" width="23" height="24" align="absmiddle" alt=""> <a href="news.html" onfocus="blur();">Man Gets Nine Months in Violin Case</a></div>
+              <div class="newsheadline"><img src="./img/headline_middle.gif" width="23" height="24" align="absmiddle" alt=""> <a href="news.html" onfocus="blur();">Lack of brains hinders research</a></div>
               <div class="clear"><div class="null"></div></div>
             </div>
             <div class="newsbar">
@@ -288,27 +289,27 @@
               <div class="clear"><div class="null"></div></div>
             </div>
             <div class="newsbar">
-              <div class="story"><span>After three years of effort city scientists now agree that the primary cause of the 2003 heatwave was hot air from our <a href="news.html" onfocus="blur();"><img src="./img/morearrow.gif" width="48" height="10" alt="" border="0" onmouseover="this.src='./img/morearrow_a.gif'" onmouseout="this.src='./img/morearrow.gif'" style="vertical-align: bottom"></a></span></div>
-              <div class="story"><span>Mayor: These kinds of crimes need more creative, effective punishments. For example, we could require compulsory <a href="news.html" onfocus="blur();"><img src="./img/morearrow.gif" width="48" height="10" alt="" border="0" onmouseover="this.src='./img/morearrow_a.gif'" onmouseout="this.src='./img/morearrow.gif'" style="vertical-align: bottom"></a></span></div>
-              <div class="story"><span>Brain donations: huge drop off in brain donations due to the great 'success' of 'Slow Traffic, Safe Streets' policy <a href="news.html" onfocus="blur();"><img src="./img/morearrow.gif" width="48" height="10" alt="" border="0" onmouseover="this.src='./img/morearrow_a.gif'" onmouseout="this.src='./img/morearrow.gif'" style="vertical-align: bottom"></a></span></div>
+              <div class="story"><span>After three years of effort city scientists now agree that the primary cause of the 2003 heatwave was hot air from our <a href="news.html" onfocus="blur();" aria-label="Read more about heat wave linked to temperatures"><img src="./img/morearrow.gif" width="48" height="10" alt="" border="0" onmouseover="this.src='./img/morearrow_a.gif'" onmouseout="this.src='./img/morearrow.gif'" style="vertical-align: bottom"></a></span></div>
+              <div class="story"><span>Mayor: These kinds of crimes need more creative, effective punishments. For example, we could require compulsory <a href="news.html" onfocus="blur();" aria-label="Read more about man gets nine months in violin case"><img src="./img/morearrow.gif" width="48" height="10" alt="" border="0" onmouseover="this.src='./img/morearrow_a.gif'" onmouseout="this.src='./img/morearrow.gif'" style="vertical-align: bottom"></a></span></div>
+              <div class="story"><span>Brain donations: huge drop off in brain donations due to the great 'success' of 'Slow Traffic, Safe Streets' policy <a href="news.html" onfocus="blur();" aria-label="Read more about lack of brains hinders research"><img src="./img/morearrow.gif" width="48" height="10" alt="" border="0" onmouseover="this.src='./img/morearrow_a.gif'" onmouseout="this.src='./img/morearrow.gif'" style="vertical-align: bottom"></a></span></div>
             </div>
             <hr style="visibility:hidden; clear:both;">
             <p class="subheadline">Elsewhere on the Web</p>
             <p>Please see the following websites for important information. Citylights take no responsibility for their content. For artichoke advice, call the number below.<br><br><span><img src="./img/list_bullets.gif" alt="bullet" border="0" align="absmiddle"> Killer bees. <a onfocus="blur();" href="../offsite.html" target="_blank">Click here</a>.<br><img src="./img/list_bullets.gif" alt="bullet" border="0" align="absmiddle"> Onions. <a onfocus="blur();" href="../offsite.html" target="_blank">Click here</a>.</span><br><br><b>Artichoke advice telephone hotline: </b><img src="./img/telefon_white_bg.gif" alt="1234 56789" border="0" align="absmiddle"></p>
           </div>
-        </td>
-        <td width="20px"><img src="./img/blank_5x5.gif" width="20px" height="5px"></td>
-        <td width="151px" valign="TOP">
+        </main></td>
+        <td width="20px"><img src="./img/blank_5x5.gif" width="20px" height="5px" alt=""></td>
+        <td width="151px" valign="TOP"><aside>
           <table width="151px" border="0px" cellspacing="0px" cellpadding="0px">
             <tbody><tr height="1px">
-              <td width="1px" background="./img/marker2_t.gif" rowspan="11" valign="TOP"><img src="./img/marker2_t.gif" width="1px" height="30px"></td>
-              <td width="151px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+              <td width="1px" background="./img/marker2_t.gif" rowspan="11" valign="TOP"><img src="./img/marker2_t.gif" width="1px" height="30px" alt=""></td>
+              <td width="151px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px" alt=""></td>
             </tr>
             <tr height="25px">
-              <td width="150px" bgcolor="#A9B8BF"><font color="#41545D" face="Verdana" size="2">&nbsp;<b>Free Penguins</b></font></td>
+              <td width="150px" bgcolor="#A9B8BF"><font color="#1a2329" face="Verdana" size="2">&nbsp;<b>Free Penguins</b></font></td>
             </tr>
             <tr height="106px">
-              <td width="150px"><div><img src="./img/teaser_right1.jpg" width="150px" height="106px"></div></td>
+              <td width="150px"><div><img src="./img/teaser_right1.jpg" width="150px" height="106px" alt="Free Penguins zoo benefit concert"></div></td>
             </tr>
             <tr>
               <td width="150px">
@@ -323,13 +324,13 @@
               <td>&nbsp;</td>
             </tr>
             <tr height="1px">
-              <td width="150px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+              <td width="150px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px" alt=""></td>
             </tr>
             <tr height="25px">
-              <td width="150px" bgcolor="#A9B8BF"><font color="#41545D" face="Verdana" size="2">&nbsp;<b>More City Parks</b></font></td>
+              <td width="150px" bgcolor="#A9B8BF"><font color="#1a2329" face="Verdana" size="2">&nbsp;<b>More City Parks</b></font></td>
             </tr>
             <tr height="154px">
-              <td width="150px"><img src="./img/teaser_right2.jpg" width="150px" height="154px"></td>
+              <td width="150px"><img src="./img/teaser_right2.jpg" width="150px" height="154px" alt="More City Parks initiative"></td>
             </tr>
             <tr>
               <td width="150px">
@@ -350,17 +351,17 @@
       </tr>
     </tbody></table>
     <!--// END FOOTER AREA //-->
-        </td><td width="10px" background="./img/border_right.gif"><img src="./img/border_right.gif" width="10px"></td>
+        </td><td width="10px" background="./img/border_right.gif"><img src="./img/border_right.gif" width="10px" alt=""></td>
       </tr>
       <tr height="10px">
-        <td width="10px" height="10px" background="./img/border_bottom_left.gif"><img src="./img/border_bottom_left.gif" width="10px" height="10px"></td>
-        <td width="780px" height="10px" background="./img/border_bottom.gif"><img src="./img/border_bottom.gif" height="10px"></td>
-        <td width="10px" height="10px" background="./img/border_bottom_right.gif"><img src="./img/border_bottom_right.gif" width="10px" height="10px"></td>
+        <td width="10px" height="10px" background="./img/border_bottom_left.gif"><img src="./img/border_bottom_left.gif" width="10px" height="10px" alt=""></td>
+        <td width="780px" height="10px" background="./img/border_bottom.gif"><img src="./img/border_bottom.gif" height="10px" alt=""></td>
+        <td width="10px" height="10px" background="./img/border_bottom_right.gif"><img src="./img/border_bottom_right.gif" width="10px" height="10px" alt=""></td>
       </tr>
     </tbody></table>
     </td></tr></tbody></table>
     </div>
-    <div id="meta-footer" class="meta">
+    <footer id="meta-footer" class="meta">
       <hr>
       <p><strong>Status:</strong> 20 February 2012 (see <a href="../changelog.html">changelog</a>) <br>Editors: <a href="https://www.w3.org/People/shadi/">Shadi Abou-Zahra</a> and the <a href="https://www.w3.org/WAI/EO/">Education and Outreach Working Group (EOWG)</a>. <br>Developed with support from <a href="https://www.w3.org/WAI/TIES/"><acronym title="Web Accessibility Initiative: Training, Implementation, Education, Support">WAI-TIES</acronym></a> and <a href="https://www.w3.org/WAI/WAI-AGE/"><acronym title="Web Accessibility Initiative: Ageing Education and Harmonisation">WAI-AGE</acronym></a> projects, co-funded by the European Commission <acronym title="Information Society Technologies">IST</acronym> Programme. [see <a href="../acks.html">Acknowledgements</a>]</p>
       <p>[<a href="https://www.w3.org/WAI/sitemap.html" shape="rect">WAI Site Map</a>] [<a href="https://www.w3.org/WAI/sitehelp.html" shape="rect">Help with WAI Website</a>] [<a href="https://www.w3.org/WAI/search.php" shape="rect">Search</a>] [<a href="https://www.w3.org/WAI/contacts" shape="rect">Contacting WAI</a>] <br><strong>Feedback welcome to <a href="mailto:wai-eo-editors@w3.org" shape="rect">wai-eo-editors@w3.org</a></strong> (a publicly archived list) or <a href="mailto:wai@w3.org" shape="rect">wai@w3.org</a> (a WAI staff-only list).</p>

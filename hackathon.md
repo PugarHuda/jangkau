@@ -68,6 +68,14 @@ Ampun (Pugar Huda Mantoro)
   Regression check on toko.html with v5: still 47 → 0 (trace `7ebe2d0264836eb6ec3fa6d932feafdb`).
 - Done: Entire checkpoints are recorded. Sessions now start inside jangkau/, so the Claude Code hooks fire (the earlier session ran from the parent folder, where the hooks never loaded).
 - Done: cfo.ai model built through the cfo.ai MCP server (Base / Growth / Downside, 24 months): https://cfo.ai/s/eaPiXgVJ6eZosuDO
+- Done: `--audit-only` (no model key), `--fail-on` for CI, SARIF 2.1.0 output (validated against the official schema), WCAG SC +
+  EN 301 549 mapping per rule, live URL input, composite GitHub Action + workflow uploading to code scanning (72 alerts live).
+- Done: Playwright E2E suite (24 tests): landing page axe-clean in light and dark mode, no horizontal scroll at 320–1440 px,
+  before/after toggle, toggle counts equal what axe finds on the shipped pages, visible focus, reduced motion, CLI exit codes, SARIF line numbers.
+- Bugs found by the new tests and runs: SARIF lines pointed at the first copy of repeated elements and missed re-serialised tags;
+  PIL kept screenshots open so Windows could not overwrite them (crashed URL runs); CI audited the landing page before its animation.
+- W3C BAD demo (live URL): 67 → 26 exposed partial-batch loss and a too-short retry cap. Fixed → 67 → 4.
+- neatlogs: verifier decisions are `neatlogs.log` events, each run has a session id, axe payloads are slimmed by an export mask.
 - Pending: confirm the traces in the dashboard and add share links; Entire checkpoint link + ID; cfo.ai model; tweets; demo video.
 
 ## Demo

@@ -56,7 +56,21 @@ cp .env.example .env    # LITELLM_API_KEY from neatlogs.com/hackathon/models + N
 python jangkau.py demo_site/index.html                  # verified agent (v5)
 JANGKAU_VERSION=v1 python jangkau.py demo_site/index.html --no-verify   # baseline, no checks
 python jangkau.py path/to/your/repo/index.html --pr    # fix a page in a git repo and open a PR (needs gh)
-python -m pytest -q
+python jangkau.py https://example.com --out runs/site    # fix a live page (snapshot + <base href>)
+python jangkau.py page.html --audit-only --sarif a.sarif --fail-on serious   # CI gate, no model key needed
+python -m pytest -q    # unit + Playwright E2E (landing page, CLI, SARIF schema)
+```
+
+### In CI (GitHub Action)
+
+```yaml
+permissions: { security-events: write }
+steps:
+  - uses: actions/checkout@v4
+  - uses: PugarHuda/jangkau@main
+    with: { pages: "index.html about.html", fail-on: serious }
+  - uses: github/codeql-action/upload-sarif@v4
+    with: { sarif_file: jangkau.sarif }
 ```
 
 `demo_site/` is a small coffee shop page with 25 failing nodes across 10 WCAG rules.
@@ -71,6 +85,9 @@ python -m pytest -q
 | We used Entire | [Entire Graph impact + diff](docs/entire-graph.md) for the verifier changes. Checkpoints (stored as git refs): checkpoint `01M4PZ7CYXWQQTTBCQ1QKJ075N` on commit [9713fcd](https://entire.io/gh/PugarHuda/jangkau/commit/9713fcd8e88c8a88519e718dc8e8ac2c7ea883f8); every agent session in `jangkau/` is recorded from Oct 12 ([repo on Entire](https://entire.io/gh/PugarHuda/jangkau)) |
 | We used cfo.ai | 24-month model with Base / Growth / Downside scenarios, built in cfo.ai through its MCP server ([view the model](https://cfo.ai/s/eaPiXgVJ6eZosuDO)). Base: ~100 customers, $6.0k MRR at month 12, 82.8% gross margin, cash never below the $10k start. Downside ($0.50/page, 40 customers): cash runs out Aug 2027, which sets the Agency fair-use rule. Numbers in [BUSINESS.md](BUSINESS.md#the-cfoai-model) |
 | It works on real pages | [StartBootstrap Freelancer](https://github.com/StartBootstrap/startbootstrap-freelancer) (`dist/index.html`, unmodified): **33 → 0** failing nodes, 7 LLM calls, 40 s. Layout unchanged, brand teal darkened to pass contrast. Run in `runs/real-freelancer/` (`compare.png` before/after), trace `28e57df2617c4345e0f2679a1b99ed94` |
+| It runs in CI | [Accessibility workflow](.github/workflows/accessibility.yml) uses this repo as a GitHub Action: the landing page must stay at 0 serious issues, the demo pages upload to **GitHub code scanning** as SARIF (72 alerts, each with file, line, WCAG SC and EN 301 549 clause). The first CI run caught a real bug: the landing page was audited at first paint, mid contrast animation (fixed with `--wait`) |
+| Mapped to the law | Every rule is reported with its WCAG 2.x success criterion, level, and EN 301 549 clause, the standard the European Accessibility Act (in force since June 2025) points to |
+| It fixes live URLs | W3C's own [inaccessible demo page](https://www.w3.org/WAI/demos/bad/before/home.html): **67 → 4** (run `runs/w3c-bad/`, trace `2d5650d366105b38449d868f3b1d74cd`). The first try got 67 → 26 and showed two agent bugs: one mistyped `find` threw away 19 good alt-text edits, and the 3-attempt cap stopped a rule that was still improving. Now valid edits are kept, progress earns more attempts, and escalation triggers on two stuck attempts in a row |
 | It opens real PRs | `--pr` on the coffee shop page: 25 → 0, [PR #1](https://github.com/PugarHuda/jangkau/pull/1) with the report as its description |
 | The agent recovers | v4 trace `8ad9968f…`: a malformed JSON reply is retried, and a `page-has-heading-one` edit that broke `heading-order` is rejected, rolled back and fixed on the next attempt |
 | Built in public | _TODO: #neatHack tweets_ |

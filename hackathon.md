@@ -51,6 +51,21 @@ Ampun (Pugar Huda Mantoro)
   with export on and the same results: v1 10 left, v2 14 left, v4 0 left. Runs now record their neatlogs trace ID
   (taken from `inject_trace_context`): v1 `002efc98d1c3610e269f95108e5371d4`, v4 `8ad9968fc9a602e0dad474b24842835f`.
 - Done: landing page live at https://jangkau-jet.vercel.app (axe: 0 violations after the hero fix animation).
+
+### 2026-10-12
+- Done: `--pr` mode. Writes the fixed page back into its git repo on a new branch, pushes, and opens a PR
+  with `report.md` as the description. Real run on `demo_site/index.html`: 25 → 0, https://github.com/PugarHuda/jangkau/pull/1
+- Done: first run on a real third-party page, StartBootstrap Freelancer `dist/index.html` (unmodified): 33 failing nodes, 5 rules.
+  v4 got it to 4. Four root causes found and fixed (v5), one per rerun:
+  1. Every correct contrast fix was rejected as "35% of pixels changed". Darkening a brand-colour section
+     repaints most of the page. Fix: contrast fixes compare edge maps (layout), not raw pixels → 33 → 1.
+  2. Retries on the last node got "still has 1 failing nodes" and nothing else. Fix: feedback includes the
+     contrast axe measured on the rendered page after the edit. The model went 2.73 → 3.44 but Haiku stalled there.
+  3. Fix: the last attempt on a stuck rule escalates to claude-sonnet-4.6. It found Bootstrap's
+     `.disabled { opacity: .65 }` → 33 → 0.
+  4. Inspecting the diff showed `landmark-one-main` was "fixed" with an empty `<main></main>`. axe passes it, but the content
+     wasn't wrapped. Fix: the verifier rejects any edit that adds an empty landmark. Rerun: `<main>` now wraps the page, 33 → 0, 7 LLM calls, 40 s.
+  Regression check on toko.html with v5: still 47 → 0 (trace `7ebe2d0264836eb6ec3fa6d932feafdb`).
 - Pending: confirm the traces in the dashboard and add share links; Entire checkpoint link + ID; cfo.ai model; tweets; demo video.
 
 ## Demo
@@ -58,8 +73,8 @@ Pending.
 
 ## Known limitations and next steps
 - One HTML file per run (no multi-page crawl yet).
-- The visual diff threshold is global. Color-contrast fixes may need a looser limit.
-- No PR creation yet. Output is the patched file plus `report.md`.
+- `--pr` handles one page per PR and needs `gh` logged in with push access to the repo.
+- Fixes land as an inline `<style>` override in the page, not in the source stylesheet or the build (Sass/templates).
 
 ## Submission
 Confirmed requirements (from https://neatlogs.com/hackathon and the organiser email):

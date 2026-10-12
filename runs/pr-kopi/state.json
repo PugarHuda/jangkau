@@ -1,0 +1,89 @@
+{
+  "target": "demo_site\\index.html",
+  "version": "v4-pr",
+  "verify": true,
+  "done": [
+    "button-name",
+    "image-alt",
+    "select-name",
+    "color-contrast",
+    "document-title",
+    "html-has-lang",
+    "heading-order",
+    "landmark-one-main",
+    "region"
+  ],
+  "results": [
+    {
+      "rule": "button-name",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "image-alt",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "select-name",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "color-contrast",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "document-title",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "html-has-lang",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "heading-order",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "landmark-one-main",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "region",
+      "status": "fixed",
+      "attempts": 1
+    }
+  ],
+  "trace_id": "4d5d9ac9b14d95dcaf9321cb361d62cf",
+  "baseline": {
+    "nodes": 25,
+    "by_rule": {
+      "button-name": 1,
+      "color-contrast": 8,
+      "document-title": 1,
+      "heading-order": 1,
+      "html-has-lang": 1,
+      "image-alt": 5,
+      "landmark-one-main": 1,
+      "link-name": 1,
+      "region": 5,
+      "select-name": 1
+    }
+  },
+  "final": {
+    "nodes": 0,
+    "by_rule": {}
+  },
+  "seconds": 31.8,
+  "usage": {
+    "prompt_tokens": 13669,
+    "completion_tokens": 2634,
+    "llm_calls": 9
+  }
+}

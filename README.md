@@ -24,10 +24,14 @@ audit (axe-core + screenshot + content fingerprint)
        │    1. the rule's failing nodes went down
        │    2. no new violations appeared
        │    3. no content was deleted (elements + text length)
-       │    4. the page still looks the same (pixel diff ≤ 35%)
-       ├─ any check fails ──► revert, retry with the reason (max 3)
+       │    4. no empty landmark was added (an empty <main> games axe)
+       │    5. the page still looks the same (pixel diff ≤ 35%; edge diff
+       │       for contrast fixes, so a recolour passes but a moved layout fails)
+       ├─ any check fails ──► revert, retry with the measured failure (max 3,
+       │                       the last attempt escalates to a stronger model)
        └─ checkpoint state.json (an interrupted run resumes)
 final audit ──► report.md (before/after, tokens, time)
+--pr ──► branch + commit the fixed page in its repo, open a PR with the report
 ```
 
 The content guard matters. The cheapest way for an LLM to "fix" a missing alt
@@ -51,6 +55,7 @@ cp .env.example .env    # LITELLM_API_KEY from neatlogs.com/hackathon/models + N
 
 python jangkau.py demo_site/index.html                  # verified agent (v2)
 JANGKAU_VERSION=v1 python jangkau.py demo_site/index.html --no-verify   # baseline, no checks
+python jangkau.py path/to/your/repo/index.html --pr    # fix a page in a git repo and open a PR (needs gh)
 python -m pytest -q
 ```
 
@@ -64,6 +69,8 @@ python -m pytest -q
 | We used neatlogs | Each run is a `jangkau_run` workflow trace with `fix_rule` agent spans, `audit` / `apply_edits` / `visual_diff` tool spans and auto-captured LLM calls. Trace IDs: v1 `002efc98d1c3610e269f95108e5371d4`, v4 `8ad9968fc9a602e0dad474b24842835f`. SDK Doctor probe: PASS |
 | We used Entire | [Entire Graph impact + diff](docs/entire-graph.md) for the verifier changes. Checkpoints on `entire/checkpoints/v1`: _TODO link + ID_ |
 | We used cfo.ai | [BUSINESS.md](BUSINESS.md) + the cfo.ai model. _TODO: link/screenshot_ |
+| It works on real pages | [StartBootstrap Freelancer](https://github.com/StartBootstrap/startbootstrap-freelancer) (`dist/index.html`, unmodified): **33 → 0** failing nodes, 7 LLM calls, 40 s. Layout unchanged, brand teal darkened to pass contrast. Run in `runs/real-freelancer/` (`compare.png` before/after), trace `28e57df2617c4345e0f2679a1b99ed94` |
+| It opens real PRs | `--pr` on the coffee shop page: 25 → 0, [PR #1](https://github.com/PugarHuda/jangkau/pull/1) with the report as its description |
 | The agent recovers | v4 trace `8ad9968f…`: a malformed JSON reply is retried, and a `page-has-heading-one` edit that broke `heading-order` is rejected, rolled back and fixed on the next attempt |
 | Built in public | _TODO: #neatHack tweets_ |
 | Code written during the hackathon | Commit history of this repo (Oct 10–12, 2026) |

@@ -26,16 +26,18 @@ neatlogs.init(
 )
 from neatlogs import span  # noqa: E402
 from openai import OpenAI  # noqa: E402
-from PIL import Image, ImageChops  # noqa: E402
+from PIL import Image, ImageChops, ImageFilter  # noqa: E402
 from playwright.sync_api import sync_playwright  # noqa: E402
 from axe_playwright_python.sync_playwright import Axe  # noqa: E402
 
 MODEL = os.getenv("JANGKAU_MODEL", "claude-sonnet-4.6")
+ESCALATE_MODEL = os.getenv("JANGKAU_ESCALATE_MODEL", "claude-sonnet-4.6")  # last attempt on a stuck rule
 IMPACT = {"critical": 0, "serious": 1, "moderate": 2, "minor": 3}
 MAX_ATTEMPTS = 3
 # ponytail: one global threshold; per-rule thresholds if contrast fixes keep tripping it
 VISUAL_LIMIT = 0.35
 CONTENT_TAGS = "a,button,input,select,textarea,img,h1,h2,h3,label,li"
+LANDMARKS = "main,nav,header,footer,aside,section,[role]"
 
 llm = OpenAI(base_url=os.getenv("LITELLM_BASE_URL", "https://litellm.vision.aivar.app/v1"),
              api_key=os.getenv("LITELLM_API_KEY")
@@ -53,7 +55,9 @@ def audit(page, html_path: Path, shot: Path) -> dict:
     violations = axe.run(page).response["violations"]
     fingerprint = page.evaluate(
         f"""() => ({{elements: document.querySelectorAll({json.dumps(CONTENT_TAGS)}).length,
-                    text: document.body.innerText.replace(/\\s+/g, ' ').trim().length}})"""
+                    text: document.body.innerText.replace(/\\s+/g, ' ').trim().length,
+                    emptyLandmarks: [...document.querySelectorAll({json.dumps(LANDMARKS)})]
+                        .filter(e => !e.textContent.trim() && !e.querySelector({json.dumps(CONTENT_TAGS)})).length}})"""
     )
     return {
         "violations": violations,
@@ -64,11 +68,17 @@ def audit(page, html_path: Path, shot: Path) -> dict:
 
 
 @span(kind="TOOL", name="visual_diff")
-def visual_diff(a: Path, b: Path) -> float:
-    """Share of pixels that changed noticeably, over the area both shots share."""
+def visual_diff(a: Path, b: Path, layout: bool = False) -> float:
+    """Share of pixels that changed noticeably, over the area both shots share.
+    layout=True compares edge maps instead, so recolouring a section (the whole point of a
+    contrast fix) passes while moved, hidden or overlapping elements still count."""
     ia, ib = Image.open(a).convert("RGB"), Image.open(b).convert("RGB")
     w, h = min(ia.width, ib.width), min(ia.height, ib.height)
-    diff = ImageChops.difference(ia.crop((0, 0, w, h)), ib.crop((0, 0, w, h))).convert("L")
+    ia, ib = ia.crop((0, 0, w, h)), ib.crop((0, 0, w, h))
+    if layout:
+        ia, ib = (i.convert("L").filter(ImageFilter.FIND_EDGES).point(lambda p: 255 if p > 40 else 0)
+                  for i in (ia, ib))
+    diff = ImageChops.difference(ia, ib).convert("L")
     changed = sum(diff.point(lambda p: 255 if p > 40 else 0).histogram()[255:])
     return changed / (w * h)
 
@@ -118,7 +128,7 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
             prompt += f"\n\nFeedback on your previous attempt: {feedback}"
         try:
             resp = llm.chat.completions.create(
-                model=MODEL, temperature=0,
+                model=ESCALATE_MODEL if attempt == MAX_ATTEMPTS else MODEL, temperature=0,
                 messages=[{"role": "system", "content": SYSTEM}, {"role": "user", "content": prompt}])
             usage["llm_calls"] += 1
             if resp.usage:
@@ -138,7 +148,11 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
         left = after["by_rule"].get(rid, 0)
         problems = []
         if left >= before["by_rule"].get(rid, 0):
-            problems.append(f"`{rid}` still has {left} failing nodes")
+            still = next((v for v in after["violations"] if v["id"] == rid), {"nodes": []})
+            measured = " | ".join(f"{n['html'][:150]} ({n['failureSummary'][-250:]})" for n in still["nodes"][:5])
+            problems.append(f"`{rid}` still has {left} failing nodes after your edit. Measured on the "
+                            f"rendered page: {measured}. Check inherited styles (opacity, overlays, "
+                            f"text-shadow) that change the rendered colour")
         # Rules still waiting in the queue may grow (e.g. a new <label> outside a landmark
         # adds a `region` node); they get fixed later. Regressions in finished rules or
         # brand-new rules are real breakage.
@@ -153,9 +167,13 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
         if fa["elements"] < fb["elements"] or fa["text"] < fb["text"] * 0.95:
             problems.append(f"content was removed (elements {fb['elements']}->{fa['elements']}, "
                             f"text {fb['text']}->{fa['text']} chars); fix it without deleting anything")
-        vd = visual_diff(work / "before.png", work / "after.png")
+        if fa["emptyLandmarks"] > fb["emptyLandmarks"]:
+            problems.append("the edit added an empty landmark; a landmark must wrap the existing "
+                            "content it describes, so move that content inside it")
+        vd = visual_diff(work / "before.png", work / "after.png", layout=rid == "color-contrast")
         if vd > VISUAL_LIMIT:
-            problems.append(f"the page changed visually too much ({vd:.0%} of pixels)")
+            what = "the layout shifted" if rid == "color-contrast" else "the page changed visually too much"
+            problems.append(f"{what} ({vd:.0%} of pixels)")
 
         if problems:
             feedback = "it was rejected and rolled back: " + "; ".join(problems) + ". Try a different fix."

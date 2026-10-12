@@ -252,15 +252,40 @@ neatlogs trace: `{s.get('trace_id', '-')}`
 """ if b else "# Jangkau report\n\nNo violations found.\n", encoding="utf-8")
 
 
+@span(kind="TOOL", name="open_pr")
+def open_pr(target: Path, out: Path):
+    """Commit the fixed page on a new branch in the target's repo and open a PR with the report."""
+    import subprocess
+    repo, name = target.resolve().parent, target.name
+    git = lambda *a: subprocess.run(["git", *a], cwd=repo, check=True, capture_output=True, text=True).stdout.strip()
+    branch = f"jangkau/{target.stem}-{time.strftime('%Y%m%d-%H%M%S')}"
+    base = git("rev-parse", "--abbrev-ref", "HEAD")
+    git("switch", "-c", branch)
+    try:
+        shutil.copy(out / name, repo / name)
+        git("add", name)
+        git("commit", "-m", f"Fix WCAG violations in {name} (Jangkau)")
+        git("push", "-u", "origin", branch)
+        url = subprocess.run(["gh", "pr", "create", "--base", base, "--head", branch,
+                              "--title", f"Accessibility fixes for {name}", "--body-file", str((out / "report.md").resolve())],
+                             cwd=repo, check=True, capture_output=True, text=True).stdout.strip()
+        log(f"pull request: {url}")
+    finally:
+        git("switch", base)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Fix WCAG violations in an HTML page and prove each fix.")
     ap.add_argument("target", type=Path, help="path to the HTML file to fix")
     ap.add_argument("--out", type=Path, default=Path("runs") / time.strftime("%Y%m%d-%H%M%S"))
     ap.add_argument("--no-verify", action="store_true", help="baseline mode: accept edits without checks")
+    ap.add_argument("--pr", action="store_true", help="write the fix back into the target's git repo and open a PR")
     a = ap.parse_args()
     if not a.target.exists():
         sys.exit(f"not found: {a.target}")
     s = run(a.target, a.out, verify=not a.no_verify)
     log(f"done: {s['baseline']['nodes']} -> {s['final']['nodes']} failing nodes. report: {a.out / 'report.md'}")
+    if a.pr and s["final"]["nodes"] < s["baseline"]["nodes"]:
+        open_pr(a.target, a.out)
     neatlogs.flush()
     neatlogs.shutdown()

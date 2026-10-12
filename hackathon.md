@@ -66,6 +66,7 @@ Ampun (Pugar Huda Mantoro)
   4. Inspecting the diff showed `landmark-one-main` was "fixed" with an empty `<main></main>`. axe passes it, but the content
      wasn't wrapped. Fix: the verifier rejects any edit that adds an empty landmark. Rerun: `<main>` now wraps the page, 33 → 0, 7 LLM calls, 40 s.
   Regression check on toko.html with v5: still 47 → 0 (trace `7ebe2d0264836eb6ec3fa6d932feafdb`).
+- Done: Entire checkpoints are recorded. Sessions now start inside jangkau/, so the Claude Code hooks fire (the earlier session ran from the parent folder, where the hooks never loaded).
 - Pending: confirm the traces in the dashboard and add share links; Entire checkpoint link + ID; cfo.ai model; tweets; demo video.
 
 ## Demo

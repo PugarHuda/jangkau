@@ -167,33 +167,45 @@ mapped to WCAG and to the European standard,
 EN 301 549.
 
 43
-00:01:37,500 --> 00:01:40,884
-Entire recorded the coding sessions behind these fixes,
+00:01:37,500 --> 00:01:39,249
+Every fix is traceable.
 
 44
-00:01:40,884 --> 00:01:42,905
-as checkpoints on our commits.
+00:01:39,249 --> 00:01:43,316
+The fixed page carries a stamp that leads back to its neatlogs trace,
 
 45
-00:01:43,500 --> 00:01:47,497
-And cfo.ai modeled the business on measured costs:
+00:01:43,316 --> 00:01:47,684
+and every Vercel deploy is re-checked before it gets a green status.
 
 46
-00:01:47,497 --> 00:01:49,153
-about nine cents per page,
+00:01:48,300 --> 00:01:51,684
+Entire recorded the coding sessions behind these fixes,
 
 47
-00:01:49,153 --> 00:01:51,236
-an eighty-four percent gross margin,
+00:01:51,684 --> 00:01:53,705
+as checkpoints on our commits.
 
 48
-00:01:51,236 --> 00:01:54,559
-and a downside case that set our per-page spend cap.
+00:01:54,300 --> 00:01:58,297
+And cfo.ai modeled the business on measured costs:
 
 49
-00:01:55,167 --> 00:01:56,319
-Jangkau.
+00:01:58,297 --> 00:01:59,953
+about nine cents per page,
 
 50
-00:01:56,319 --> 00:01:58,340
+00:01:59,953 --> 00:02:02,036
+an eighty-four percent gross margin,
+
+51
+00:02:02,036 --> 00:02:05,359
+and a downside case that set our per-page spend cap.
+
+52
+00:02:05,967 --> 00:02:07,119
+Jangkau.
+
+53
+00:02:07,119 --> 00:02:09,140
 So the web reaches everyone.

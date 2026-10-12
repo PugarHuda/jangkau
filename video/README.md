@@ -7,6 +7,7 @@ Every frame comes from real output, nothing is mocked:
 - `capture/terminal.json`: timed stdout of a real `jangkau.py demo_site/shop.html` run (47 → 0, trace `6e973c4e…`).
 - `public/shots/nl-*.png`: the neatlogs dashboard (trace, detections, flagged spans), captured logged in.
 - `public/data/alerts.json`: open code scanning alerts from the GitHub API, with the WCAG / EN 301 549 mapping from the SARIF.
+- `public/data/trace.json`: real `--explain` output for the live fixed page, and a deploy's commit statuses from the GitHub API.
 - `tts.py`: voice-over with Kokoro (open-weight TTS, local). Each phrase is synthesised on its own, so captions are exact.
 - `src/Demo.tsx`: the Remotion composition. A yellow keyboard-focus ring moves through each real screen.
 

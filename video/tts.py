@@ -17,7 +17,7 @@ OUT = Path(__file__).parent / "public" / "vo"
 MODEL = Path(os.environ.get("KOKORO_DIR", "."))
 # how a word is spoken, when the caption should keep its written form
 SAY = {"Jangkau": "Jahng-cow", "cfo.ai": "C.F.O. dot A.I.", "neatlogs": "neat logs", "W3C's": "W 3 C's",
-       "EN 301 549": "E N 3 0 1, 5 4 9", "CI": "C I", "WCAG": "W-cag"}
+       "EN 301 549": "E N 3 0 1, 5 4 9", "CI": "C I", "WCAG": "W-cag", "Vercel": "Ver-sell"}
 
 SCENES = [
     ("problem", "One in six people lives with a disability. To a screen reader, this online shop sounds like: "
@@ -39,6 +39,8 @@ SCENES = [
                   "failures down to four."),
     ("ci", "It also runs in CI, as a GitHub Action. Every failure lands in code scanning, mapped to WCAG and to "
            "the European standard, EN 301 549."),
+    ("trace", "Every fix is traceable. The fixed page carries a stamp that leads back to its neatlogs trace, and "
+              "every Vercel deploy is re-checked before it gets a green status."),
     ("entire", "Entire recorded the coding sessions behind these fixes, as checkpoints on our commits."),
     ("cfo", "And cfo.ai modeled the business on measured costs: about nine cents per page, an eighty-four percent "
             "gross margin, and a downside case that set our per-page spend cap."),

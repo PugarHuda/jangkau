@@ -7,6 +7,7 @@ import vo from "../public/vo/vo.json";
 import terminal from "../public/data/terminal.json";
 import alerts from "../public/data/alerts.json";
 import aria from "../public/shots/aria.json";
+import trace from "../public/data/trace.json";
 
 export const FPS = 30;
 const LEAD = 6; // frames of picture before the voice starts
@@ -276,6 +277,44 @@ const AlertList: React.FC<{ at: number; box: Rect }> = ({ at, box }) => {
   );
 };
 
+/** Real output: `--explain` on the live page, and the commit statuses a Vercel deploy got. */
+const Provenance: React.FC<{ statusAt: number }> = ({ statusAt }) => {
+  const f = useCurrentFrame();
+  const typed = Math.min(trace.cmd.length, Math.max(0, Math.floor((f - 10) * 1.6)));
+  const out = spring({ frame: f - 10 - Math.ceil(trace.cmd.length / 1.6) - 8, fps: FPS, config: { damping: 200 } });
+  const [head, link] = trace.explain.split(" neatlogs trace ");
+  const panel: React.CSSProperties = {
+    position: "absolute", borderRadius: 18, border: `1px solid ${C.line}`, boxShadow: "0 40px 120px rgba(0,0,0,.5)",
+  };
+  return (
+    <>
+      <div style={{ ...panel, left: 80, top: 112, width: 1760, height: 260, background: "#0b1120", padding: "24px 30px", fontFamily: MONO, fontSize: 26, color: C.soft }}>
+        <div style={{ color: C.ink }}>$ {trace.cmd.slice(0, typed)}</div>
+        <div style={{ opacity: out, marginTop: 18, lineHeight: 1.5 }}>
+          <div style={{ color: C.pass, fontWeight: 600 }}>{head}</div>
+          <div>neatlogs trace <span style={{ color: C.focus }}>{link.split("?")[0]}</span></div>
+          <div>{link.split(", ").slice(1).join(", ")}</div>
+        </div>
+      </div>
+      <div style={{ ...panel, left: 80, top: 404, width: 1760, background: C.panel, padding: "22px 30px", fontFamily: FONT, color: C.ink,
+        opacity: spring({ frame: f - statusAt, fps: FPS, config: { damping: 200 } }) }}>
+        <div style={{ fontSize: 28, fontWeight: 800 }}>Commit {trace.sha} · {trace.subject}</div>
+        <div style={{ fontSize: 20, color: C.soft, marginBottom: 10 }}>commit statuses, live from the GitHub API</div>
+        {trace.statuses.map((st, i) => {
+          const a = spring({ frame: f - statusAt - 12 - i * 18, fps: FPS, config: { damping: 200 } });
+          return (
+            <div key={st.context} style={{ display: "flex", alignItems: "center", gap: 18, padding: "14px 0", borderTop: `1px solid ${C.line}`, opacity: a }}>
+              <div style={{ width: 34, height: 34, borderRadius: 17, background: C.pass, color: C.navy, fontWeight: 800, fontSize: 24, display: "flex", alignItems: "center", justifyContent: "center" }}>✓</div>
+              <div style={{ fontFamily: MONO, fontSize: 26, width: 380, fontWeight: 600 }}>{st.context}</div>
+              <div style={{ fontSize: 24, color: C.soft }}>{st.description}</div>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+};
+
 const Title: React.FC<{ at: number; children: React.ReactNode; sub?: string }> = ({ at, children, sub }) => {
   const f = useCurrentFrame();
   const a = spring({ frame: f - at, fps: FPS, config: { damping: 200 } });
@@ -373,6 +412,12 @@ const scenesJsx: Record<string, (len: number) => React.ReactNode> = {
       <Shot src="shots/gh-actions.png" w={2400} h={1350} box={[80, 112, 900, 790]}
         keys={[{ at: 0, cam: [540, 400, 1300, 800] }, { at: 30, cam: [540, 400, 1300, 800], ring: [560, 1105, 900, 66] }, { at: 110, cam: [540, 400, 1300, 800], ring: [560, 520, 900, 66] }]} />
       <AlertList at={cue("ci", "Every failure")} box={[1010, 112, 830, 790]} />
+    </>
+  ),
+  trace: () => (
+    <>
+      <Title at={0} sub="a provenance stamp in the page, a commit status on every deploy">Every fix is traceable</Title>
+      <Provenance statusAt={cue("trace", "every Vercel")} />
     </>
   ),
   entire: () => (

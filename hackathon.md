@@ -90,7 +90,7 @@ Ampun (Pugar Huda Mantoro)
 - Left: #neatHack tweets and the submission quote tweet.
 
 ## Demo
-Video (1:59, English, captions burned in, `video/jangkau-demo.srt` for platforms that take captions): built with Remotion from
+Video (2:09, English, captions burned in, `video/jangkau-demo.srt` for platforms that take captions): built with Remotion from
 real captures, script in `docs/demo-script.md`, sources in `video/`. Live site: https://jangkau-jet.vercel.app
 
 ## Known limitations and next steps

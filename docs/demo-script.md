@@ -1,4 +1,4 @@
-# Demo video script (target 2:00, X free accounts cap at 2:20)
+# Demo video script (2:09, X free accounts cap at 2:20)
 
 The organisers asked for one video covering: the problem, how cfo.ai and Entire were part of the project,
 and how neatlogs was used to identify and resolve the incidents the agent ran into. The middle block is the longest on purpose.
@@ -12,5 +12,6 @@ and how neatlogs was used to identify and resolve the incidents the agent ran in
 | 0:55–1:10 | Freelancer span: `color-contrast` partial → v5 trace, Sonnet escalation, `compare.png` | "Incident two, a real Bootstrap site: contrast fixes kept failing. The traces showed a pixel diff punishing correct recolours, then a hidden 0.65 opacity. Edge-map diff, measured feedback, escalation: 33 to 0." |
 | 1:10–1:22 | Detections → **Execution Failed** on `apply_edits`, then the W3C run 67 → 4 | "Incident three, W3C's own inaccessible demo page: one bad edit threw away 19 good ones. Now valid edits are kept: 67 to 4." |
 | 1:22–1:32 | GitHub → Security → Code scanning alerts, `accessibility.yml` | "And it runs in CI: SARIF in GitHub code scanning, each alert mapped to WCAG and EN 301 549." |
+| 1:32–1:43 | `--explain` on the live fixed page, then the commit statuses of a deploy (`Vercel`, `jangkau/accessibility`) | "Every fix is traceable. The fixed page carries a stamp that leads back to its neatlogs trace, and every Vercel deploy is re-checked before it gets a green status." |
 | 1:32–1:45 | Entire checkpoint page + `docs/entire-graph.md` | "Entire recorded every agent session behind these fixes, and Entire Graph showed the blast radius before we touched the verifier." |
 | 1:45–2:00 | cfo.ai model, Base / Growth / Downside | "cfo.ai modelled the business: $0.06 per page, 83% gross margin, and the downside case that set our fair-use rule. Jangkau: so the web reaches everyone." |

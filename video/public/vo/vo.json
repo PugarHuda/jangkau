@@ -259,6 +259,28 @@
   ]
  },
  {
+  "name": "trace",
+  "text": "Every fix is traceable. The fixed page carries a stamp that leads back to its neatlogs trace, and every Vercel deploy is re-checked before it gets a green status.",
+  "duration": 10.104,
+  "captions": [
+   {
+    "text": "Every fix is traceable.",
+    "start": 0.0,
+    "end": 1.429
+   },
+   {
+    "text": "The fixed page carries a stamp that leads back to its neatlogs trace,",
+    "start": 1.749,
+    "end": 5.696
+   },
+   {
+    "text": "and every Vercel deploy is re-checked before it gets a green status.",
+    "start": 5.816,
+    "end": 9.784
+   }
+  ]
+ },
+ {
   "name": "entire",
   "text": "Entire recorded the coding sessions behind these fixes, as checkpoints on our commits.",
   "duration": 5.325,

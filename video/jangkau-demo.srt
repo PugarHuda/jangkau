@@ -1,0 +1,199 @@
+1
+00:00:00,200 --> 00:00:03,080
+One in six people lives with a disability.
+
+2
+00:00:03,080 --> 00:00:04,331
+To a screen reader,
+
+3
+00:00:04,331 --> 00:00:06,195
+this online shop sounds like:
+
+4
+00:00:06,195 --> 00:00:07,176
+image.
+
+5
+00:00:07,176 --> 00:00:08,200
+Link.
+
+6
+00:00:08,200 --> 00:00:09,181
+Image.
+
+7
+00:00:09,181 --> 00:00:11,656
+Forty-seven accessibility failures.
+
+8
+00:00:11,656 --> 00:00:12,715
+And in Europe,
+
+9
+00:00:12,715 --> 00:00:14,776
+since June 2025,
+
+10
+00:00:14,776 --> 00:00:16,520
+that's a legal problem.
+
+11
+00:00:17,133 --> 00:00:20,610
+Jangkau is an agent that doesn't just audit the page.
+
+12
+00:00:20,610 --> 00:00:21,912
+It fixes it.
+
+13
+00:00:21,912 --> 00:00:24,421
+Every edit is re-checked in a real browser,
+
+14
+00:00:24,421 --> 00:00:25,842
+and if it breaks anything,
+
+15
+00:00:25,842 --> 00:00:27,906
+it's rolled back and tried again.
+
+16
+00:00:28,500 --> 00:00:30,583
+We traced every run with neatlogs,
+
+17
+00:00:30,583 --> 00:00:34,999
+then set up a detection that flags each rule the agent failed to fix.
+
+18
+00:00:34,999 --> 00:00:36,465
+Here's what it caught.
+
+19
+00:00:37,067 --> 00:00:38,326
+Incident one.
+
+20
+00:00:38,326 --> 00:00:41,846
+Our first verifier rejected correct label fixes.
+
+21
+00:00:41,846 --> 00:00:43,368
+The span told us why:
+
+22
+00:00:43,368 --> 00:00:46,632
+it counted rules still waiting in the queue as breakage.
+
+23
+00:00:46,632 --> 00:00:47,862
+We fixed the check,
+
+24
+00:00:47,862 --> 00:00:50,950
+and the shop went from forty-seven failures to zero.
+
+25
+00:00:51,567 --> 00:00:52,647
+Incident two,
+
+26
+00:00:52,647 --> 00:00:54,588
+on a real Bootstrap template.
+
+27
+00:00:54,588 --> 00:00:56,658
+Contrast fixes kept failing.
+
+28
+00:00:56,658 --> 00:01:00,148
+The traces showed a pixel diff punishing correct recolors,
+
+29
+00:01:00,148 --> 00:01:03,604
+and then a hidden opacity of zero point six five.
+
+30
+00:01:03,604 --> 00:01:04,791
+Edge-map diffs,
+
+31
+00:01:04,791 --> 00:01:05,935
+measured feedback,
+
+32
+00:01:05,935 --> 00:01:10,218
+and escalation to a stronger model took it from thirty-three to zero.
+
+33
+00:01:10,833 --> 00:01:11,977
+Incident three,
+
+34
+00:01:11,977 --> 00:01:15,732
+on the W3C's own inaccessible demo page.
+
+35
+00:01:15,732 --> 00:01:20,937
+The Execution Failed detection caught one bad edit throwing away nineteen good ones.
+
+36
+00:01:20,937 --> 00:01:22,673
+Now valid edits are kept:
+
+37
+00:01:22,673 --> 00:01:25,057
+sixty-seven failures down to four.
+
+38
+00:01:25,667 --> 00:01:27,366
+It also runs in CI,
+
+39
+00:01:27,366 --> 00:01:28,987
+as a GitHub Action.
+
+40
+00:01:28,987 --> 00:01:31,006
+Every failure lands in code scanning,
+
+41
+00:01:31,006 --> 00:01:34,027
+mapped to WCAG and to the European standard,
+
+42
+00:01:34,027 --> 00:01:36,902
+EN 301 549.
+
+43
+00:01:37,500 --> 00:01:40,884
+Entire recorded the coding sessions behind these fixes,
+
+44
+00:01:40,884 --> 00:01:42,905
+as checkpoints on our commits.
+
+45
+00:01:43,500 --> 00:01:46,196
+And cfo.ai modeled the business:
+
+46
+00:01:46,196 --> 00:01:47,767
+about six cents per page,
+
+47
+00:01:47,767 --> 00:01:49,892
+an eighty-three percent gross margin,
+
+48
+00:01:49,892 --> 00:01:52,831
+and a downside case that set our fair-use rule.
+
+49
+00:01:53,433 --> 00:01:54,585
+Jangkau.
+
+50
+00:01:54,585 --> 00:01:56,606
+So the web reaches everyone.

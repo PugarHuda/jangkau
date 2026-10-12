@@ -1,0 +1,130 @@
+[
+ {
+  "t": 2.28,
+  "text": "neatlogs trace: 848da8cc19d5cbe2fa3a4f1128f8237e"
+ },
+ {
+  "t": 4.89,
+  "text": "baseline: 47 failing nodes across 14 rules"
+ },
+ {
+  "t": 5.57,
+  "text": "fixing button-name (critical, 1 nodes)"
+ },
+ {
+  "t": 10.27,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 11.0,
+  "text": "fixing image-alt (critical, 6 nodes)"
+ },
+ {
+  "t": 15.28,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 16.01,
+  "text": "fixing label (critical, 3 nodes)"
+ },
+ {
+  "t": 19.4,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 20.09,
+  "text": "fixing aria-hidden-focus (serious, 1 nodes)"
+ },
+ {
+  "t": 22.85,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 23.56,
+  "text": "fixing color-contrast (serious, 18 nodes)"
+ },
+ {
+  "t": 37.56,
+  "text": "  attempt 1 accepted, 1 nodes left"
+ },
+ {
+  "t": 44.23,
+  "text": "  -> fixed after 2 attempt(s)"
+ },
+ {
+  "t": 44.93,
+  "text": "fixing document-title (serious, 1 nodes)"
+ },
+ {
+  "t": 47.22,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 47.91,
+  "text": "fixing frame-title (serious, 1 nodes)"
+ },
+ {
+  "t": 50.17,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 50.87,
+  "text": "fixing html-has-lang (serious, 1 nodes)"
+ },
+ {
+  "t": 53.0,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 53.7,
+  "text": "fixing heading-order (moderate, 1 nodes)"
+ },
+ {
+  "t": 56.85,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 57.54,
+  "text": "fixing landmark-one-main (moderate, 1 nodes)"
+ },
+ {
+  "t": 60.23,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 60.92,
+  "text": "fixing meta-viewport (moderate, 1 nodes)"
+ },
+ {
+  "t": 63.61,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 64.31,
+  "text": "fixing page-has-heading-one (moderate, 1 nodes)"
+ },
+ {
+  "t": 67.61,
+  "text": "  attempt 1 rejected, reverting: the edit introduced new violations {'heading-order': 1}: heading-order: Heading levels should only increase by one at <h3>Kemej"
+ },
+ {
+  "t": 67.61,
+  "text": "  Heading order invalid)"
+ },
+ {
+  "t": 73.98,
+  "text": "  -> fixed after 2 attempt(s)"
+ },
+ {
+  "t": 74.68,
+  "text": "fixing region (moderate, 2 nodes)"
+ },
+ {
+  "t": 78.63,
+  "text": "  -> fixed after 1 attempt(s)"
+ },
+ {
+  "t": 80.57,
+  "text": "done: 47 -> 0 failing nodes. report: runs\\video-toko\\report.md"
+ }
+]

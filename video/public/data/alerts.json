@@ -1,0 +1,1272 @@
+[
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 81,
+  "n": 73,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 78,
+  "n": 72,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 77,
+  "n": 71,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 76,
+  "n": 70,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 75,
+  "n": 69,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 67,
+  "n": 68,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 36,
+  "n": 67,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 34,
+  "n": 66,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 26,
+  "n": 65,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 25,
+  "n": 64,
+  "path": "demo_site/toko.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "Page should contain a level-one heading",
+  "line": 2,
+  "n": 63,
+  "path": "demo_site/toko.html",
+  "rule": "page-has-heading-one",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "Zooming and scaling must not be disabled",
+  "line": 5,
+  "n": 62,
+  "path": "demo_site/toko.html",
+  "rule": "meta-viewport",
+  "sev": "warning",
+  "tags": [
+   "1.4.4",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.4"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.4"
+  ]
+ },
+ {
+  "desc": "Links must have discernible text",
+  "line": 31,
+  "n": 61,
+  "path": "demo_site/toko.html",
+  "rule": "link-name",
+  "sev": "error",
+  "tags": [
+   "2.4.4",
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "2.4.4",
+   "4.1.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.2.4.4",
+   "9.4.1.2"
+  ]
+ },
+ {
+  "desc": "Document should have one main landmark",
+  "line": 2,
+  "n": 60,
+  "path": "demo_site/toko.html",
+  "rule": "landmark-one-main",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "Form elements must have labels",
+  "line": 78,
+  "n": 59,
+  "path": "demo_site/toko.html",
+  "rule": "label",
+  "sev": "error",
+  "tags": [
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "4.1.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.4.1.2"
+  ]
+ },
+ {
+  "desc": "Form elements must have labels",
+  "line": 77,
+  "n": 58,
+  "path": "demo_site/toko.html",
+  "rule": "label",
+  "sev": "error",
+  "tags": [
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "4.1.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.4.1.2"
+  ]
+ },
+ {
+  "desc": "Form elements must have labels",
+  "line": 76,
+  "n": 57,
+  "path": "demo_site/toko.html",
+  "rule": "label",
+  "sev": "error",
+  "tags": [
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "4.1.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.4.1.2"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 59,
+  "n": 56,
+  "path": "demo_site/toko.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 52,
+  "n": 55,
+  "path": "demo_site/toko.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 45,
+  "n": 54,
+  "path": "demo_site/toko.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 38,
+  "n": 53,
+  "path": "demo_site/toko.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 31,
+  "n": 52,
+  "path": "demo_site/toko.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 27,
+  "n": 51,
+  "path": "demo_site/toko.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "<html> element must have a lang attribute",
+  "line": 2,
+  "n": 50,
+  "path": "demo_site/toko.html",
+  "rule": "html-has-lang",
+  "sev": "error",
+  "tags": [
+   "3.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "3.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.3.1.1"
+  ]
+ },
+ {
+  "desc": "Heading levels should only increase by one",
+  "line": 75,
+  "n": 49,
+  "path": "demo_site/toko.html",
+  "rule": "heading-order",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "Frames must have an accessible name",
+  "line": 82,
+  "n": 48,
+  "path": "demo_site/toko.html",
+  "rule": "frame-title",
+  "sev": "error",
+  "tags": [
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "4.1.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.4.1.2"
+  ]
+ },
+ {
+  "desc": "Documents must have <title> element to aid in navigation",
+  "line": 2,
+  "n": 47,
+  "path": "demo_site/toko.html",
+  "rule": "document-title",
+  "sev": "error",
+  "tags": [
+   "2.4.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "2.4.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.2.4.2"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 81,
+  "n": 46,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 62,
+  "n": 45,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 61,
+  "n": 44,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 61,
+  "n": 43,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 55,
+  "n": 42,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 54,
+  "n": 41,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 54,
+  "n": 40,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 48,
+  "n": 39,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 47,
+  "n": 38,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 47,
+  "n": 37,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 41,
+  "n": 36,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 40,
+  "n": 35,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 40,
+  "n": 34,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 34,
+  "n": 33,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 30,
+  "n": 32,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 29,
+  "n": 31,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 28,
+  "n": 30,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 25,
+  "n": 29,
+  "path": "demo_site/toko.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Buttons must have discernible text",
+  "line": 80,
+  "n": 28,
+  "path": "demo_site/toko.html",
+  "rule": "button-name",
+  "sev": "error",
+  "tags": [
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "4.1.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.4.1.2"
+  ]
+ },
+ {
+  "desc": "ARIA hidden element must not be focusable or contain focusable elements",
+  "line": 79,
+  "n": 27,
+  "path": "demo_site/toko.html",
+  "rule": "aria-hidden-focus",
+  "sev": "error",
+  "tags": [
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "4.1.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.4.1.2"
+  ]
+ },
+ {
+  "desc": "Select element must have an accessible name",
+  "line": 58,
+  "n": 26,
+  "path": "demo_site/index.html",
+  "rule": "select-name",
+  "sev": "error",
+  "tags": [
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": null,
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 58,
+  "n": 25,
+  "path": "demo_site/index.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 57,
+  "n": 24,
+  "path": "demo_site/index.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 56,
+  "n": 23,
+  "path": "demo_site/index.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 37,
+  "n": 22,
+  "path": "demo_site/index.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "All page content should be contained by landmarks",
+  "line": 31,
+  "n": 21,
+  "path": "demo_site/index.html",
+  "rule": "region",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "Links must have discernible text",
+  "line": 67,
+  "n": 20,
+  "path": "demo_site/index.html",
+  "rule": "link-name",
+  "sev": "error",
+  "tags": [
+   "2.4.4",
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "2.4.4",
+   "4.1.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.2.4.4",
+   "9.4.1.2"
+  ]
+ },
+ {
+  "desc": "Document should have one main landmark",
+  "line": 2,
+  "n": 19,
+  "path": "demo_site/index.html",
+  "rule": "landmark-one-main",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 67,
+  "n": 18,
+  "path": "demo_site/index.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 49,
+  "n": 17,
+  "path": "demo_site/index.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 44,
+  "n": 16,
+  "path": "demo_site/index.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 39,
+  "n": 15,
+  "path": "demo_site/index.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "Images must have alternative text",
+  "line": 23,
+  "n": 14,
+  "path": "demo_site/index.html",
+  "rule": "image-alt",
+  "sev": "error",
+  "tags": [
+   "1.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.1.1.1"
+  ]
+ },
+ {
+  "desc": "<html> element must have a lang attribute",
+  "line": 2,
+  "n": 13,
+  "path": "demo_site/index.html",
+  "rule": "html-has-lang",
+  "sev": "error",
+  "tags": [
+   "3.1.1",
+   "accessibility"
+  ],
+  "wcag": [
+   "3.1.1"
+  ],
+  "level": "A",
+  "en": [
+   "9.3.1.1"
+  ]
+ },
+ {
+  "desc": "Heading levels should only increase by one",
+  "line": 33,
+  "n": 12,
+  "path": "demo_site/index.html",
+  "rule": "heading-order",
+  "sev": "warning",
+  "tags": [
+   "accessibility"
+  ],
+  "wcag": [],
+  "level": "best practice",
+  "en": []
+ },
+ {
+  "desc": "Documents must have <title> element to aid in navigation",
+  "line": 2,
+  "n": 11,
+  "path": "demo_site/index.html",
+  "rule": "document-title",
+  "sev": "error",
+  "tags": [
+   "2.4.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "2.4.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.2.4.2"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 66,
+  "n": 10,
+  "path": "demo_site/index.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 51,
+  "n": 9,
+  "path": "demo_site/index.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 46,
+  "n": 8,
+  "path": "demo_site/index.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 41,
+  "n": 7,
+  "path": "demo_site/index.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 34,
+  "n": 6,
+  "path": "demo_site/index.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 27,
+  "n": 5,
+  "path": "demo_site/index.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 26,
+  "n": 4,
+  "path": "demo_site/index.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Elements must meet minimum color contrast ratio thresholds",
+  "line": 25,
+  "n": 3,
+  "path": "demo_site/index.html",
+  "rule": "color-contrast",
+  "sev": "error",
+  "tags": [
+   "1.4.3",
+   "accessibility"
+  ],
+  "wcag": [
+   "1.4.3"
+  ],
+  "level": "AA",
+  "en": [
+   "9.1.4.3"
+  ]
+ },
+ {
+  "desc": "Buttons must have discernible text",
+  "line": 62,
+  "n": 2,
+  "path": "demo_site/index.html",
+  "rule": "button-name",
+  "sev": "error",
+  "tags": [
+   "4.1.2",
+   "accessibility"
+  ],
+  "wcag": [
+   "4.1.2"
+  ],
+  "level": "A",
+  "en": [
+   "9.4.1.2"
+  ]
+ }
+]

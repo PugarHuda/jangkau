@@ -105,6 +105,6 @@ Confirmed requirements (from https://neatlogs.com/hackathon and the organiser em
 - [x] Entire checkpoint link + checkpoint ID (`https://entire.io/gh/PugarHuda/jangkau/commit/<sha>`)
 - [x] cfo.ai business plan (pricing, costs, revenue, runway)
 - [x] A run showing failure and recovery
-- [ ] #neatHack build-in-public posts (the submission post is one; a separate build-log post is drafted)
+- [x] #neatHack build-in-public posts: https://x.com/BangDropID/status/2109666896643809508, https://x.com/BangDropID/status/2109655294532055517
 - [x] Submission form at https://neatlogs.com/submission (submitted Oct 12)
 - [x] Public repo with commits dated during the hackathon

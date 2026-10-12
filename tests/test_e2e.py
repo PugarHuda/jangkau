@@ -238,3 +238,21 @@ def test_vercel_protection_bypass_header_reaches_the_server(tmp_path):
     assert "audit: 0 failing elements" in opened.stdout, opened.stdout[-400:] + locked.stdout[-200:]
     # the secret went to the audited host only, never to the third-party host the page loads from
     assert ("localhost", False) in seen and ("localhost", True) not in seen
+
+
+def test_entire_plugin_flags_a_checkpoint_that_regresses(tmp_path):
+    """`entire jangkau <checkpoint>`: a commit that strips alt text is reported per rule and exits 1."""
+    g = lambda *a: subprocess.run(["git", "-C", str(tmp_path), "-c", "user.email=t@t", "-c", "user.name=t", *a],
+                                  check=True, capture_output=True)
+    page = tmp_path / "index.html"
+    page.write_text('<!doctype html><html lang="en"><title>t</title><main><img src="a.png" alt="A cat"></main></html>')
+    g("init", "-q"); g("add", "."); g("commit", "-qm", "base")
+    page.write_text('<!doctype html><html lang="en"><title>t</title><main><img src="a.png"></main></html>')
+    g("commit", "-qam", "agent edit", "--trailer", "Entire-Checkpoint: 01TESTCHECKPOINT")
+    plugin = Path(__file__).resolve().parent.parent / "entire-plugin" / "entire_jangkau.py"
+    r = subprocess.run([sys.executable, str(plugin), "01TESTCHECKPOINT", "--repo", str(tmp_path), "--json"],
+                       capture_output=True, text=True)
+    assert r.returncode == 1, r.stderr[-500:]
+    out = json.loads(r.stdout)
+    assert out["checkpoint"] == "01TESTCHECKPOINT" and out["verdict"] == "regressed"
+    assert out["pages"][0]["worse"] == {"image-alt": [0, 1]}

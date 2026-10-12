@@ -377,3 +377,83 @@ Warnings
     file skipped; no parser for this file type, so its changes are not analyzed
     head version has no supported parser
 ```
+
+
+## Oct 12, evening: a risky change to `fix_rule` (checkpoint `01M4R62ENFM5D7KN4E1P0MPF23`)
+
+Fixes now edit the site's own stylesheets, not only the page, which changes the agent's core loop. Before the
+change we checked who depends on it:
+
+```
+$ entire graph impact --repo . --symbol fix_rule
+Impact: fix_rule (jangkau.py:577) def=577 span=577-706 [function]
+Blast radius: 4 callers (2 direct, 2 transitive), 10 callees, 0 type consumers, 4 data flows, 8 co-change files, 1 sibling.
+Callers (2 direct, 2 transitive; who breaks if behavior changes):
+- run (jangkau.py:761, def :714)
+- jangkau.py (jangkau.py) [via run]
+- fix_site (jangkau.py:397, def :387) [via run]
+- entire-graph.md (docs/entire-graph.md) [doc-mention, name_only]
+Callees (10; what it depends on):
+- neatlogs.log
+- shutil.copy
+- llm (jangkau.py:78)
+- audit (jangkau.py:125)
+- visual_diff (jangkau.py:146)
+- apply_valid_edits (jangkau.py:163)
+- parse_json (jangkau.py:186)
+- stylesheet (jangkau.py:528)
+- colour_sources (jangkau.py:538)
+- log (jangkau.py:709)
+Type consumers (0 in, 0 out; USES_TYPE/PARAM_TYPE/RETURNS_TYPE):
+- none
+Data flows (1 in, 3 out):
+- -> audit (jangkau.py:125)
+- -> stylesheet (jangkau.py:528)
+- -> colour_sources (jangkau.py:538)
+- <- run (jangkau.py:714)
+Co-change coupling (8; files that historically change with jangkau.py):
+- .github/workflows/accessibility.yml [files changed together in 4 recent commits]
+- .gitignore [files changed together in 2 recent commits]
+- README.md [files changed together in 6 recent commits]
+- action.yml [files changed together in 3 recent commits]
+- hackathon.md [files changed together in 5 recent commits]
+- requirements.txt [files changed together in 2 recent commits]
+- test_jangkau.py [files changed together in 8 recent commits]
+- tests/test_e2e.py [files changed together in 4 recent commits]
+Same-container siblings (1):
+- restore (jangkau.py:584) [member]
+```
+
+`run` alone has 37 dependents. Because of that, the change was gated on `entire graph verify` against a test
+baseline recorded on the parent commit (see below), not only on a plain test run. The rollback was widened at the
+same time: a rejected edit now restores every file it touched, not just the page (`restore`, the new sibling listed
+above).
+
+What the checkpoint changed, at entity level:
+
+```
+$ entire graph checkpoint 01M4R62ENFM5D7KN4E1P0MPF23
+jangkau.py (Python)
+  + function fix_site added
+  ~ function sync_prompt body changed (0 dependents)
+  + function stylesheet added
+  + function colour_sources added
+  + function local added
+  ~ function fix_rule body changed (2 dependents)
+  + function restore added
+  ~ function run body changed (37 dependents)
+  ~ function write_report body changed (3 dependents)
+  ~ function open_pr body changed (0 dependents)
+```
+
+The gate: a baseline recorded on the parent commit (`889beae`), then the edited tree checked against it:
+
+```
+$ entire graph verify --test "python -m pytest -v" --record-baseline baseline.json   # on 889beae
+BASELINE RECORDED: baseline.json (pytest; 32 passing, 0 failing, exit 0)
+$ entire graph verify --test "python -m pytest -v" --pre-edit-baseline baseline.json  # on the change
+VERDICT: NO EFFECT — the target tests behave exactly as before your edit.
+```
+
+All 32 tests that passed before still pass after the change. The plugin test added in the same session is new, so
+it has no baseline to compare against.

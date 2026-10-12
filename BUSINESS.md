@@ -3,7 +3,7 @@
 > The model is built in cfo.ai (built through the cfo.ai MCP server from Claude Code):
 > workspace page **Jangkau model**, with the tables Plan assumptions, Company assumptions,
 > Customers and revenue, and P&L and cash, plus the scenarios Base, Growth and Downside.
-> Results are in [the cfo.ai model](#the-cfoai-model) below.
+> Live model: https://cfo.ai/s/eaPiXgVJ6eZosuDO (view-only, Base scenario). Results are in [the cfo.ai model](#the-cfoai-model) below.
 
 ## Customer
 Small businesses, agencies and Shopify/WordPress sites that must meet WCAG 2.1 AA

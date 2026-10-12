@@ -62,11 +62,13 @@ from axe_playwright_python.sync_playwright import Axe  # noqa: E402
 MODEL = os.getenv("JANGKAU_MODEL", "claude-sonnet-4.6")
 ESCALATE_MODEL = os.getenv("JANGKAU_ESCALATE_MODEL", "claude-sonnet-4.6")  # last attempt on a stuck rule
 IMPACT = {"critical": 0, "serious": 1, "moderate": 2, "minor": 3}
-MAX_ATTEMPTS = 3
+MAX_ATTEMPTS = 3        # attempts per rule while stuck
+MAX_ATTEMPTS_PROGRESS = 8  # hard cap: every accepted partial fix earns one more attempt
 # ponytail: one global threshold; per-rule thresholds if contrast fixes keep tripping it
 VISUAL_LIMIT = 0.35
 CONTENT_TAGS = "a,button,input,select,textarea,img,h1,h2,h3,label,li"
 LANDMARKS = "main,nav,header,footer,aside,section,[role]"
+SETTLE_MS = 0  # --wait: let intro animations finish before auditing
 
 _llm = None
 
@@ -90,6 +92,8 @@ usage = {"prompt_tokens": 0, "completion_tokens": 0, "llm_calls": 0}
 @span(kind="TOOL", name="audit")
 def audit(page, html_path: Path, shot: Path) -> dict:
     page.goto(html_path.resolve().as_uri())
+    if SETTLE_MS:
+        page.wait_for_timeout(SETTLE_MS)
     page.screenshot(path=str(shot), full_page=True)
     violations = axe.run(page).response["violations"]
     fingerprint = page.evaluate(
@@ -124,14 +128,26 @@ def visual_diff(a: Path, b: Path, layout: bool = False) -> float:
 
 
 @span(kind="TOOL", name="apply_edits")
-def apply_edits(source: str, edits: list) -> str:
-    """Apply find/replace edits; each `find` must match exactly once."""
+def apply_valid_edits(source: str, edits: list) -> tuple:
+    """Apply each find/replace whose `find` matches exactly once; collect the rest as errors.
+    One mistyped `find` in a batch of 20 alt-text edits no longer throws away the other 19:
+    the re-audit judges what was applied, and the skipped edits go back to the model."""
+    errors = []
     for i, e in enumerate(edits):
         find, repl = e.get("find", ""), e.get("replace", "")
         n = source.count(find) if find else 0
         if n != 1:
-            raise ValueError(f"edit {i}: `find` matched {n} times (must be exactly 1): {find[:80]!r}")
+            errors.append(f"edit {i}: `find` matched {n} times (must be exactly 1): {find[:80]!r}")
+            continue
         source = source.replace(find, repl, 1)
+    return source, errors
+
+
+def apply_edits(source: str, edits: list) -> str:
+    """Strict variant: every `find` must match exactly once."""
+    source, errors = apply_valid_edits(source, edits)
+    if errors:
+        raise ValueError(errors[0])
     return source
 
 
@@ -260,7 +276,9 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
     """Fix one rule. Accepted edits are kept and the rule is retried until it is fully
     resolved; rejected edits are rolled back. Returns fixed / partial / gave-up."""
     rid, start_nodes, feedback = rule["id"], len(rule["nodes"]), ""
-    for attempt in range(1, MAX_ATTEMPTS + 1):
+    budget, stuck, attempt = MAX_ATTEMPTS, 0, 0
+    while attempt < budget:
+        attempt += 1
         source = html.read_text(encoding="utf-8")
         nodes = "\n".join(f"- target {n['target']}: {n['html'][:300]}\n  {n['failureSummary'][:300]}"
                           for n in rule["nodes"][:15])
@@ -269,16 +287,21 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
         if feedback:
             prompt += f"\n\nFeedback on your previous attempt: {feedback}"
         try:
+            # escalate only when the cheap model is stuck: two failed or rejected attempts in a row
             resp = llm().chat.completions.create(
-                model=ESCALATE_MODEL if attempt == MAX_ATTEMPTS else MODEL, temperature=0,
+                model=ESCALATE_MODEL if stuck >= 2 else MODEL, temperature=0,
                 messages=[{"role": "system", "content": SYSTEM}, {"role": "user", "content": prompt}])
             usage["llm_calls"] += 1
             if resp.usage:
                 usage["prompt_tokens"] += resp.usage.prompt_tokens
                 usage["completion_tokens"] += resp.usage.completion_tokens
             plan = parse_json(resp.choices[0].message.content or "")
-            html.write_text(apply_edits(source, plan.get("edits", [])), encoding="utf-8", newline="\n")
-        except Exception as e:  # bad JSON, non-unique find, API hiccup -> retry with feedback
+            patched, skipped = apply_valid_edits(source, plan.get("edits", []))
+            if patched == source:
+                raise ValueError("no edit applied. " + "; ".join(skipped[:5]))
+            html.write_text(patched, encoding="utf-8", newline="\n")
+        except Exception as e:  # bad JSON, no usable edit, API hiccup -> retry with feedback
+            stuck += 1
             feedback = f"it failed with {type(e).__name__}: {e}. Try again."
             log(f"  attempt {attempt} failed before audit: {e}")
             neatlogs.log("attempt {attempt} failed before audit", level="warning",
@@ -325,9 +348,10 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
             neatlogs.log("attempt {attempt} rejected and rolled back", level="warning", attempt=attempt,
                          rule=rid, nodes_left=left, visual_diff=round(vd, 4), problems=problems)
             html.write_text(source, encoding="utf-8", newline="\n")  # recovery: roll back the bad edit
+            stuck += 1
             continue
         neatlogs.log("attempt {attempt} accepted", attempt=attempt, rule=rid, nodes_left=left,
-                     visual_diff=round(vd, 4))
+                     visual_diff=round(vd, 4), skipped_edits=len(skipped))
         if left == 0:
             return {"rule": rid, "status": "fixed", "attempts": attempt}
         # partial progress: keep the edit, retry the remaining nodes
@@ -335,10 +359,14 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
         before = after
         shutil.copy(work / "after.png", work / "before.png")
         rule = next(v for v in after["violations"] if v["id"] == rid)
+        stuck, budget = 0, min(budget + 1, MAX_ATTEMPTS_PROGRESS)  # progress earns another attempt
         feedback = f"it was accepted, but {left} nodes still fail (listed above). Fix those too."
+        if skipped:
+            feedback += (" These edits were skipped because their `find` was not an exact, unique copy "
+                         "of the current file: " + "; ".join(skipped[:5]))
     left = before["by_rule"].get(rid, 0)
     return {"rule": rid, "status": "partial" if left < start_nodes else "gave-up",
-            "attempts": MAX_ATTEMPTS, "last_feedback": feedback}
+            "attempts": attempt, "last_feedback": feedback}
 
 
 def log(msg: str):
@@ -485,7 +513,10 @@ if __name__ == "__main__":
     ap.add_argument("--sarif", type=Path, help="with --audit-only: write SARIF 2.1.0 for GitHub code scanning")
     ap.add_argument("--fail-on", choices=["never", *IMPACT], default="never",
                     help="exit 1 when a violation of this impact or worse remains (for CI)")
+    ap.add_argument("--wait", type=int, default=0, metavar="MS",
+                    help="wait this long after load before each audit (pages that animate into place)")
     a = ap.parse_args()
+    SETTLE_MS = a.wait
     if re.match(r"https?://", a.target):
         if a.pr:
             sys.exit("--pr needs a local file in a git repo, not a URL")

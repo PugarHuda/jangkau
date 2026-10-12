@@ -70,3 +70,14 @@ def test_find_line_handles_reserialised_and_repeated_elements():
     assert find_line(src, '<a href="#">z</a>', nth=1) == 5
     assert find_line(src, '<a class="new">') == 3  # bare tag fallback never matches <abbr>
     assert find_line(src, "<html>") == 1
+
+
+def test_apply_valid_edits_keeps_good_edits_and_reports_bad_ones():
+    from jangkau import apply_valid_edits
+    src = "<img a><img b><p>x</p><p>x</p>"
+    out, errors = apply_valid_edits(src, [{"find": "<img a>", "replace": "<img a alt=1>"},
+                                          {"find": "<img zzz>", "replace": "nope"},
+                                          {"find": "<p>x</p>", "replace": "ambiguous"},
+                                          {"find": "<img b>", "replace": "<img b alt=2>"}])
+    assert out == "<img a alt=1><img b alt=2><p>x</p><p>x</p>"
+    assert len(errors) == 2 and "matched 0 times" in errors[0] and "matched 2 times" in errors[1]

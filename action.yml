@@ -13,6 +13,9 @@ inputs:
   fail-on:
     description: Fail the step when a violation of this impact or worse is found (never, critical, serious, moderate, minor).
     default: never
+  wait:
+    description: Milliseconds to wait after load before auditing, for pages that animate into their final state.
+    default: "0"
 outputs:
   sarif:
     description: Path of the SARIF file.
@@ -35,6 +38,7 @@ runs:
         PAGES: ${{ inputs.pages }}
         SARIF: ${{ inputs.sarif }}
         FAIL_ON: ${{ inputs.fail-on }}
+        WAIT_MS: ${{ inputs.wait }}
       run: |
         status=0
         i=0
@@ -42,7 +46,7 @@ runs:
         for page in $PAGES; do
           i=$((i + 1))
           python "${{ github.action_path }}/jangkau.py" "$page" --audit-only \
-            --out "jangkau-audit/$i" --sarif "jangkau-audit/$i.sarif" --fail-on "$FAIL_ON" || status=1
+            --out "jangkau-audit/$i" --sarif "jangkau-audit/$i.sarif" --fail-on "$FAIL_ON" --wait "$WAIT_MS" || status=1
           files+=("jangkau-audit/$i.sarif")
           cat "jangkau-audit/$i/report.md" >> "$GITHUB_STEP_SUMMARY"
         done

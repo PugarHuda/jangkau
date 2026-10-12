@@ -54,6 +54,7 @@ neatlogs.init(
     mask=slim_span,
 )
 from neatlogs import span  # noqa: E402
+from opentelemetry import trace as otel_trace  # noqa: E402
 from openai import OpenAI  # noqa: E402
 from PIL import Image, ImageChops, ImageFilter  # noqa: E402
 from playwright.sync_api import sync_playwright  # noqa: E402
@@ -84,6 +85,35 @@ def llm() -> OpenAI:
 
 
 axe = Axe()
+# A rule axe-core lacks, found on W3C's demo page: onfocus="blur()" throws keyboard focus away, so
+# keyboard users can never act on the element (WCAG failure F55; 2.1.1 and 2.4.7). Neither axe nor
+# HTML_CodeSniffer flags it.
+axe.axe_script += r"""
+;axe.configure({
+  checks: [{id: 'focus-not-removed', evaluate: function (node) {
+      return !/\bblur\s*\(/.test(node.getAttribute('onfocus') || ''); },
+    metadata: {impact: 'serious', messages: {pass: 'Focus stays on the element',
+      fail: 'onfocus calls blur(), which removes keyboard focus as soon as the element receives it'}}}],
+  rules: [{id: 'focus-not-removed', selector: '[onfocus]', any: ['focus-not-removed'], impact: 'serious',
+    tags: ['cat.keyboard', 'wcag2a', 'wcag211', 'wcag2aa', 'wcag247', 'EN-301-549', 'EN-9.2.1.1', 'EN-9.2.4.7'],
+    metadata: {description: 'Ensure elements do not remove keyboard focus when they receive it',
+      help: 'Elements must not remove focus when focused (WCAG failure F55)',
+      helpUrl: 'https://www.w3.org/WAI/WCAG22/Techniques/failures/F55'}}]
+});"""
+HTMLCS_JS = (Path(__file__).parent / "vendor" / "HTMLCS.js").read_text(encoding="utf-8")
+
+
+@span(kind="TOOL", name="crosscheck_htmlcs")
+def crosscheck(page) -> dict:
+    """Second, independent engine on the page that is loaded: HTML_CodeSniffer (WCAG2AA), the engine
+    behind Pa11y. Reported next to axe, not used as a gate: its technique-level checks sometimes
+    disagree with a valid fix (e.g. alt="" inside a link that has an aria-label)."""
+    page.add_script_tag(content=HTMLCS_JS)
+    items = page.evaluate("""() => new Promise(done => HTMLCS.process('WCAG2AA', document, () => done(
+        HTMLCS.getMessages().filter(m => m.type === 1).map(m => ({
+            code: m.code.split('.').slice(3, 5).join('.'), msg: m.msg.slice(0, 200),
+            html: (m.element.outerHTML || '').slice(0, 160)})))))""")
+    return {"errors": len(items), "items": items}
 usage = {"prompt_tokens": 0, "completion_tokens": 0, "llm_calls": 0}
 
 
@@ -241,6 +271,96 @@ def snapshot_url(url: str, out: Path) -> Path:
     return target
 
 
+NOT_PAGES = re.compile(r"\.(png|jpe?g|gif|svg|webp|ico|pdf|zip|css|js|json|xml|txt|mp4|webm|woff2?)$", re.I)
+
+
+@span(kind="TOOL", name="discover_pages")
+def discover_pages(start: str, limit: int) -> list:
+    """HTML pages reachable from `start`, breadth first, at most `limit`, staying on the same host and
+    under the start URL's directory (crawling /docs/intro.html covers /docs/, not the whole site)."""
+    from urllib.parse import urldefrag, urlparse
+    origin = urlparse(start).netloc
+    scope = urlparse(start).path.rsplit("/", 1)[0] + "/"
+    queue, seen, pages = [urldefrag(start)[0]], {urldefrag(start)[0]}, []
+    with sync_playwright() as pw:
+        page = pw.chromium.launch().new_page()
+        while queue and len(pages) < limit:
+            url = queue.pop(0)
+            try:
+                resp = page.goto(url, wait_until="domcontentloaded", timeout=30000)
+            except Exception as e:
+                log(f"  skip {url}: {type(e).__name__}")
+                continue
+            if not resp or resp.status >= 400 or "html" not in resp.headers.get("content-type", ""):
+                continue
+            if page.url not in pages:
+                pages.append(page.url)
+            for href in page.eval_on_selector_all("a[href]", "els => els.map(e => e.href)"):
+                u = urldefrag(href)[0]
+                p = urlparse(u)
+                if p.scheme in ("http", "https") and p.netloc == origin and p.path.startswith(scope) and u not in seen and not NOT_PAGES.search(p.path):
+                    seen.add(u)
+                    queue.append(u)
+    return pages
+
+
+@span(kind="WORKFLOW", name="jangkau_site_audit")
+def audit_site(start: str, limit: int, out: Path, sarif: "Path | None") -> dict:
+    """Crawl a site and audit every page: one report for the site, one SARIF with page URLs."""
+    pages = discover_pages(start, limit)
+    log(f"crawl: {len(pages)} page(s) from {start}")
+    results, rules, all_results = [], {}, []
+    for i, url in enumerate(pages, 1):
+        d = out / "pages" / f"{i:02d}"
+        s = audit_only(snapshot_url(url, d / "source"), d, d / "page.sarif" if sarif else None)
+        results.append({"url": url, "dir": f"pages/{i:02d}", "nodes": s["baseline"]["nodes"],
+                        "rules": len(s["baseline"]["by_rule"]), "htmlcs": s["crosscheck"]["before"]["errors"]})
+        for v in s["violations"]:
+            r = rules.setdefault(v["id"], {"id": v["id"], "impact": v["impact"], "tags": v.get("tags", []),
+                                          "help": v["help"], "pages": 0, "nodes": 0})
+            r["pages"] += 1
+            r["nodes"] += len(v["nodes"])
+        if sarif:
+            run_ = json.loads((d / "page.sarif").read_text(encoding="utf-8"))["runs"][0]
+            for res in run_["results"]:
+                res["locations"][0]["physicalLocation"]["artifactLocation"]["uri"] = url
+            all_results.append(run_)
+        log(f"  {url}: {s['baseline']['nodes']} failing elements")
+    top = sorted(rules.values(), key=lambda r: (IMPACT.get(r["impact"], 9), -r["pages"], -r["nodes"]))
+    rows = "\n".join(f"| [{r['url']}]({r['url']}) | {r['nodes']} | {r['rules']} | {r['htmlcs']} | [report]({r['dir']}/report.md) |"
+                     for r in results)
+    rule_rows = "\n".join(f"| `{r['id']}` | {r['impact']} | {', '.join(standards(r['tags'])['wcag']) or '-'} | "
+                          f"{', '.join(standards(r['tags'])['en301549']) or '-'} | {r['pages']}/{len(results)} | {r['nodes']} |"
+                          for r in top)
+    (out / "report.md").write_text(f"""# Jangkau site audit ({VERSION})
+
+Start: {start}
+Pages audited: **{len(results)}**, failing elements: **{sum(r['nodes'] for r in results)}**
+
+| Page | axe failing elements | Rules | HTML_CodeSniffer errors | Details |
+|---|---|---|---|---|
+{rows}
+
+## Rules across the site
+
+| Rule | Impact | WCAG SC | EN 301 549 | Pages | Elements |
+|---|---|---|---|---|---|
+{rule_rows}
+""", encoding="utf-8")
+    if sarif:
+        merged = all_results[0] if all_results else {"tool": {"driver": {"name": "Jangkau", "rules": []}}, "results": []}
+        seen_rules = {r["id"] for r in merged["tool"]["driver"]["rules"]}
+        for r_ in all_results[1:]:
+            merged["tool"]["driver"]["rules"] += [r for r in r_["tool"]["driver"]["rules"] if r["id"] not in seen_rules]
+            seen_rules |= {r["id"] for r in r_["tool"]["driver"]["rules"]}
+            merged["results"] += r_["results"]
+        sarif.parent.mkdir(parents=True, exist_ok=True)
+        sarif.write_text(json.dumps({"$schema": "https://json.schemastore.org/sarif-2.1.0.json", "version": "2.1.0",
+                                     "runs": [merged]}, indent=2), encoding="utf-8")
+    return {"pages": results, "rules": top,
+            "violations": [{"id": r["id"], "impact": r["impact"]} for r in top]}
+
+
 @span(kind="WORKFLOW", name="jangkau_audit")
 def audit_only(target: Path, out: Path, sarif: "Path | None") -> dict:
     """Audit without fixing: no model key needed. Writes report.md and, optionally, SARIF."""
@@ -248,9 +368,11 @@ def audit_only(target: Path, out: Path, sarif: "Path | None") -> dict:
     with sync_playwright() as pw:
         page = pw.chromium.launch().new_page(viewport={"width": 1280, "height": 800})
         res = audit(page, target, out / "audit.png")
+        cross = crosscheck(page)
     s = {"target": str(target), "version": VERSION, "verify": "audit-only", "results": [],
          "baseline": {"nodes": res["nodes"], "by_rule": res["by_rule"]},
-         "final": {"nodes": res["nodes"], "by_rule": res["by_rule"]}, "violations": res["violations"]}
+         "final": {"nodes": res["nodes"], "by_rule": res["by_rule"]}, "violations": res["violations"],
+         "crosscheck": {"before": cross}}
     write_report(s, out / "report.md")
     if sarif:
         uri = os.path.relpath(target.resolve(), Path.cwd()).replace(os.sep, "/")
@@ -269,6 +391,40 @@ Rules:
 - Fix the root cause (add labels, alt text, lang, roles, contrast colors in CSS...).
 - NEVER delete content, links, buttons, inputs or images to make a violation disappear.
 - Keep the visual design as close to the original as possible."""
+
+# The system prompt lives in the neatlogs prompt registry, so a prompt change is versioned and every
+# trace records which version ran. SYSTEM above is the fallback when the registry can't be reached.
+PROMPT_NAME = "jangkau-fixer-system"
+PROMPT = {"content": SYSTEM, "ref": "local"}
+
+
+def load_prompt() -> dict:
+    if not os.getenv("NEATLOGS_API_KEY"):
+        return {"content": SYSTEM, "ref": "local"}
+    label = os.getenv("JANGKAU_PROMPT_LABEL", "production")
+    try:
+        h = neatlogs.get_prompt(PROMPT_NAME, label=label)
+        return {"content": h.content, "ref": f"{PROMPT_NAME}@v{h.version} ({label})"}
+    except Exception as e:  # registry down or prompt missing: run with the local copy, and say so
+        log(f"prompt registry unavailable ({type(e).__name__}), using the local system prompt")
+        return {"content": SYSTEM, "ref": "local (registry unavailable)"}
+
+
+def sync_prompt(label: str) -> str:
+    """Push the local SYSTEM to the registry as a new version under `label`, if it changed."""
+    try:
+        h = neatlogs.get_prompt(PROMPT_NAME, label=label)
+    except Exception:
+        h = None
+    if h and h.content == SYSTEM:
+        return f"{PROMPT_NAME}@v{h.version} ({label}) already matches the local prompt"
+    if h is None:
+        h = neatlogs.create_prompt(name=PROMPT_NAME, prompt=SYSTEM, labels=[label], config={"temperature": 0},
+                                   commit_message="System prompt of the fixing agent")
+        return f"created {PROMPT_NAME}@v{h.version} ({label})"
+    v = neatlogs.save_as_version(prompt_name=PROMPT_NAME, content=SYSTEM, labels=[label],
+                                 commit_message=f"Sync from jangkau.py ({VERSION})")
+    return f"saved {PROMPT_NAME} version {v.get('version', '?')} ({label})"
 
 
 @span(kind="AGENT", name="fix_rule")
@@ -290,7 +446,7 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
             # escalate only when the cheap model is stuck: two failed or rejected attempts in a row
             resp = llm().chat.completions.create(
                 model=ESCALATE_MODEL if stuck >= 2 else MODEL, temperature=0,
-                messages=[{"role": "system", "content": SYSTEM}, {"role": "user", "content": prompt}])
+                messages=[{"role": "system", "content": PROMPT["content"]}, {"role": "user", "content": prompt}])
             usage["llm_calls"] += 1
             if resp.usage:
                 usage["prompt_tokens"] += resp.usage.prompt_tokens
@@ -384,6 +540,10 @@ def run(target: Path, out: Path, verify: bool) -> dict:
     else:
         shutil.copytree(target.parent, out, dirs_exist_ok=True)
         state = {"target": str(target), "version": VERSION, "verify": verify, "done": [], "results": []}
+    PROMPT.update(load_prompt())
+    state["prompt"] = PROMPT["ref"]
+    log(f"system prompt: {PROMPT['ref']}")
+    otel_trace.get_current_span().set_attribute("jangkau.prompt", PROMPT["ref"])
     headers = {}
     neatlogs.inject_trace_context(headers)  # traceparent = 00-<trace id>-<span id>-01
     state["trace_id"] = headers.get("traceparent", "-").split("-")[1] if headers else "-"
@@ -394,6 +554,7 @@ def run(target: Path, out: Path, verify: bool) -> dict:
         start = time.time()
         if "baseline" not in state:
             base = audit(page, html, out / "baseline.png")
+            state["crosscheck"] = {"before": crosscheck(page)}
             state["baseline"] = {"nodes": base["nodes"], "by_rule": base["by_rule"]}
             state["violations"] = [{"id": v["id"], "impact": v["impact"], "help": v["help"],
                                     "tags": v.get("tags", []), "nodes": []} for v in base["violations"]]
@@ -416,6 +577,7 @@ def run(target: Path, out: Path, verify: bool) -> dict:
 
         final = audit(page, html, out / "final.png")
         state["final"] = {"nodes": final["nodes"], "by_rule": final["by_rule"]}
+        state.setdefault("crosscheck", {})["after"] = crosscheck(page)
         state["seconds"] = round(time.time() - start, 1)
         state["usage"] = usage
         state_file.write_text(json.dumps(state, indent=2))
@@ -441,6 +603,20 @@ def compliance_table(s: dict) -> str:
     return "\n".join(lines)
 
 
+def crosscheck_section(s: dict) -> str:
+    c = s.get("crosscheck") or {}
+    if "before" not in c:
+        return ""
+    after = c.get("after", c["before"])
+    head = (f"HTML_CodeSniffer errors: **{c['before']['errors']}**" if "after" not in c else
+            f"HTML_CodeSniffer errors: **{c['before']['errors']} → {after['errors']}**")
+    flat = lambda t: " ".join(t.split()).replace("|", "/").replace("`", "'")  # one table cell
+    rows = "\n".join(f"| `{i['code']}` | {flat(i['msg'])} | `{flat(i['html'])[:90]}` |" for i in after["items"][:12])
+    return ("\n## Independent cross-check (HTML_CodeSniffer, WCAG2AA)\n\n"
+            f"A second engine, the one behind Pa11y, so a fix that only satisfies axe shows up here. {head}\n"
+            + (f"\n| Technique | Message | Element |\n|---|---|---|\n{rows}\n" if rows else ""))
+
+
 def write_report(s: dict, path: Path):
     b, f = s["baseline"]["nodes"], s["final"]["nodes"]
     if s.get("verify") == "audit-only":
@@ -450,7 +626,7 @@ Target: `{s['target']}`
 Failing elements: **{b}** across {len(s['baseline']['by_rule'])} rules
 
 {compliance_table(s)}
-""", encoding="utf-8")
+{crosscheck_section(s)}""", encoding="utf-8")
         return
     rows = "\n".join(f"| `{r['rule']}` | {r['status']} | {r['attempts']} | "
                      f"{s['baseline']['by_rule'].get(r['rule'], 0)} → {s['final']['by_rule'].get(r['rule'], 0)} |"
@@ -476,7 +652,8 @@ neatlogs trace: `{s.get('trace_id', '-')}`
 ## Standards (WCAG 2.x, EN 301 549 for the European Accessibility Act)
 
 {compliance_table(s)}
-
+{crosscheck_section(s)}
+System prompt: `{s.get('prompt', 'local')}`  
 neatlogs delivery: `{json.dumps(s.get('delivery', {}))}`
 """ if b else "# Jangkau report\n\nNo violations found.\n", encoding="utf-8")
 
@@ -505,7 +682,7 @@ def open_pr(target: Path, out: Path):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Fix WCAG violations in an HTML page and prove each fix.")
-    ap.add_argument("target", help="HTML file to fix, or an http(s) URL to snapshot first")
+    ap.add_argument("target", nargs="?", help="HTML file to fix, or an http(s) URL to snapshot first")
     ap.add_argument("--out", type=Path, default=Path("runs") / time.strftime("%Y%m%d-%H%M%S"))
     ap.add_argument("--no-verify", action="store_true", help="baseline mode: accept edits without checks")
     ap.add_argument("--pr", action="store_true", help="write the fix back into the target's git repo and open a PR")
@@ -515,8 +692,31 @@ if __name__ == "__main__":
                     help="exit 1 when a violation of this impact or worse remains (for CI)")
     ap.add_argument("--wait", type=int, default=0, metavar="MS",
                     help="wait this long after load before each audit (pages that animate into place)")
+    ap.add_argument("--crawl", type=int, metavar="N",
+                    help="audit up to N same-origin pages reachable from the URL (audit only, no fixing)")
+    ap.add_argument("--sync-prompt", metavar="LABEL", nargs="?", const="production",
+                    help="save the local system prompt to the neatlogs prompt registry under LABEL, then exit")
     a = ap.parse_args()
     SETTLE_MS = a.wait
+    if a.sync_prompt:
+        if not os.getenv("NEATLOGS_API_KEY"):
+            sys.exit("--sync-prompt needs NEATLOGS_API_KEY")
+        log(sync_prompt(a.sync_prompt))
+        sys.exit(0)
+    if not a.target:
+        ap.error("target is required")
+    if a.crawl:
+        if not re.match(r"https?://", a.target):
+            sys.exit("--crawl needs an http(s) URL")
+        with neatlogs.identify(session_id=f"jangkau-{a.out.name}"):
+            s = audit_site(a.target, a.crawl, a.out, a.sarif)
+        log(f"site audit: {len(s['pages'])} pages, {sum(p['nodes'] for p in s['pages'])} failing elements. "
+            f"report: {a.out / 'report.md'}" + (f", sarif: {a.sarif}" if a.sarif else ""))
+        neatlogs.flush()
+        neatlogs.shutdown()
+        if a.fail_on != "never" and any(IMPACT.get(v["impact"], 9) <= IMPACT[a.fail_on] for v in s["violations"]):
+            sys.exit(1)
+        sys.exit(0)
     if re.match(r"https?://", a.target):
         if a.pr:
             sys.exit("--pr needs a local file in a git repo, not a URL")

@@ -78,13 +78,15 @@ Ampun (Pugar Huda Mantoro)
 - neatlogs: verifier decisions are `neatlogs.log` events, each run has a session id, axe payloads are slimmed by an export mask.
 - Done: neatlogs detections for the agent (custom "Rule left unfixed" + built-in "Execution Failed"); incident write-up in docs/incidents.md.
   W3C `region` (4 nodes, table layout) is still open: a landmark-map prompt was tried, measured no better, and reverted.
+- Done: HTML_CodeSniffer cross-check in every report; custom axe rule `focus-not-removed` (F55) found by that cross-check;
+  `--crawl N` site audits; system prompt in the neatlogs prompt registry with the version recorded per run. W3C v7: 81 → 0.
 - Pending: confirm the traces in the dashboard and add share links; Entire checkpoint link + ID; cfo.ai model; tweets; demo video.
 
 ## Demo
 Pending.
 
 ## Known limitations and next steps
-- One HTML file per run (no multi-page crawl yet).
+- Fixing is one page per run; `--crawl` audits many pages but does not fix them.
 - `--pr` handles one page per PR and needs `gh` logged in with push access to the repo.
 - Fixes land as an inline `<style>` override in the page, not in the source stylesheet or the build (Sass/templates).
 

@@ -1,0 +1,317 @@
+<html><head><base href="https://www.w3.org/WAI/demos/bad/before/tickets.html">
+<title>Welcome to CityLights! [Inaccessible Tickets Page]</title>    <style>
+      td {
+        color: #000000;
+        text-decoration: none;
+        font: 15px/15px "Times New Roman", Times, serif;
+      }
+      #main .headline {
+        color: #41545d;
+        font: 24px verdana;
+        font-family: impact;
+        text-decoration: none;
+      }
+      .prices td {
+        font: 12px/12px "Times New Roman", Times, serif;
+      }
+      #terms{
+        font-family: "Times New Roman", Times, serif;
+        text-transform:uppercase;
+        font-size: 13px;
+        line-height: 13px;
+        padding:0;
+        margin:0;
+      }
+    </style>
+    <link href="../css/meta.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" async="" defer="" src="//www.w3.org/analytics/piwik/piwik.js"></script><script type="text/javascript">
+      function ChangeColor(id, colour){
+        document.getElementById(id).style.backgroundColor=colour;
+      }
+      function switchImage(imgName, imgSrc){
+        if (document.images){
+          if (imgSrc != "none"){
+              document.images[imgName].src = imgSrc;
+          }
+        }
+      }
+    </script>
+    <noscript><B><FONT COLOR=RED>This page uses scripts!!!</FONT></B></noscript>
+    <script src="../js/onload.js" type="text/javascript"></script>
+  </head>
+  <body text="#000000" bgcolor="#D7D7CD" leftmargin="0px" topmargin="0px" marginwidth="0px" marginheight="0px" link="#226C8E" vlink="#226C8E" alink="#226C8E">
+    <div id="meta-header">
+      <p id="skipnav"><a href="#page">Skip to inaccessible demo page</a></p>
+      <p id="logos"><a href="https://www.w3.org/" title="W3C Home"><img alt="W3C logo" src="../img/w3c.png" height="48" width="72"></a><a href="https://www.w3.org/WAI/" title="WAI Home"><img alt="Web Accessibility Initiative (WAI) logo" src="../img/wai.png" height="48"></a></p>
+      <h1><span class="subhead">Inaccessible Tickets Page</span><span class="hidden"> -</span> Before and After Demonstration</h1>
+      <p class="subline">Improving a Web site using Web Content Accessibility Guidelines (WCAG) 2.0</p>
+      <div id="mnav" class="inaccessible">
+        <ul>
+          <li class="first"><a href="../Overview.html">Overview</a></li>
+          <li class="first"><a href="home.html">Home</a></li>
+          <li><a href="news.html">News</a></li>
+          <li class="current"><span class="hidden">Current location: </span>Tickets
+            <div class="subnav"><ul>
+              <li class="inaccessible"><strong>Inaccessible:</strong><a class="page current"><span class="hidden">Inaccessible </span>Tickets Page</a><a href="./reports/tickets.html" class="report"><span class="hidden">Inaccessible Tickets Page </span> Report</a></li>
+              <li class="accessible"><strong>Accessible:</strong><a href="../after/tickets.html" class="page"><span class="hidden">Accessible </span>Tickets Page</a><a href="../after/reports/tickets.html" class="report"><span class="hidden">Accessible Tickets Page </span> Report</a></li>
+            </ul><a href="./annotated/tickets.html" class="annotoggle">Show <br>Annotations</a></div>
+          </li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="template.html">Template</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="page">
+    <p class="skip" id="startcontent">Demo starts here</p>
+    <table width="100%" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="#D7D7CD"><tbody><tr valign="MIDDLE"><td width="100%" align="CENTER">
+    <table width="800px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="WHITE">
+      <tbody><tr height="10px">
+        <td width="10px" background="./img/border_left_top.gif"><img src="./img/border_left_top.gif" width="10px" height="10px"></td>
+        <td width="780px" background="./img/border_top.gif"><img src="./img/border_top.gif" height="10px"></td>
+        <td width="10px" background="./img/border_right_top.gif"><img src="./img/border_right_top.gif" width="10px" height="10px"></td>
+      </tr>
+      <tr>
+        <td width="10px" background="./img/border_left.gif"><img src="./img/border_left.gif" width="10px"></td>
+        <td width="780px" align="CENTER">
+    <table width="780px" height="144px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="WHITE">
+      <tbody><tr height="86px">
+        <td width="443px" background="./img/top_logo_next.gif" valign="MIDDLE"><div><a href="home.html"><img src="./img/top_logo.gif" width="443px" height="86px" alt="Red dot with a white letter 'C' that symbolizes a moon crescent as well as the sun. This logo is followed by a black banner that says 'CITYLIGHTS' which is the name of this online portal. Finally, the slogan of the portal, 'your access to the city', follows in a turquoise green handwriting style and with a slight slant across the top banner."></a></div></td>
+        <td width="24px" valign="MIDDLE"><img src="./img/top_logo_next_end.gif" width="24px" height="86px"></td>
+        <td width="128px" valign="MIDDLE"><img src="./img/top_weather.gif" width="128px" height="86px"></td>
+        <td width="22px" valign="MIDDLE"><img src="./img/top_logo_next_start.gif" width="22px" height="86px"></td>
+        <td width="163px" background="./img/top_logo_next.gif" align="CENTER" valign="MIDDLE">
+          <select onchange="location.href = this.value;">
+            <option selected="">QUICKMENU ----&gt;
+            </option><option value="../offsite.html">Broadcasting
+            </option><option value="../offsite.html">Education
+            </option><option value="../offsite.html">Electricity
+            </option><option value="../offsite.html">Fire service
+            </option><option value="../offsite.html">Gas service
+            </option><option value="../offsite.html">Health care
+            </option><option value="../offsite.html">Police service
+            </option><option value="../offsite.html">Public Libraries
+            </option><option value="../offsite.html">Social services
+            </option><option value="../offsite.html">Social housing
+            </option><option value="../offsite.html">Telecommunications
+            </option><option value="../offsite.html">Town planning
+            </option><option value="../offsite.html">Transportation
+            </option><option value="../offsite.html">Waste management
+            </option><option value="../offsite.html">Water services
+          </option></select>
+        </td>
+      </tr>
+      <tr height="7px">
+        <td width="780px" background="./img/mark.gif" colspan="5"><img src="./img/mark.gif" width="158px" height="7px"></td>
+      </tr>
+      <tr height="25px">
+        <td colspan="5">
+          <table width="780px" border="0px" cellspacing="0px" cellpadding="0px">
+            <tbody><tr height="25px">
+              <td bgcolor="#EDEDED" width="380px"><font color="BLACK" face="Verdana" size="2">&nbsp;&nbsp;<b>Traffic:</b> Construction work on Main Road</font></td>
+              <td bgcolor="#EDEDED" align="RIGHT" id="WEATHER"><font color="BLACK" face="Verdana" size="2"><b>Today:</b>
+                <script language="JavaScript">
+                  var now = new Date();
+                  var days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+                  var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+                  var date = ((now.getDate()<10) ? "0" : "")+ now.getDate();
+                  function fourdigits(number)	{
+                    return (number < 1000) ? number + 1900 : number;
+                  }
+                  today =  days[now.getDay()] + " " + date + " " + months[now.getMonth()] + " " + (fourdigits(now.getYear())) + ", Sunny, 23&deg;C&nbsp;&nbsp;</FONT>";
+                  document.all.WEATHER.setAttribute("BGCOLOR", "#EDEDED", 0);
+                  document.write(today);
+                </script>Monday 12 October 2026, Sunny, 23°C&nbsp;&nbsp;</font></td>
+            </tr>
+          </tbody></table>
+        </td>
+      </tr>
+      <tr height="1px">
+        <td width="780px" background="./img/marker2_w.gif" colspan="5"><img src=".img/marker2_w.gif" width="78px" height="1px"></td>
+      </tr>
+      <tr height="25px">
+        <td colspan="5">&nbsp;</td>
+      </tr>
+    </tbody></table>
+    <table width="780px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="WHITE">
+      <tbody><tr width="780px">
+        <td width="155px" bgcolor="#E4E4E4" valign="TOP">
+          <table width="155px" border="0px" cellspacing="0px" cellpadding="0px">
+            <tbody><tr height="1px">
+              <td width="155px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+              <td width="1px" background="./img/marker2_t.gif" rowspan="9" valign="TOP"><img src="./img/marker2_t.gif" width="1" height="30px"></td>
+            </tr>
+            <tr height="34px">
+              <td width="154px" bgcolor="#EDEDED" id="home" onmouseover="switchImage('nav_home', './img/nav_home2.gif'); ChangeColor('home','#FFF')" onmouseout="switchImage('nav_home', './img/nav_home.gif'); ChangeColor('home','#EDEDED')"><a href="javascript:location.href='home.html';" onfocus="blur();"><img name="nav_home" src="./img/nav_home.gif" width="88" height="27" hspace="15" border="0px"></a></td>
+            </tr>
+            <tr height="1px">
+              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+            <tr height="34px">
+              <td width="154px" bgcolor="#EDEDED" id="news" onmouseover="switchImage('nav_news', './img/nav_news2.gif'); ChangeColor('news','#FFF')" onmouseout="switchImage('nav_news', './img/nav_news.gif'); ChangeColor('news','#EDEDED')"><a href="javascript:location.href='news.html';" onfocus="blur();"><img src="./img/nav_news.gif" name="nav_news" width="90" height="21" hspace="12" border="0px"></a></td>
+            </tr>
+            <tr height="1px">
+              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+            <tr height="34px">
+              <td width="154px" bgcolor="#EDEDED" id="tickets" onmouseover="switchImage('nav_facts', './img/nav_facts2.gif'); ChangeColor('tickets','#FFF')" onmouseout="switchImage('nav_facts', './img/nav_facts.gif'); ChangeColor('tickets','#EDEDED')"><a href="javascript:location.href='tickets.html';" onfocus="blur();"><img name="nav_facts" src="./img/nav_facts.gif" width="105" height="23" hspace="9" border="0px"></a></td>
+            </tr>
+            <tr height="1px">
+              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+            <tr height="34px">
+              <td width="154px" bgcolor="#EDEDED" id="survey" onmouseover="switchImage('nav_survey', './img/nav_survey2.gif'); ChangeColor('survey','#FFF')" onmouseout="switchImage('nav_survey', './img/nav_survey.gif'); ChangeColor('survey','#EDEDED')"><a href="javascript:location.href='survey.html';" onfocus="blur();"><img src="./img/nav_survey.gif" name="nav_survey" width="107" height="32" hspace="8" border="0px"></a></td>
+            </tr>
+            <tr height="1px">
+              <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+          </tbody></table>
+        </td>
+        <td width="20px"><img src="./img/blank_5x5.gif" width="20px" height="5px"></td>
+        <td width="625px" height="600px" valign="TOP" id="main">
+          <p style="padding-top:5px;"><img src="./img/headline_ticket_offers.gif" border="0"></p>
+          <table style="border; border: 1px dashed Silver; margin:0px;" width="600px">
+            <tbody><tr>
+              <td><p>Citylights in partnership with globo enterprises are proud to offer specially priced tickets to see these great artists - <i><b>Les Garçons &amp; The Obelisks</b></i></p><p>These <big style="font-weight:bold;">special deals</big> are exclusive to Citylights and can only be purchased by calling the ticket hotline:</p></td>
+              <td valign="top" align="center" width="300px"><div><b>concert dates</b>
+                <table width="250px" border="1" bordercolor="#C0C0C0" rules="rows">
+                  <tbody><tr bgcolor="#A9B8BF">
+                    <td><b><font color="41545D">Les Garçons</font></b></td>
+                    <td><b><font color="41545D">The Obelisks</font></b></td>
+                  </tr>
+                  <tr>
+                    <td>12/2/06</td>
+                    <td>24/3/06</td>
+                  </tr>
+                </tbody></table></div>
+              </td>
+            </tr>
+            <tr bgcolor="#EDEDED">
+              <td colspan="2" align="center">
+                <table width="550px" cellpadding="0" cellspacing="0" border="0">
+                  <tbody><tr><td valign="middle" align="right" width="430px" style="border:0px;margin:0px;padding:0px;">Buy tickets by phoning the M-u-s-i-c line ---- get your tickets now!:&nbsp;</td>
+                  <td valign="middle" align="left" width="120px" style="border:0px;margin:0px;padding:0px;"><div><img src="./img/telefon_lightgrey_bg.gif" alt="music line phone number" border="0" valign="absmiddle"></div></td>
+                </tr></tbody></table>
+              </td>
+            </tr>
+          </tbody></table>
+          <p>&nbsp;</p>
+          <table width="600px">
+            <tbody><tr align="left">
+              <th style="padding-bottom:10px;"><img src="./img/headline_ticket_prices.gif" border="0"></th>
+            </tr>
+          </tbody></table>
+          <div></div>
+          <table width="600px" cellspacing="0" class="prices">
+            <tbody><tr bgcolor="#A9B8BF">
+              <td><b><font color="41545D">ADULT</font></b></td>
+              <td><b><font color="41545D">FS</font></b></td>
+              <td><b><font color="41545D">RS</font></b></td>
+              <td><b><font color="41545D">DC</font></b></td>
+              <td><b><font color="41545D">ST</font></b></td>
+            </tr>
+            <tr>
+              <td><b><font color="41545D">Obelisks - Monkey, Monkey</font></b></td>
+              <td><font color="41545D">$20.90</font></td>
+              <td><font color="41545D">$20.90</font></td>
+              <td><font color="41545D">$20.90</font></td>
+              <td><font color="41545D">$20.90</font></td>
+            </tr>
+            <tr>
+              <td><b><font color="41545D">Les Garçons de la Plage</font></b></td>
+              <td><font color="41545D">$20.90</font></td>
+              <td><font color="41545D">$27.90</font></td>
+              <td><font color="41545D">$30.90</font></td>
+              <td><font color="41545D">$33.90</font></td>
+            </tr>
+            <tr>
+              <td colspan="5" bgcolor="A9B8BF"><b><font color="41545D"><font face="verdana">Concession</font></font></b></td>
+            </tr>
+            <tr>
+              <td><b><font color="41545D">Obelisks - Monkey, Monkey</font></b></td>
+              <td><font color="41545D">$20.90</font></td>
+              <td><font color="41545D">$20.90</font></td>
+              <td><font color="41545D">$20.90</font></td>
+              <td><font color="41545D">$20.90</font></td>
+            </tr>
+            <tr>
+              <td><b><font color="41545D">Les Garçons de la Plage</font></b></td>
+              <td><font color="41545D">$20.90</font></td>
+              <td><font color="41545D">$27.90</font></td>
+              <td><font color="41545D">$30.90</font></td>
+              <td><font color="41545D">$33.90</font></td>
+            </tr>
+            <tr bgcolor="#A9B8BF">
+              <td colspan="5"><b><font color="41545D">Group (5 or more)</font></b></td>
+            </tr>
+            <tr>
+              <td><b><font color="41545D">Obelisks - Monkey, Monkey</font></b></td>
+              <td><font color="41545D">$14.90</font></td>
+              <td><font color="41545D">$14.90</font></td>
+              <td><font color="41545D">$14.90</font></td>
+              <td><font color="41545D">$14.90</font></td>
+            </tr>
+            <tr>
+              <td><b><font color="41545D">Les Garçons de la Plage</font></b></td>
+              <td><font color="41545D">$14.90</font></td>
+              <td><font color="41545D">$20.90</font></td>
+              <td><font color="41545D">$22.90</font></td>
+              <td><font color="41545D">$23.90</font></td>
+            </tr>
+          </tbody></table>
+          <table style="border:1px dashed silver;border-bottom:none;margin-top: 25px;" bgcolor="#ededed" width="600px">
+            <tbody><tr><td align="center">
+              <table width="550px" cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+                <td valign="middle" align="right" width="430px" style="border:0px;margin:0px;padding:0px;"><div>Buy tickets by phoning the M-u-s-i-c line ---- get your tickets now!:&nbsp;</div></td>
+                <td valign="middle" align="left" width="120px" style="border:0px;margin:0px;padding:0px;"><img src="./img/telefon_lightgrey_bg.gif" alt="music line phone number" border="0" valign="absmiddle"></td>
+              </tr></tbody></table>
+            </td></tr>
+            <tr bgcolor="#ffffff">
+              <td style="padding:20px 5px 5px 5px"><div style="text-align: center;"><font size="4"><b>Citylights Terms and Conditions</b></font></div><p id="terms" align="justify"><b><br><br>[1] YOU AGREE THROUGH THE ACT OF CALLING THE M-U-S-I-C LINE OR BY READING ANY PART OF THESE TERMS AND CONDITIONS THAT YOU WILL NOT, NOW OR EVER, (A) TRANSMIT ANY MATERIAL TO ANY PERSON, LIVING OR DEAD, THAT MAY BE DEEMED BY THAT PERSON TO BE DEFAMATORY, HARMFUL, UNLAWFUL, ARGUMENTATIVE OR CONFUSING, AND THAT FURTHERMORE (B) ANY RESEMBLANCE BETWEEN YOURSELF OR YOUR FAMILY AND ANY PERSONS, VEGETABLES OR MUSICAL INSTRUMENTS LIVING, DEAD OR OTHER FEATURED ON THE CITYLIGHTS WEBSITE IS ENTIRELY UNINTENTIONAL AND THAT WHERE SUCH A RESEMBLANCE MAY OCCUR THAT YOU WILL TAKE IMMEDIATE ACTION TO PREVENT SUCH RESEMBLANCE REOCCURRING.<br><br>[2] CITYLIGHTS SHALL NOT BE LIABLE TO YOU FOR ANY DAMAGES OR LOSS OF REVENUE, GOODWILL, ENTHUSIASM OR SKIN TONE ARISING OUT OF OR IN CONNECTION WITH ANY USE OR OTHER INTERACTION WITH (A) THE CITYLIGHTS WEBSITES, (B) REVIEWS OF THE CITYLIGHTS WEBSITE, (C) ANY EMPLOYEES OR POTENTIAL EMPLOYEES OF CITYLIGHTS PAST OR PRESENT OR (D) ANY WEBSITE LINKING TO OR LINKED FROM THE CITYLIGHTS WEBSITE, WHETHER DIRECTLY OR THROUGH OTHER WEBSITES.<br><br>[3] REMEDIES. <u>SINCE CITYLIGHTS WOULD BE IRREPARABLY DAMAGED TO AN UNFORESEEABLE DEGREE IF SECTIONS [1] AND [2] WERE NOT SPECIFICALLY ENFORCED, CITYLIGHTS WILL BE ENTITLED WITHOUT BOND, OTHER SECURITY OR PROOF OF DAMAGES, TO APPROPRIATE EQUITABLE REMEDIES WITH RESPECT TO BREACHES OF SUCH SECTIONS, IN ADDITION TO ANY OTHER AVAILABLE REMEDIES.</u></b></p></td>
+            </tr>
+          </tbody></table>
+          <p>&nbsp;</p>
+        </td>
+      </tr>
+    </tbody></table>
+    <table width="780px" height="17px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="#EDEDED">
+      <tbody><tr height="17px">
+        <td align="RIGHT"><font color="BLACK" face="Verdana" size="1"><a rel="Copyright" href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2012 <a href="https://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.org/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>)</font></td>
+      </tr>
+    </tbody></table>
+        </td><td width="10px" background="./img/border_right.gif"><img src="./img/border_right.gif" width="10px"></td>
+      </tr>
+      <tr height="10px">
+        <td width="10px" height="10px" background="./img/border_bottom_left.gif"><img src="./img/border_bottom_left.gif" width="10px" height="10px"></td>
+        <td width="780px" height="10px" background="./img/border_bottom.gif"><img src="./img/border_bottom.gif" height="10px"></td>
+        <td width="10px" height="10px" background="./img/border_bottom_right.gif"><img src="./img/border_bottom_right.gif" width="10px" height="10px"></td>
+      </tr>
+    </tbody></table>
+    </td></tr></tbody></table>
+    </div>
+    <div id="meta-footer" class="meta">
+      <hr>
+      <p><strong>Status:</strong> 20 February 2012 (see <a href="../changelog.html">changelog</a>) <br>Editors: <a href="https://www.w3.org/People/shadi/">Shadi Abou-Zahra</a> and the <a href="https://www.w3.org/WAI/EO/">Education and Outreach Working Group (EOWG)</a>. <br>Developed with support from <a href="https://www.w3.org/WAI/TIES/"><acronym title="Web Accessibility Initiative: Training, Implementation, Education, Support">WAI-TIES</acronym></a> and <a href="https://www.w3.org/WAI/WAI-AGE/"><acronym title="Web Accessibility Initiative: Ageing Education and Harmonisation">WAI-AGE</acronym></a> projects, co-funded by the European Commission <acronym title="Information Society Technologies">IST</acronym> Programme. [see <a href="../acks.html">Acknowledgements</a>]</p>
+      <p>[<a href="https://www.w3.org/WAI/sitemap.html" shape="rect">WAI Site Map</a>] [<a href="https://www.w3.org/WAI/sitehelp.html" shape="rect">Help with WAI Website</a>] [<a href="https://www.w3.org/WAI/search.php" shape="rect">Search</a>] [<a href="https://www.w3.org/WAI/contacts" shape="rect">Contacting WAI</a>] <br><strong>Feedback welcome to <a href="mailto:wai-eo-editors@w3.org" shape="rect">wai-eo-editors@w3.org</a></strong> (a publicly archived list) or <a href="mailto:wai@w3.org" shape="rect">wai@w3.org</a> (a WAI staff-only list).</p>
+      <div class="copyright"><p><a rel="Copyright" href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2012 <a href="https://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.org/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>, <a rel="Copyright" href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a> and <a rel="Copyright" href="https://www.w3.org/Consortium/Legal/copyright-software">software licensing</a> rules apply. Your interactions with this site are in accordance with our <a href="https://www.w3.org/Consortium/Legal/privacy-statement#Public">public</a> and <a href="https://www.w3.org/Consortium/Legal/privacy-statement#Members">Member</a> privacy statements.</p></div>
+    </div>
+  <!-- Piwik -->
+      <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["setDomains", ["*.www.w3.org/WAI"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+      var u="//www.w3.org/analytics/piwik/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', 328]);
+      var d=document, g=d.createElement('script'),
+      s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js';
+      s.parentNode.insertBefore(g,s);
+      })();
+      </script>
+      <noscript><p><img src="//www.w3.org/analytics/piwik/piwik.php?idsite=328"
+      style="border:0;" alt="" /></p></noscript>
+      <!-- End Piwik Code -->
+
+</body></html>

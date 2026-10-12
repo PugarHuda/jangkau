@@ -81,3 +81,8 @@ def test_apply_valid_edits_keeps_good_edits_and_reports_bad_ones():
                                           {"find": "<img b>", "replace": "<img b alt=2>"}])
     assert out == "<img a alt=1><img b alt=2><p>x</p><p>x</p>"
     assert len(errors) == 2 and "matched 0 times" in errors[0] and "matched 2 times" in errors[1]
+
+
+def test_prompt_falls_back_to_local_without_a_key():
+    import jangkau
+    assert jangkau.load_prompt() == {"content": jangkau.SYSTEM, "ref": "local"}

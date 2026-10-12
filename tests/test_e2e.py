@@ -142,3 +142,59 @@ def test_sarif_matches_official_schema(tmp_path):
     sarif = tmp_path / "a.sarif"
     run_cli("demo_site/index.html", "--audit-only", "--out", str(tmp_path / "o"), "--sarif", str(sarif))
     jsonschema.validate(json.loads(sarif.read_text(encoding="utf-8")), json.loads(schema.read_text(encoding="utf-8")))
+
+
+@pytest.fixture(scope="module")
+def site(tmp_path_factory):
+    """A real HTTP server with a small site: two pages in /docs/, one outside it, one image link."""
+    import functools
+    import http.server
+    import threading
+    root = tmp_path_factory.mktemp("site")
+    (root / "docs").mkdir()
+    (root / "docs" / "index.html").write_text(
+        '<html><body><a href="b.html">b</a> <a href="../outside.html">out</a> <a href="pic.png">pic</a>'
+        '<a href="b.html#top">b again</a></body></html>')
+    (root / "docs" / "b.html").write_text(
+        '<html lang="en"><head><title>b</title></head><body><main><h1>b</h1>'
+        '<a href="index.html" onfocus="this.blur()">home</a></main></body></html>')
+    (root / "outside.html").write_text("<html><body>outside</body></html>")
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(root))
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    yield f"http://127.0.0.1:{server.server_port}"
+    server.shutdown()
+
+
+def test_crawl_stays_in_scope_and_merges_sarif(site, tmp_path):
+    sarif = tmp_path / "site.sarif"
+    r = run_cli(f"{site}/docs/index.html", "--crawl", "10", "--out", str(tmp_path / "o"), "--sarif", str(sarif),
+                "--fail-on", "serious")
+    assert r.returncode == 1, r.stdout[-800:] + r.stderr[-800:]  # b.html drops focus: serious
+    report = (tmp_path / "o" / "report.md").read_text(encoding="utf-8")
+    assert "Pages audited: **2**" in report and "outside" not in report
+    uris = {res["locations"][0]["physicalLocation"]["artifactLocation"]["uri"]
+            for res in json.loads(sarif.read_text(encoding="utf-8"))["runs"][0]["results"]}
+    assert uris == {f"{site}/docs/index.html", f"{site}/docs/b.html"}
+
+
+def test_custom_rule_catches_focus_removal(tmp_path):
+    page = tmp_path / "p.html"
+    page.write_text('<html lang="en"><head><title>t</title></head><body><main><h1>t</h1>'
+                    '<a href="#" onfocus="blur();">a</a><button onfocus="track()">b</button></main></body></html>')
+    run_cli(str(page), "--audit-only", "--out", str(tmp_path / "o"))
+    report = (tmp_path / "o" / "report.md").read_text(encoding="utf-8")
+    assert "| `focus-not-removed` | serious | 2.1.1, 2.4.7 | A | 9.2.1.1, 9.2.4.7 | 1 |" in report  # not the button
+
+
+def test_crosscheck_reports_second_engine(tmp_path):
+    run_cli("demo_site/toko.html", "--audit-only", "--out", str(tmp_path))
+    report = (tmp_path / "report.md").read_text(encoding="utf-8")
+    assert "## Independent cross-check (HTML_CodeSniffer, WCAG2AA)" in report
+    n = int(re.search(r"HTML_CodeSniffer errors: \*\*(\d+)\*\*", report).group(1))
+    assert n > 10  # the broken shop fails the second engine too
+
+
+def test_cli_requires_a_target_and_url_for_crawl():
+    assert "target is required" in run_cli().stderr
+    assert "--crawl needs an http(s) URL" in run_cli("demo_site/toko.html", "--crawl", "2").stderr

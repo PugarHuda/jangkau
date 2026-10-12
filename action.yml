@@ -16,6 +16,9 @@ inputs:
   wait:
     description: Milliseconds to wait after load before auditing, for pages that animate into their final state.
     default: "0"
+  crawl:
+    description: For URL pages, also audit up to this many pages under the same directory (0 = only the page itself).
+    default: "0"
 outputs:
   sarif:
     description: Path of the SARIF file.
@@ -39,13 +42,16 @@ runs:
         SARIF: ${{ inputs.sarif }}
         FAIL_ON: ${{ inputs.fail-on }}
         WAIT_MS: ${{ inputs.wait }}
+        CRAWL: ${{ inputs.crawl }}
       run: |
         status=0
         i=0
         files=()
         for page in $PAGES; do
           i=$((i + 1))
-          python "${{ github.action_path }}/jangkau.py" "$page" --audit-only \
+          mode=(--audit-only)
+          if [ "$CRAWL" -gt 0 ] && [[ "$page" == http* ]]; then mode=(--crawl "$CRAWL"); fi
+          python "${{ github.action_path }}/jangkau.py" "$page" "${mode[@]}" \
             --out "jangkau-audit/$i" --sarif "jangkau-audit/$i.sarif" --fail-on "$FAIL_ON" --wait "$WAIT_MS" || status=1
           files+=("jangkau-audit/$i.sarif")
           cat "jangkau-audit/$i/report.md" >> "$GITHUB_STEP_SUMMARY"

@@ -23,6 +23,16 @@ jobs:
           sarif: site.sarif
           fail-on: serious
           wait: "3500"  # the hero headline animates from failing to passing contrast
+      # The deployed site, crawled live: catches regressions that only show up in production.
+      - name: Live site
+        if: always()
+        uses: ./
+        with:
+          pages: https://jangkau-jet.vercel.app/
+          crawl: "5"
+          sarif: live.sarif
+          fail-on: serious
+          wait: "3500"
       # The demo pages are broken on purpose; report them to code scanning without failing.
       - name: Demo pages
         if: always()

@@ -1,0 +1,497 @@
+<html><head><base href="https://www.w3.org/WAI/demos/bad/before/annotated/home.html">
+<title>Welcome to CityLights! [Annotated Inaccessible Home Page]</title>    <style>
+      #main * {
+        color: #000000;
+        font: normal 15px "Times New Roman", Times, serif;
+        text-decoration: none;
+      }
+      #main p{
+        margin: 6px 0;
+      }
+      #main a {
+        text-decoration: none;
+        color: #226C8E;
+      }
+      #main .headline {
+        margin-top: 0px;
+        color: #41545d;
+        font: 24px verdana;
+        font-family: impact;
+        text-decoration: none;
+        margin-bottom: 0px;
+      }
+      #main .subheadline {
+        padding:16px 0 6px 0;
+        color: #41545d;
+        font: 20px verdana;
+        font-family: impact;
+        text-decoration: none;
+      }
+      #content * {
+        margin: 0;
+        padding: 0;
+      }
+      #content p{
+        margin: 6px 0;
+      }
+      #content .newsbar {
+        background: #eeeee;
+      }
+      :root #content .newsbar {
+        float: left;
+        width: 100%;
+      }
+      #content .newsheadline img {
+        float: left;
+        padding: 0;
+        margin: 0 5px 15px 0;
+      }
+      #content .newsheadline {
+        width: 135px;
+        margin-right: 5px;
+        background: #ededed;
+        padding-right: 10px;
+        vertical-align: top;
+        display: inline-block;
+      }
+      #content .newsheadline a {
+        color: black;
+        font-weight: bold;
+        background: #ededed;
+      }
+      #content .newsheadline p {
+        font-weight: bold;
+        background: #ededed;
+      }
+      * html #content .newsheadline {
+        width: 138px;
+        display: inline;
+      }
+      :root #content .newsheadline {
+        float: left;
+        width: 128px;
+        display: inline;
+      }
+      #content .image {
+        width: 135px;
+        height: 119px;
+        padding: 0 5px;
+        margin-right: 5px;
+        background: #cccccc;
+        display: inline-block;
+      }
+      * html #content .image {
+        width: 138px;
+        display: inline;
+      }
+      :root #content .image {
+        float: left;
+        width: 128px;
+        display: block;
+        display: inline;
+      }
+      #content .story {
+        width: 135px;
+        margin-right: 5px;
+        background: #ededed;
+        vertical-align: top;
+        padding: 2px 5px 5px;
+        display: inline-block;
+      }
+      #content .story span {
+      }
+      * html #content .story {
+        width: 138px;
+        display: inline;
+      }
+      :root #content .story {
+        float: left;
+        width: 128px;
+        display: inline;
+      }
+      #content .headline {
+        clear: left;
+        color: #41545d;
+        margin-top: 5px;
+        padding-top: 1em;
+        font: 24px verdana;
+        font-family: impact;
+        margin-bottom: 15px;
+        text-decoration: none;
+      }
+      #content .midwidth {
+        height: 1px;
+      }
+      #content .clear {
+        clear: left;
+      }
+    </style>
+    <link href="../../css/meta.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" async="" defer="" src="//www.w3.org/analytics/piwik/piwik.js"></script><script type="text/javascript">
+      function ChangeColor(id, colour){
+        document.getElementById(id).style.backgroundColor=colour;
+      }
+      function switchImage(imgName, imgSrc){
+        if (document.images){
+          if (imgSrc != "none"){
+              document.images[imgName].src = imgSrc;
+          }
+        }
+      }
+    </script>
+    <noscript><B><FONT COLOR=RED>This page uses scripts!!!</FONT></B></noscript>
+    <script src="../../js/onload.js" type="text/javascript"></script>
+    <link href="../../css/inbetween.css" rel="stylesheet" type="text/css">
+    <script src="../../js/annotations.js" type="text/javascript"></script>
+  </head>
+  <body text="#000000" bgcolor="#D7D7CD" leftmargin="0px" topmargin="0px" marginwidth="0px" marginheight="0px" link="#226C8E" vlink="#226C8E" alink="#226C8E">
+    <div id="meta-header">
+      <p id="skipnav"></p><ul class="skip"><li><a href="#page">Skip to inaccessible demo page</a></li><li><a href="#annotations">Skip to annotations for demo page</a></li></ul>
+      <p id="logos"><a href="https://www.w3.org/" title="W3C Home"><img alt="W3C logo" src="../../img/w3c.png" height="48" width="72"></a><a href="https://www.w3.org/WAI/" title="WAI Home"><img alt="Web Accessibility Initiative (WAI) logo" src="../../img/wai.png" height="48"></a></p>
+      <h1><span class="subhead">Annotated Inaccessible Home Page</span><span class="hidden"> -</span> Before and After Demonstration</h1>
+      <p class="subline">Improving a Web site using Web Content Accessibility Guidelines (WCAG) 2.0</p>
+      <div id="mnav" class="inaccessible">
+        <ul>
+          <li class="first"><a href="../../Overview.html">Overview</a></li>
+          <li class="current first"><span class="hidden">Current location: </span>Home
+            <div class="subnav"><ul>
+              <li class="inaccessible"><strong>Inaccessible:</strong><a class="page current"><span class="hidden">Inaccessible </span>Home Page</a><a href="../reports/home.html" class="report"><span class="hidden">Inaccessible Home Page </span> Report</a></li>
+              <li class="accessible"><strong>Accessible:</strong><a href="../../after/annotated/home.html" class="page"><span class="hidden">Accessible </span>Home Page</a><a href="../../after/reports/home.html" class="report"><span class="hidden">Accessible Home Page </span> Report</a></li>
+            </ul><a href="../home.html" class="annotoggle">Hide <br>Annotations</a></div>
+          </li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="tickets.html">Tickets</a></li>
+          <li><a href="survey.html">Survey</a></li>
+          <li><a href="template.html">Template</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="page">
+    <p class="skip" id="startcontent">Demo starts here</p>
+    <table width="100%" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="#D7D7CD"><tbody><tr valign="MIDDLE"><td width="100%" align="CENTER">
+    <table width="800px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="WHITE">
+      <tbody><tr height="10px">
+        <td width="10px" background="../img/border_left_top.gif"><img src="../img/border_left_top.gif" width="10px" height="10px"></td>
+        <td width="780px" background="../img/border_top.gif"><img src="../img/border_top.gif" height="10px"></td>
+        <td width="10px" background="../img/border_right_top.gif"><img src="../img/border_right_top.gif" width="10px" height="10px"></td>
+      </tr>
+      <tr>
+        <td width="10px" background="../img/border_left.gif"><img src="../img/border_left.gif" width="10px"></td>
+        <td width="780px" align="CENTER">
+    <table width="780px" height="144px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="WHITE">
+      <tbody><tr height="86px">
+        <td width="443px" background="../img/top_logo_next.gif" valign="MIDDLE"><div class="annot_link_parent"><a href="home.html"><img src="../img/top_logo.gif" width="443px" height="86px" alt="Red dot with a white letter 'C' that symbolizes a moon crescent as well as the sun. This logo is followed by a black banner that says 'CITYLIGHTS' which is the name of this online portal. Finally, the slogan of the portal, 'your access to the city', follows in a turquoise green handwriting style and with a slight slant across the top banner."></a><span id="annot_link_01" class="annot_link prev_sib" style="margin-top: 25px;padding-right: 25px;"><a href="#annot_01" title="01: Image with incorrect text alternative">01</a></span></div></td>
+        <td width="24px" valign="MIDDLE"><img src="../img/top_logo_next_end.gif" width="24px" height="86px"></td>
+        <td width="128px" valign="MIDDLE"><img src="../img/top_weather.gif" width="128px" height="86px"></td>
+        <td width="22px" valign="MIDDLE"><img src="../img/top_logo_next_start.gif" width="22px" height="86px"></td>
+        <td width="163px" background="../img/top_logo_next.gif" align="CENTER" valign="MIDDLE">
+          <select onchange="location.href = this.value;">
+            <option selected="">QUICKMENU ----&gt;
+            </option><option value="../../offsite.html">Broadcasting
+            </option><option value="../../offsite.html">Education
+            </option><option value="../../offsite.html">Electricity
+            </option><option value="../../offsite.html">Fire service
+            </option><option value="../../offsite.html">Gas service
+            </option><option value="../../offsite.html">Health care
+            </option><option value="../../offsite.html">Police service
+            </option><option value="../../offsite.html">Public Libraries
+            </option><option value="../../offsite.html">Social services
+            </option><option value="../../offsite.html">Social housing
+            </option><option value="../../offsite.html">Telecommunications
+            </option><option value="../../offsite.html">Town planning
+            </option><option value="../../offsite.html">Transportation
+            </option><option value="../../offsite.html">Waste management
+            </option><option value="../../offsite.html">Water services
+          </option></select>
+        </td>
+      </tr>
+      <tr height="7px">
+        <td width="780px" background="../img/mark.gif" colspan="5"><img src="../img/mark.gif" width="158px" height="7px"></td>
+      </tr>
+      <tr height="25px">
+        <td colspan="5">
+          <table width="780px" border="0px" cellspacing="0px" cellpadding="0px">
+            <tbody><tr height="25px">
+              <td bgcolor="#EDEDED" width="380px"><font color="BLACK" face="Verdana" size="2">&nbsp;&nbsp;<b>Traffic:</b> Construction work on Main Road</font></td>
+              <td bgcolor="#EDEDED" align="RIGHT" id="WEATHER"><font color="BLACK" face="Verdana" size="2"><b>Today:</b>
+                <script language="JavaScript">
+                  var now = new Date();
+                  var days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+                  var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+                  var date = ((now.getDate()<10) ? "0" : "")+ now.getDate();
+                  function fourdigits(number)	{
+                    return (number < 1000) ? number + 1900 : number;
+                  }
+                  today =  days[now.getDay()] + " " + date + " " + months[now.getMonth()] + " " + (fourdigits(now.getYear())) + ", Sunny, 23&deg;C&nbsp;&nbsp;</FONT>";
+                  document.all.WEATHER.setAttribute("BGCOLOR", "#EDEDED", 0);
+                  document.write(today);
+                </script>Monday 12 October 2026, Sunny, 23°C&nbsp;&nbsp;</font></td>
+            </tr>
+          </tbody></table>
+        </td>
+      </tr>
+      <tr height="1px">
+        <td width="780px" background="../img/marker2_w.gif" colspan="5"><img src="../img/marker2_w.gif" width="78px" height="1px"></td>
+      </tr>
+      <tr height="25px">
+        <td colspan="5">&nbsp;</td>
+      </tr>
+    </tbody></table>
+    <table width="780px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="WHITE">
+      <tbody><tr width="780px">
+        <td width="155px" bgcolor="#E4E4E4" valign="TOP">
+          <table width="155px" border="0px" cellspacing="0px" cellpadding="0px">
+            <tbody><tr height="1px">
+              <td width="155px" background="../img/marker2_w.gif"><img src="../img/marker2_w.gif" width="78px" height="1px"></td>
+              <td width="1px" background="../img/marker2_t.gif" rowspan="9" valign="TOP"><img src="../img/marker2_t.gif" width="1" height="30px"></td>
+            </tr>
+            <tr height="34px">
+              <td width="154px" bgcolor="#EDEDED" id="home" onmouseover="switchImage('nav_home', '../img/nav_home2.gif'); ChangeColor('home','#FFF')" onmouseout="switchImage('nav_home', '../img/nav_home.gif'); ChangeColor('home','#EDEDED')"><a href="javascript:location.href='home.html';" onfocus="blur();"><img name="nav_home" src="../img/nav_home.gif" width="88" height="27" hspace="15" border="0px"></a></td>
+            </tr>
+            <tr height="1px">
+              <td width="154px" background="../img/marker2_w.gif"><img src="../img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+            <tr height="34px">
+              <td width="154px" bgcolor="#EDEDED" id="news" onmouseover="switchImage('nav_news', '../img/nav_news2.gif'); ChangeColor('news','#FFF')" onmouseout="switchImage('nav_news', '../img/nav_news.gif'); ChangeColor('news','#EDEDED')"><a href="javascript:location.href='news.html';" onfocus="blur();"><img src="../img/nav_news.gif" name="nav_news" width="90" height="21" hspace="12" border="0px"></a></td>
+            </tr>
+            <tr height="1px">
+              <td width="154px" background="../img/marker2_w.gif"><img src="../img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+            <tr height="34px">
+              <td width="154px" bgcolor="#EDEDED" id="tickets" onmouseover="switchImage('nav_facts', '../img/nav_facts2.gif'); ChangeColor('tickets','#FFF')" onmouseout="switchImage('nav_facts', '../img/nav_facts.gif'); ChangeColor('tickets','#EDEDED')"><a href="javascript:location.href='tickets.html';" onfocus="blur();"><img name="nav_facts" src="../img/nav_facts.gif" width="105" height="23" hspace="9" border="0px"></a></td>
+            </tr>
+            <tr height="1px">
+              <td width="154px" background="../img/marker2_w.gif"><img src="../img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+            <tr height="34px">
+              <td width="154px" bgcolor="#EDEDED" id="survey" onmouseover="switchImage('nav_survey', '../img/nav_survey2.gif'); ChangeColor('survey','#FFF')" onmouseout="switchImage('nav_survey', '../img/nav_survey.gif'); ChangeColor('survey','#EDEDED')"><a href="javascript:location.href='survey.html';" onfocus="blur();"><img src="../img/nav_survey.gif" name="nav_survey" width="107" height="32" hspace="8" border="0px"></a></td>
+            </tr>
+            <tr height="1px">
+              <td width="154px" background="../img/marker2_w.gif"><img src="../img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+          </tbody></table>
+        </td>
+        <td width="20px"><img src="../img/blank_5x5.gif" width="20px" height="5px"></td>
+        <td width="434px" height="600px" valign="TOP" id="main">
+          <p class="headline">Welcome to CityLights</p>
+          <p>Citylights is the new portal for visitors and residents. Find out what's on, book tickets, and get the latest news.</p>
+          <div id="content">
+            <div class="midwidth"><div></div></div>
+            <div class="newsbar">
+              <div class="newsheadline annot_link_parent"><img src="../img/headline_middle.gif" width="23" height="24" align="absmiddle"> <a href="../news/annotations" onfocus="blur();">Heat wave linked to temperatures</a><span id="annot_link_03" class="annot_link prev_sib" style="margin-left: -13.2em !important;padding-right: 17.2em;width: 20px !important;border-right: dashed blue 1px !important;height: 1em;margin-top: -1em;"><a href="#annot_03" title="03: Link not visually distinct">03</a></span></div>
+              <div class="newsheadline"><img src="../img/headline_middle.gif" width="23" height="24" align="absmiddle"> <a href="../news/annotations" onfocus="blur();">Man Gets Nine Months in Violin Case</a></div>
+              <div class="newsheadline"><img src="../img/headline_middle.gif" width="23" height="24" align="absmiddle"> <a href="../news/annotations" onfocus="blur();">Lack of brains hinders research</a></div>
+              <div class="clear"><div class="null"></div></div>
+            </div>
+            <div class="newsbar">
+              <div class="image" style="background: url(../img/panda-sm.jpg) center center no-repeat #cccccc" title="image"><div class="null"></div></div>
+              <div class="image" style="background: url(../img/oldenburgstudentviolin34.jpg) center center no-repeat #cccccc" title="image"><div class="null"></div></div>
+              <div class="image annot_link_parent" style="background: url(../img/BrainInJar.jpg) center center no-repeat #cccccc;" title="image"><div class="null"><span id="annot_link_04" class="annot_link prev_sib" style="margin-left: -32.4em !important;padding-right: 32.4em;width: 2em !important;border-right: dashed blue 1px !important;height: 1.5em;margin-top: .5em;"><a href="#annot_04" title="04: Image with inadequate text alternative">04</a></span></div></div>
+              <div class="clear"><div class="null"></div></div>
+            </div>
+            <div class="newsbar">
+              <div class="story"><span class="annot_link_parent">After three years of effort city scientists now agree that the primary cause of the 2003 heatwave was hot air from our <a href="../news/annotations" onfocus="blur();"><img src="../img/morearrow.gif" width="48" height="10" alt="" border="0" onmouseover="this.src='../img/morearrow_a.gif'" onmouseout="this.src='../img/morearrow.gif'" style="vertical-align: bottom"></a><span id="annot_link_07" class="annot_link prev_sib" style="margin-left: -13.5em !important;padding-right: 12.2em;width: 20px !important;margin-top: 6.8em;"><a href="#annot_07" title="07: Link with image has empty text alternative">07</a></span></span></div>
+              <div class="story annot_link_parent"><span id="annot_link_06" class="annot_link next_sib" style="margin-left: -22.7em !important;padding-right: 21.7em;width: 20px !important;border-right: dashed blue 1px !important;height: .5em;margin-top: -0.5em;"><a href="#annot_06" title="06: Reading sequence not meaningful">06</a></span><span>Mayor: These kinds of crimes need more creative, effective punishments. For example, we could require compulsory <a href="../news/annotations" onfocus="blur();"><img src="../img/morearrow.gif" width="48" height="10" alt="" border="0" onmouseover="this.src='../img/morearrow_a.gif'" onmouseout="this.src='../img/morearrow.gif'" style="vertical-align: bottom"></a></span></div>
+              <div class="story"><span>Brain donations: huge drop off in brain donations due to the great 'success' of 'Slow Traffic, Safe Streets' policy <a href="../news/annotations" onfocus="blur();"><img src="../img/morearrow.gif" width="48" height="10" alt="" border="0" onmouseover="this.src='../img/morearrow_a.gif'" onmouseout="this.src='../img/morearrow.gif'" style="vertical-align: bottom"></a></span></div>
+            </div>
+            <hr style="visibility:hidden; clear:both;">
+            <p class="subheadline">Elsewhere on the Web</p>
+            <p class="annot_link_parent">Please see the following websites for important information. Citylights take no responsibility for their content. For artichoke advice, call the number below.<br><br><span class="annot_link_parent"><span id="annot_link_08" class="annot_link next_sib" style="margin-left: -13em !important;padding-right: 12em;width: 20px !important;margin-top: 0em;"><a href="#annot_08" title="08: Decorative image without empty text alternative">08</a></span><img src="../img/list_bullets.gif" alt="bullet" border="0" align="absmiddle"> Killer bees. <a onfocus="blur();" href="../../offsite.html" target="_blank">Click here</a>.<br><img src="../img/list_bullets.gif" alt="bullet" border="0" align="absmiddle"><span id="annot_link_09" class="annot_link prev_sib" style="margin-left: -13em !important;padding-right: 12.5em;height: .9em;margin-top: 1.5em;"><a href="#annot_09" title="09: List not marked up as such">09</a></span> Onions. <a onfocus="blur();" href="../../offsite.html" target="_blank">Click here</a>.</span><br><br><b>Artichoke advice telephone hotline: </b><img src="../img/telefon_white_bg.gif" alt="1234 56789" border="0" align="absmiddle"><span id="annot_link_10" class="annot_link prev_sib" style="margin-left: -13em !important;padding-right: 27em;width: 20px !important;border-right: dashed blue 1px !important;height: .5em;top: auto !important;bottom:1em;"><a href="#annot_10" title="10: Image with incorrect text alternative">10</a></span></p>
+          </div>
+        </td>
+        <td width="20px"><img src="../img/blank_5x5.gif" width="20px" height="5px"></td>
+        <td width="151px" valign="TOP">
+          <table width="151px" border="0px" cellspacing="0px" cellpadding="0px">
+            <tbody><tr height="1px">
+              <td width="1px" background="../img/marker2_t.gif" rowspan="11" valign="TOP"><img src="../img/marker2_t.gif" width="1px" height="30px"></td>
+              <td width="151px" background="../img/marker2_w.gif"><img src="../img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+            <tr height="25px">
+              <td width="150px" bgcolor="#A9B8BF"><font color="#41545D" face="Verdana" size="2">&nbsp;<b>Free Penguins</b></font></td>
+            </tr>
+            <tr height="106px">
+              <td width="150px"><div class="annot_link_parent"><img src="../img/teaser_right1.jpg" width="150px" height="106px"><span id="annot_link_02" class="annot_link prev_sib" style="margin-left: -40.9em !important;padding-right: 41em;top: .5em !important;"><a href="#annot_02" title="02: Image without any text alternative">02</a></span></div></td>
+            </tr>
+            <tr>
+              <td width="150px">
+                <table width="150px" border="0px" cellspacing="0px" cellpadding="3px">
+                  <tbody><tr>
+                    <td><div class="annot_link_parent">"Free penguins" slogan at zoo benefit concert causes confusion among city rockers. Adjective or verb?<br><a href="../tickets/annotations" onfocus="blur();" style="text-decoration:none;">Read More...</a><span id="annot_link_05" class="annot_link prev_sib" style="margin-left: -40.9em !important;padding-right: 39em;border-right: dashed blue 1px !important;height: 1.5em;margin-bottom: .5em;bottom: 0;top: auto !important;"><a href="#annot_05" title="05: Link text is not descriptive">05</a></span></div></td>
+                  </tr>
+                </tbody></table>
+              </td>
+            </tr>
+            <tr height="17px">
+              <td>&nbsp;</td>
+            </tr>
+            <tr height="1px">
+              <td width="150px" background="../img/marker2_w.gif"><img src="../img/marker2_w.gif" width="78px" height="1px"></td>
+            </tr>
+            <tr height="25px">
+              <td width="150px" bgcolor="#A9B8BF"><font color="#41545D" face="Verdana" size="2">&nbsp;<b>More City Parks</b></font></td>
+            </tr>
+            <tr height="154px">
+              <td width="150px"><img src="../img/teaser_right2.jpg" width="150px" height="154px"></td>
+            </tr>
+            <tr>
+              <td width="150px">
+                <table width="150px" border="0px" cellspacing="0px" cellpadding="3px">
+                  <tbody><tr>
+                    <td>More parks and more green throughout the city at the price of already rare car parking spaces, how will this affect you?<br><a href="../survey/annotations" onfocus="blur();" style="text-decoration:none;">Read More...</a></td>
+                  </tr>
+                </tbody></table>
+              </td>
+            </tr>
+          </tbody></table>
+        </td>
+      </tr>
+    </tbody></table>
+    <table width="780px" height="17px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="#EDEDED">
+      <tbody><tr height="17px">
+        <td align="RIGHT"><font color="BLACK" face="Verdana" size="1"><a rel="Copyright" href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2012 <a href="https://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.org/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>)</font></td>
+      </tr>
+    </tbody></table>
+        </td><td width="10px" background="../img/border_right.gif"><img src="../img/border_right.gif" width="10px"></td>
+      </tr>
+      <tr height="10px">
+        <td width="10px" height="10px" background="../img/border_bottom_left.gif"><img src="../img/border_bottom_left.gif" width="10px" height="10px"></td>
+        <td width="780px" height="10px" background="../img/border_bottom.gif"><img src="../img/border_bottom.gif" height="10px"></td>
+        <td width="10px" height="10px" background="../img/border_bottom_right.gif"><img src="../img/border_bottom_right.gif" width="10px" height="10px"></td>
+      </tr>
+    </tbody></table>
+    </td></tr></tbody></table>
+    <div id="annotations">
+      <hr>
+      <h2>Annotations</h2>
+      <div id="annot_01">
+        <h3>Note 01: Image with incorrect text alternative</h3>
+<p>The text alternative for this image of text is overly verbose and does not serve the equivalent purpose of the image. The text alternative is as follows:</p><p class="code"><code>&lt;img src="top_logo.gif" alt="Red dot with a white letter 'C' that symbolizes a moon crescent as well as the sun. This logo is followed by a black banner that says 'CITYLIGHTS' which is the name of this online portal. Finally, the slogan of the portal, 'your access to the city', follows in a turquoise green handwriting style and with a slight slant across the top banner." ... &gt;</code></p><p>Note: This error is derived from the <a href="template.html">Template</a> design and occurs throughout the entire website.</p>
+        <dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#text-equiv-all">Success Criterion 1.1.1 - Non-text Content</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F30">Failure 30</a>: Failure of Success Criterion 1.1.1 and 1.2.1 due to using text alternatives that are not alternatives (e.g. filenames or placeholder text)</dd>
+        </dl>
+        <p><a href="#annot_link_01">Back to demo</a></p>
+      </div>
+      <div id="annot_02">
+        <h3>Note 02: Image without any text alternative</h3>
+<p>This image does not have any text alternative, so that it is unclear to some reasers if the image is important or not.</p><p class="code"><code>&lt;img src="teaser_right1.jpg" ... &gt;</code></p><p>Note: Every <code>img</code> element should have an <code>alt</code> attribute. The attribute should be empty if the image should be ignored by assistive technology.</p>
+        <dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#text-equiv-all">Success Criterion 1.1.1 - Non-text Content</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F65">Failure 65</a>: Failure of Success Criterion 1.1.1 due to omitting the alt attribute on img elements, area elements, and input elements of type "image"</dd>
+        </dl>
+        <p><a href="#annot_link_02">Back to demo</a></p>
+      </div>
+      <div id="annot_03">
+        <h3>Note 03: Link not visually distinct</h3>
+<p>The link "heat wave linked to temperature" is not sufficiently distinct because it resembles a heading, and will not be recognized as a link by many readers.
+        </p><dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#visual-audio-contrast-visual-presentation">Success Criterion 1.4.8 - Visual Presentation</a></dt>
+          <dd>Advisory Technique: Making links visually distinct (future link)</dd>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#navigation-mechanisms">Guideline 2.4 - Navigable</a></dt>
+          <dd>Advisory Technique: Making links visually distinct (future link)</dd>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#meaning">Guideline 3.1 - Readable</a></dt>
+          <dd>Advisory Technique: Making links visually distinct (future link)</dd>
+        </dl>
+        <p><a href="#annot_link_03">Back to demo</a></p>
+      </div>
+      <div id="annot_04">
+        <h3>Note 04: Image with inadequate text alternative</h3>
+<p>The text alternative for this image is provided in the <code>title</code> attribute alone, which is not usable for many readers. Moreover, the text alternative "image" does not describe the image.</p><p class="code"><code>&lt;div style="background: url(BrainInJar.jpg)" title="image" ... &gt;</code></p><p>Note: The techniques for retrofitting this image differ depending if the author regards this image as purely decorative or as informative.</p>
+        <dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#text-equiv-all">Success Criterion 1.1.1 - Non-text Content</a></dt>
+          <dd><ul><li><a href="https://www.w3.org/TR/WCAG20-TECHS/F3">Failure 3</a>: Failure of Success Criterion 1.1.1 due to using CSS to include images that convey important information</li><li><a href="https://www.w3.org/TR/WCAG20-TECHS/F30">Failure 30</a>: Failure of Success Criterion 1.1.1 and 1.2.1 due to using text alternatives that are not alternatives (e.g. filenames or placeholder text)</li></ul></dd>
+        </dl>
+        <p><a href="#annot_link_04">Back to demo</a></p>
+      </div>
+      <div id="annot_05">
+        <h3>Note 05: Link text is not descriptive</h3>
+<p>The link text "Read more..." is not descriptive to convey the purpose of the link.</p>
+        <dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#navigation-mechanisms-refs">Success Criterion 2.4.4 - Link Purpose (In Context)</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F63">Failure 63</a>: Failure of Success Criterion 2.4.4 due to providing link context only in content that is not related to the link</dd>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#navigation-mechanisms-link">Success Criterion 2.4.9 - Link Purpose (Link Only)</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F84">Failure 84</a>: Failure of Success Criterion 2.4.9 due to using a non-specific link such as "click here" or "more" without a mechanism to change the link text to specific text.</dd>
+        </dl>
+        <p><a href="#annot_link_05">Back to demo</a></p>
+      </div>
+      <div id="annot_06">
+        <h3>Note 06: Reading sequence not meaningful</h3>
+<p>These three columns of text appear to be visually distinct but according to the markup code they appear as one piece of running text. They would read as follows:</p><p class="code"><code>"<em>After three years of effort city scientists now agree that the primary cause of the 2003 heatwave was hot air from our Mayor: These kinds of crimes need more creative, effective punishments. For example, we could require compulsory Brain donations: huge drop off in brain donations down due to the 'success' of 'Slow Traffic, Safe Streets' policy</em>"</code></p>
+        <dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#content-structure-separation-programmatic">Success Criterion 1.3.1 - Info and Relationships</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F2">Failure 2</a>: Failure of Success Criterion 1.3.1 due to using changes in text presentation to convey information without using the appropriate markup or text</dd>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#content-structure-separation-sequence">Success Criterion 1.3.2 - Meaningful Sequence</a></dt>
+          <dd><ul><li><a href="https://www.w3.org/TR/WCAG20-TECHS/F1">Failure 1</a>: Failure of Success Criterion 1.3.2 due to changing the meaning of content by positioning information with CSS</li><li><a href="https://www.w3.org/TR/WCAG20-TECHS/F49">Failure 49</a>: Failure of Success Criterion 1.3.2 due to using an HTML layout table that does not make sense when linearized</li></ul></dd>
+        </dl>
+        <p><a href="#annot_link_06">Back to demo</a></p>
+      </div>
+      <div id="annot_07">
+        <h3>Note 07: Link with image has empty text alternative</h3>
+<p>This image has an empty text alternative but it is the only content in the link, so that the purpose of the link is unclear to some users.</p><p class="code"><code>&lt;a href="news.html" ... &gt;&lt;img src="morearrow.gif" alt="" ... &gt;&lt;/a&gt;</code></p>
+        <dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#navigation-mechanisms-refs">Success Criterion 2.4.4 - Link Purpose (In Context)</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F89">Failure 89</a>: Failure of 2.4.4, 2.4.9 and 4.1.2 due to using null alt on an image where the image is the only content in a link</dd>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#navigation-mechanisms-link">Success Criterion 2.4.9 - Link Purpose (Link Only)</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F89">Failure 89</a>: Failure of 2.4.4, 2.4.9 and 4.1.2 due to using null alt on an image where the image is the only content in a link</dd>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#ensure-compat-rsv">Success Criterion 4.1.2 - Name, Role, Value</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F89">Failure 89</a>: Failure of 2.4.4, 2.4.9 and 4.1.2 due to using null alt on an image where the image is the only content in a link</dd>
+        </dl>
+        <p><a href="#annot_link_07">Back to demo</a></p>
+      </div>
+      <div id="annot_08">
+        <h3>Note 08: Decorative image without empty text alternative</h3>
+<p>This image has the text alternative "bullet", which does not provide any useful information. The image should have an empty text alternative to indicate that it is a decorative image that should be ignored by assistive technology.</p><p class="code"><code>&lt;img src="list_bullets.gif" alt="bullet" ... &gt;</code></p><p>Note: The image can also be dispayed using CSS rather than the <code>img</code> element.</p>
+        <dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#text-equiv-all">Success Criterion 1.1.1 - Non-text Content</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F39">Failure 39</a>: Failure of Success Criterion 1.1.1 due to providing a text alternative that is not null (e.g. alt="spacer" or alt="image") for images that should be ignored by assistive technology</dd>
+        </dl>
+        <p><a href="#annot_link_08">Back to demo</a></p>
+      </div>
+      <div id="annot_09">
+        <h3>Note 09: List not marked up as such</h3>
+<p>The items "Killer bees" and "Onions" are formatted to visually resemble a list but this structural information is not represented in the HTML code.</p>
+        <dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#content-structure-separation-programmatic">Success Criterion 1.3.1 - Info and Relationships</a></dt>
+          <dd><a href="https://www.w3.org/TR/WCAG20-TECHS/F2">Failure 2</a>: Failure of Success Criterion 1.3.1 due to using changes in text presentation to convey information without using the appropriate markup or text</dd>
+        </dl>
+        <p><a href="#annot_link_09">Back to demo</a></p>
+      </div>
+      <div id="annot_10">
+        <h3>Note 10: Image with incorrect text alternative</h3>
+<p>This image has an incorrect text alternative, "1234 56789"; possibly because the text alternative is outdated or a placeholder.</p><p class="code"><code>&lt;img src="telefon_white_bg.gif" alt="1234 56789" ... &gt;</code></p>
+        <dl>
+          <dt><a href="https://www.w3.org/WAI/WCAG20/quickref/#text-equiv-all">Success Criterion 1.1.1 - Non-text Content</a></dt>
+          <dd><ul><li><a href="https://www.w3.org/TR/WCAG20-TECHS/F20">Failure 20</a>: Failure of Success Criterion 1.1.1 and 4.1.2 due to not updating text alternatives when changes to non-text content occur</li><li><a href="https://www.w3.org/TR/WCAG20-TECHS/F30">Failure 30</a>: Failure of Success Criterion 1.1.1 and 1.2.1 due to using text alternatives that are not alternatives (e.g. filenames or placeholder text)</li><li><a href="https://www.w3.org/TR/WCAG20-TECHS/F71">Failure 71</a>: Failure of Success Criterion 1.1.1 due to using text look-alikes to represent text without providing a text alternative</li></ul></dd>
+        </dl>
+        <p><a href="#annot_link_10">Back to demo</a></p>
+      </div>
+    </div>
+  </div>
+    <div id="meta-footer" class="meta">
+      <hr>
+      <p><strong>Status:</strong> 20 February 2012 (see <a href="../../changelog.html">changelog</a>) <br>Editors: <a href="https://www.w3.org/People/shadi/">Shadi Abou-Zahra</a> and the <a href="https://www.w3.org/WAI/EO/">Education and Outreach Working Group (EOWG)</a>. <br>Developed with support from <a href="https://www.w3.org/WAI/TIES/"><acronym title="Web Accessibility Initiative: Training, Implementation, Education, Support">WAI-TIES</acronym></a> and <a href="https://www.w3.org/WAI/WAI-AGE/"><acronym title="Web Accessibility Initiative: Ageing Education and Harmonisation">WAI-AGE</acronym></a> projects, co-funded by the European Commission <acronym title="Information Society Technologies">IST</acronym> Programme. [see <a href="../../acks.html">Acknowledgements</a>]</p>
+      <p>[<a href="https://www.w3.org/WAI/sitemap.html" shape="rect">WAI Site Map</a>] [<a href="https://www.w3.org/WAI/sitehelp.html" shape="rect">Help with WAI Website</a>] [<a href="https://www.w3.org/WAI/search.php" shape="rect">Search</a>] [<a href="https://www.w3.org/WAI/contacts" shape="rect">Contacting WAI</a>] <br><strong>Feedback welcome to <a href="mailto:wai-eo-editors@w3.org" shape="rect">wai-eo-editors@w3.org</a></strong> (a publicly archived list) or <a href="mailto:wai@w3.org" shape="rect">wai@w3.org</a> (a WAI staff-only list).</p>
+      <div class="copyright"><p><a rel="Copyright" href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2012 <a href="https://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.org/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>, <a rel="Copyright" href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a> and <a rel="Copyright" href="https://www.w3.org/Consortium/Legal/copyright-software">software licensing</a> rules apply. Your interactions with this site are in accordance with our <a href="https://www.w3.org/Consortium/Legal/privacy-statement#Public">public</a> and <a href="https://www.w3.org/Consortium/Legal/privacy-statement#Members">Member</a> privacy statements.</p></div>
+    </div>
+    <div id="lightbox_background"><div id="lightbox_container"></div></div>
+  <!-- Piwik -->
+      <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["setDomains", ["*.www.w3.org/WAI"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+      var u="//www.w3.org/analytics/piwik/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', 328]);
+      var d=document, g=d.createElement('script'),
+      s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js';
+      s.parentNode.insertBefore(g,s);
+      })();
+      </script>
+      <noscript><p><img src="//www.w3.org/analytics/piwik/piwik.php?idsite=328"
+      style="border:0;" alt="" /></p></noscript>
+      <!-- End Piwik Code -->
+
+</body></html>

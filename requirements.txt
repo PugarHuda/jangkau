@@ -4,3 +4,4 @@ playwright
 axe-playwright-python
 pillow
 pytest
+jsonschema

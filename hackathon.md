@@ -32,9 +32,9 @@ Ampun (Pugar Huda Mantoro)
 - Done: LiteLLM key claimed. First real run on `index.html` (claude-sonnet-4.6): 25 → 0 nodes.
   A real recovery happened: the first `select-name` fix added 6 `region` violations, was rejected and rolled back, then fixed on attempt 2.
   However, v1 (`--no-verify`) also reached 0, so the page was too easy to show improvement.
-- Done: added a harder page `demo_site/toko.html` (batik shop): 47 failing nodes across 14 rules.
+- Done: added a harder page `demo_site/shop.html` (batik shop): 47 failing nodes across 14 rules.
   Real images added to the demo (missing images made Chrome collapse the cards).
-- Iteration, all on claude-haiku with toko.html (local run data in `runs/dbg-toko-*`, not exported to neatlogs yet):
+- Iteration, all on claude-haiku with shop.html (local run data in `runs/dbg-toko-*`, not exported to neatlogs yet):
 
   | Version | Change | Nodes left | LLM calls | Tokens in/out | Time |
   |---|---|---|---|---|---|
@@ -65,7 +65,7 @@ Ampun (Pugar Huda Mantoro)
      `.disabled { opacity: .65 }` → 33 → 0.
   4. Inspecting the diff showed `landmark-one-main` was "fixed" with an empty `<main></main>`. axe passes it, but the content
      wasn't wrapped. Fix: the verifier rejects any edit that adds an empty landmark. Rerun: `<main>` now wraps the page, 33 → 0, 7 LLM calls, 40 s.
-  Regression check on toko.html with v5: still 47 → 0 (trace `7ebe2d0264836eb6ec3fa6d932feafdb`).
+  Regression check on shop.html with v5: still 47 → 0 (trace `7ebe2d0264836eb6ec3fa6d932feafdb`).
 - Done: Entire checkpoints are recorded. Sessions now start inside jangkau/, so the Claude Code hooks fire (the earlier session ran from the parent folder, where the hooks never loaded).
 - Done: cfo.ai model built through the cfo.ai MCP server (Base / Growth / Downside, 24 months): https://cfo.ai/s/eaPiXgVJ6eZosuDO
 - Done: `--audit-only` (no model key), `--fail-on` for CI, SARIF 2.1.0 output (validated against the official schema), WCAG SC +

@@ -196,7 +196,7 @@ const Terminal: React.FC<{ box: Rect; speed: number; start?: number }> = ({ box,
   const f = useCurrentFrame();
   const t = ((f - start) / FPS) * speed;
   const rows = (terminal as { t: number; text: string }[]).filter((r) => r.t <= t && !r.text.startsWith("neatlogs trace"));
-  const head = "$ python jangkau.py demo_site/toko.html";
+  const head = "$ python jangkau.py demo_site/shop.html";
   return (
     <div style={{
       position: "absolute", left: box[0], top: box[1], width: box[2], height: box[3], background: "#0b1120", borderRadius: 18,
@@ -295,9 +295,9 @@ const BOX_UNDER_TITLE: Rect = [80, 112, 1760, 790];
 const scenesJsx: Record<string, (len: number) => React.ReactNode> = {
   problem: () => (
     <>
-      <Shot src="shots/toko-before.png" w={2400} h={1671} box={[80, 70, 1020, 820]} label="A real shop page"
+      <Shot src="shots/shop-before.png" w={2400} h={1671} box={[80, 70, 1020, 820]} label="A real shop page"
         keys={[{ at: 0, cam: [0, 0, 2400, 1930] }, { at: 160, cam: [0, 0, 1600, 1290] }, { at: 330, cam: [0, 380, 1600, 1290] }]} />
-      <AriaPanel tree={aria["toko-before"]} box={[1140, 70, 700, 820]} title="What a screen reader gets" perLine={8} start={40} />
+      <AriaPanel tree={aria["shop-before"]} box={[1140, 70, 700, 820]} title="What a screen reader gets" perLine={8} start={40} />
       <Big from="47" to="" at={cue("problem", "Forty-seven")} label="WCAG failures found by axe-core" x={240} y={560} />
       {(() => {
         const at = cue("problem", "Europe");
@@ -309,14 +309,14 @@ const scenesJsx: Record<string, (len: number) => React.ReactNode> = {
     <>
       <Title at={0} sub="a real run, replayed at 7× speed">Jangkau fixes the page, then proves it</Title>
       <Terminal box={[80, 112, 1000, 790]} speed={78 / ((len - 30) / FPS)} />
-      <AriaPanel tree={aria["toko-after"]} good box={[1120, 112, 720, 790]} title="After: what a screen reader gets" perLine={6} start={30} />
+      <AriaPanel tree={aria["shop-after"]} good box={[1120, 112, 720, 790]} title="After: what a screen reader gets" perLine={6} start={30} />
     </>
   ),
   neatlogs: () => (
     <>
       <Title at={0} sub="every run is a trace: workflow, agent spans, tool spans, LLM calls">neatlogs</Title>
       <Sequence durationInFrames={cue("neatlogs", "then set up") + 10}>
-        <Shot src="shots/nl-trace.png" {...NL} box={BOX_UNDER_TITLE} keys={[{ at: 0 }, { at: 30, cam: [470, 260, 730, 640], ring: [500, 300, 680, 230] }]} />
+        <Shot src="shots/nl-trace.png" {...NL} box={BOX_UNDER_TITLE} keys={[{ at: 0 }, { at: 30, cam: [470, 270, 730, 630], ring: [495, 322, 690, 250] }]} />
       </Sequence>
       <Sequence from={cue("neatlogs", "then set up")}>
         <Shot src="shots/nl-detections.png" {...NL} box={BOX_UNDER_TITLE} keys={[{ at: 0 }, { at: 40, cam: [70, 120, 1530, 330], ring: [86, 220, 1500, 44] }]} />

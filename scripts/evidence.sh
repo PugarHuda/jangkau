@@ -9,7 +9,7 @@ cd "$(dirname "$0")/.."
 grep -q '^NEATLOGS_API_KEY=.\+' .env || { echo "set NEATLOGS_API_KEY in .env first"; exit 1; }
 
 PY=.venv/Scripts/python; [ -x "$PY" ] || PY=.venv/bin/python
-PAGE=${PAGE:-demo_site/toko.html}
+PAGE=${PAGE:-demo_site/shop.html}
 export JANGKAU_MODEL=${JANGKAU_MODEL:-claude-haiku}
 STAMP=$(date +%H%M%S)
 

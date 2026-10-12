@@ -18,7 +18,7 @@ which typically costs $1,000–5,000 per site.
 | Agency | $299 | 600 |
 
 ## Cost per page (measured)
-Measured run (v4, claude-haiku, toko.html, 47 → 0 failing nodes): 16 LLM calls,
+Measured run (v4, claude-haiku, shop.html, 47 → 0 failing nodes): 16 LLM calls,
 33.1k input + 5.1k output tokens ≈ **$0.06 per page** (Haiku list price $1/$5 per M tokens),
 plus about $0.01 of compute (one headless Chromium for about 70 s).
 Budget conservatively with **$0.10 per page** (bigger real-world pages, retries).

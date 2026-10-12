@@ -5,8 +5,8 @@ and how neatlogs was used to identify and resolve the incidents the agent ran in
 
 | Time | Screen | Voice-over |
 |---|---|---|
-| 0:00–0:12 | Batik shop page, screen reader reading "image, image, button" | "1 in 6 people live with a disability. To a screen reader, this shop is 'image, image, button'. 47 WCAG failures, and in the EU that's now a legal problem." |
-| 0:12–0:25 | `python jangkau.py demo_site/toko.html` starting | "Jangkau is an agent that fixes the page, not just audits it. Every edit is re-audited and rolled back if it breaks anything." |
+| 0:00–0:16 | Batik shop page next to its real accessibility tree | "One in six people lives with a disability. To a screen reader, this online shop sounds like: image. Link. Image. Forty-seven accessibility failures. And in Europe, since June 2025, that's a legal problem." |
+| 0:12–0:25 | `python jangkau.py demo_site/shop.html` starting | "Jangkau is an agent that fixes the page, not just audits it. Every edit is re-audited and rolled back if it breaks anything." |
 | 0:25–0:40 | neatlogs → Detections → **Rule left unfixed**, flagged spans list | "neatlogs flags every rule the agent failed to fix. Here's each incident it caught." |
 | 0:40–0:55 | Click the v2 `label` span: `new violations: {'region': 13}`, then the v4 trace at 0 | "Incident one: our verifier rejected correct label fixes. The span said why. We fixed the check: 47 to 0." |
 | 0:55–1:10 | Freelancer span: `color-contrast` partial → v5 trace, Sonnet escalation, `compare.png` | "Incident two, a real Bootstrap site: contrast fixes kept failing. The traces showed a pixel diff punishing correct recolours, then a hidden 0.65 opacity. Edge-map diff, measured feedback, escalation: 33 to 0." |

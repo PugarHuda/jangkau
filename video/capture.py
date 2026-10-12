@@ -9,8 +9,8 @@ OUT = ROOT / "video" / "public" / "shots"
 W, H = 1600, 900
 
 PAGES = [  # name, url, full page, wait ms
-    ("toko-before", (ROOT / "demo_site" / "toko.html").as_uri(), True, 500),
-    ("toko-after", (ROOT / "runs" / "video-toko" / "toko.html").as_uri(), True, 500),
+    ("shop-before", (ROOT / "demo_site" / "shop.html").as_uri(), True, 500),
+    ("shop-after", (ROOT / "runs" / "video-shop" / "shop.html").as_uri(), True, 500),
     ("landing", "https://jangkau-jet.vercel.app/", False, 3500),
     ("landing-full", "https://jangkau-jet.vercel.app/", True, 3500),
     ("w3c-before", "https://www.w3.org/WAI/demos/bad/before/home.html", True, 1500),
@@ -47,7 +47,7 @@ with sync_playwright() as pw:
     # what a screen reader gets from the shop, before and after: the real accessibility tree
     import json
     tree = {}
-    for name in ("toko-before", "toko-after"):
+    for name in ("shop-before", "shop-after"):
         page = ctx.new_page()
         page.goto(dict((n, u) for n, u, *_ in PAGES)[name])
         tree[name] = page.locator("body").aria_snapshot()

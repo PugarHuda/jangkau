@@ -63,12 +63,12 @@ def test_before_after_toggle(browser):
     after.click()
     assert after.get_attribute("aria-pressed") == "true" and before.get_attribute("aria-pressed") == "false"
     frame = page.locator("#shop")
-    assert frame.get_attribute("src") == "after/toko.html" and "fixed by Jangkau" in frame.get_attribute("title")
+    assert frame.get_attribute("src") == "after/shop.html" and "fixed by Jangkau" in frame.get_attribute("title")
     page.wait_for_timeout(800)
     fixed = page.frame_locator("#shop").locator("html")
     assert fixed.get_attribute("lang") == "en"  # the fixed page really loaded
     before.click()
-    assert frame.get_attribute("src") == "before/toko.html"
+    assert frame.get_attribute("src") == "before/shop.html"
 
 
 def test_toggle_counts_match_the_real_pages(browser):
@@ -78,7 +78,7 @@ def test_toggle_counts_match_the_real_pages(browser):
     found = []
     for name in ("before", "after"):
         p = browser.new_page()
-        p.goto((ROOT / "site" / name / "toko.html").as_uri())
+        p.goto((ROOT / "site" / name / "shop.html").as_uri())
         found.append(sum(len(v["nodes"]) for v in Axe().run(p).response["violations"]))
     assert counts == found
 
@@ -113,14 +113,14 @@ def run_cli(*args):
 
 def test_audit_only_cli_writes_sarif_and_fails_ci(tmp_path):
     out, sarif = tmp_path / "audit", tmp_path / "a.sarif"
-    r = run_cli("demo_site/toko.html", "--audit-only", "--out", str(out), "--sarif", str(sarif), "--fail-on", "serious")
+    r = run_cli("demo_site/shop.html", "--audit-only", "--out", str(out), "--sarif", str(sarif), "--fail-on", "serious")
     assert r.returncode == 1, r.stderr[-500:]
     doc = json.loads(sarif.read_text(encoding="utf-8"))
     run = doc["runs"][0]
     assert doc["version"] == "2.1.0" and len(run["results"]) == 47
     contrast = next(x for x in run["tool"]["driver"]["rules"] if x["id"] == "color-contrast")
     assert contrast["properties"]["wcag"] == ["1.4.3"] and contrast["properties"]["en301549"] == ["9.1.4.3"]
-    src = (ROOT / "demo_site" / "toko.html").read_text(encoding="utf-8").splitlines()
+    src = (ROOT / "demo_site" / "shop.html").read_text(encoding="utf-8").splitlines()
     for res in run["results"]:  # every element-level result points at a line holding that element
         line = res["locations"][0]["physicalLocation"]["region"]["startLine"]
         tag = re.search(r": (<\w+)", res["message"]["text"]).group(1)
@@ -130,7 +130,7 @@ def test_audit_only_cli_writes_sarif_and_fails_ci(tmp_path):
 
 
 def test_audit_only_passes_on_the_fixed_page(tmp_path):
-    r = run_cli("site/after/toko.html", "--audit-only", "--out", str(tmp_path), "--fail-on", "minor")
+    r = run_cli("site/after/shop.html", "--audit-only", "--out", str(tmp_path), "--fail-on", "minor")
     assert r.returncode == 0, r.stdout[-500:] + r.stderr[-500:]
 
 
@@ -188,7 +188,7 @@ def test_custom_rule_catches_focus_removal(tmp_path):
 
 
 def test_crosscheck_reports_second_engine(tmp_path):
-    run_cli("demo_site/toko.html", "--audit-only", "--out", str(tmp_path))
+    run_cli("demo_site/shop.html", "--audit-only", "--out", str(tmp_path))
     report = (tmp_path / "report.md").read_text(encoding="utf-8")
     assert "## Independent cross-check (HTML_CodeSniffer, WCAG2AA)" in report
     n = int(re.search(r"HTML_CodeSniffer errors: \*\*(\d+)\*\*", report).group(1))
@@ -197,4 +197,4 @@ def test_crosscheck_reports_second_engine(tmp_path):
 
 def test_cli_requires_a_target_and_url_for_crawl():
     assert "target is required" in run_cli().stderr
-    assert "--crawl needs an http(s) URL" in run_cli("demo_site/toko.html", "--crawl", "2").stderr
+    assert "--crawl needs an http(s) URL" in run_cli("demo_site/shop.html", "--crawl", "2").stderr

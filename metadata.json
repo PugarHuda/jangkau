@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QK02SH139QSD9DR0ZJDJFH",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "demo_site/index.html",
+    "demo_site/toko.html",
+    "runs/video-toko/after.png",
+    "runs/video-toko/baseline.png",
+    "runs/video-toko/before.png",
+    "runs/video-toko/final.png",
+    "runs/video-toko/index.html",
+    "runs/video-toko/report.md",
+    "runs/video-toko/state.json",
+    "runs/video-toko/toko.html",
+    "site/after/toko.html",
+    "site/before/toko.html",
+    "tests/test_e2e.py",
+    "video/capture/terminal.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

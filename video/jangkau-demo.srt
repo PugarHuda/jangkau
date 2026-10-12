@@ -175,25 +175,25 @@ Entire recorded the coding sessions behind these fixes,
 as checkpoints on our commits.
 
 45
-00:01:43,500 --> 00:01:46,196
-And cfo.ai modeled the business:
+00:01:43,500 --> 00:01:47,497
+And cfo.ai modeled the business on measured costs:
 
 46
-00:01:46,196 --> 00:01:47,767
-about six cents per page,
+00:01:47,497 --> 00:01:49,153
+about nine cents per page,
 
 47
-00:01:47,767 --> 00:01:49,892
-an eighty-three percent gross margin,
+00:01:49,153 --> 00:01:51,236
+an eighty-four percent gross margin,
 
 48
-00:01:49,892 --> 00:01:52,831
-and a downside case that set our fair-use rule.
+00:01:51,236 --> 00:01:54,559
+and a downside case that set our per-page spend cap.
 
 49
-00:01:53,433 --> 00:01:54,585
+00:01:55,167 --> 00:01:56,319
 Jangkau.
 
 50
-00:01:54,585 --> 00:01:56,606
+00:01:56,319 --> 00:01:58,340
 So the web reaches everyone.

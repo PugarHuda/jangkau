@@ -384,11 +384,11 @@ const scenesJsx: Record<string, (len: number) => React.ReactNode> = {
   ),
   cfo: () => (
     <>
-      <Title at={0} sub="24-month model with Base, Growth and Downside scenarios">cfo.ai</Title>
+      <Title at={0} sub="24-month model; cost per page measured from 8 real runs">cfo.ai</Title>
       <Shot src="shots/cfo.png" w={2400} h={1350} box={BOX_UNDER_TITLE}
-        keys={[{ at: 0 }, { at: 24, cam: [440, 230, 1940, 420], ring: [455, 320, 1900, 40] },
-          { at: cue("cfo", "eighty-three"), cam: [440, 400, 1940, 260], ring: [480, 425, 1900, 50] },
-          { at: cue("cfo", "downside"), cam: [440, 500, 1940, 140], ring: [480, 525, 1900, 40] }]} />
+        keys={[{ at: 0 }, { at: 24, cam: [440, 300, 1940, 420], ring: [450, 394, 1920, 82] },
+          { at: cue("cfo", "eighty-four"), cam: [440, 420, 1940, 280], ring: [470, 526, 1900, 58] },
+          { at: cue("cfo", "downside"), cam: [440, 560, 1940, 240], ring: [450, 660, 1920, 62] }]} />
     </>
   ),
   outro: () => <Outro />,

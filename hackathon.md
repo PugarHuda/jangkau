@@ -83,6 +83,8 @@ Ampun (Pugar Huda Mantoro)
 - Done: real cost per run from the LiteLLM gateway; 8-run benchmark (4 real pages x 2 models, all to 0): Haiku mean $0.09,
   Sonnet $0.22, worst $0.41. Default model switched to Haiku; cfo.ai Base/Downside cost per page now measured; `--max-cost` cap.
   deployment.yml audits the live deployment on Vercel's deployment_status and posts a commit status.
+- Done: provenance across tools: fixed pages stamped with the neatlogs trace and prompt version, `--pr` commits carry
+  Jangkau-Trace / Jangkau-Prompt / Jangkau-Result trailers (like Entire-Checkpoint), `--explain` reads the stamp from a file or URL.
 - Pending: confirm the traces in the dashboard and add share links; Entire checkpoint link + ID; cfo.ai model; tweets; demo video.
 
 ## Demo

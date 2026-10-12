@@ -40,8 +40,8 @@ SCENES = [
     ("ci", "It also runs in CI, as a GitHub Action. Every failure lands in code scanning, mapped to WCAG and to "
            "the European standard, EN 301 549."),
     ("entire", "Entire recorded the coding sessions behind these fixes, as checkpoints on our commits."),
-    ("cfo", "And cfo.ai modeled the business: about six cents per page, an eighty-three percent gross margin, "
-            "and a downside case that set our fair-use rule."),
+    ("cfo", "And cfo.ai modeled the business on measured costs: about nine cents per page, an eighty-four percent "
+            "gross margin, and a downside case that set our per-page spend cap."),
     ("outro", "Jangkau. So the web reaches everyone."),
 ]
 

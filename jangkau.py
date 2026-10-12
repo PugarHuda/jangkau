@@ -606,6 +606,9 @@ def run(target: Path, out: Path, verify: bool) -> dict:
         final = audit(page, html, out / "final.png")
         state["final"] = {"nodes": final["nodes"], "by_rule": final["by_rule"]}
         state.setdefault("crosscheck", {})["after"] = crosscheck(page)
+        if verify:  # the audits are done; the stamp is a comment and changes nothing they measure
+            html.write_text(stamp_html(html.read_text(encoding="utf-8"), provenance(state)), encoding="utf-8",
+                            newline="\n")
         state["seconds"] = round(time.time() - start, 1)
         state["usage"] = usage
         state_file.write_text(json.dumps(state, indent=2))
@@ -662,7 +665,7 @@ Failing elements: **{b}** across {len(s['baseline']['by_rule'])} rules
     path.write_text(f"""# Jangkau report ({s['version']}, verify={s['verify']})
 
 Target: `{s['target']}`  
-neatlogs trace: `{s.get('trace_id', '-')}`
+neatlogs trace: {trace_link(s.get('trace_id', '-'))}
 
 | Metric | Value |
 |---|---|
@@ -688,8 +691,39 @@ neatlogs delivery: `{json.dumps(s.get('delivery', {}))}`
 """ if b else "# Jangkau report\n\nNo violations found.\n", encoding="utf-8")
 
 
+STAMP = re.compile(r"<!-- Jangkau: .*? -->\n?", re.S)
+
+
+def trace_link(trace_id: str) -> str:
+    """Dashboard link for a trace when NEATLOGS_TRACE_URL (with {trace}) is set, else the bare ID."""
+    tpl = os.getenv("NEATLOGS_TRACE_URL")
+    return tpl.format(trace=trace_id) if tpl and trace_id not in ("", "-") else trace_id
+
+
+def provenance(s: dict) -> dict:
+    """Where a fix came from: the neatlogs trace of the run, the prompt version, the result."""
+    return {"trace": s.get("trace_id", "-"), "link": trace_link(s.get("trace_id", "-")),
+            "prompt": s.get("prompt", "local"), "version": s.get("version", VERSION),
+            "result": f"{s['baseline']['nodes']} -> {s['final']['nodes']} failing elements"}
+
+
+def stamp_html(html: str, prov: dict) -> str:
+    """Leave a provenance comment in the fixed page, so whoever finds the change later can open the
+    trace of the agent decisions that made it. Re-running replaces the old stamp."""
+    stamp = (f"<!-- Jangkau: accessibility fixes, {prov['result']} (WCAG 2.x / EN 301 549). "
+             f"neatlogs trace {prov['link']}, prompt {prov['prompt']}, {prov['version']}. -->\n")
+    html = STAMP.sub("", html)
+    m = re.match(r"\s*<!doctype[^>]*>\s*", html, re.I)
+    return html[:m.end()] + stamp + html[m.end():] if m else stamp + html
+
+
+def commit_trailers(prov: dict) -> str:
+    """Git trailers in the same form as Entire's Entire-Checkpoint, so `git log` links code to traces."""
+    return f"Jangkau-Trace: {prov['trace']}\nJangkau-Prompt: {prov['prompt']}\nJangkau-Result: {prov['result']}"
+
+
 @span(kind="TOOL", name="open_pr")
-def open_pr(target: Path, out: Path):
+def open_pr(target: Path, out: Path, s: dict):
     """Commit the fixed page on a new branch in the target's repo and open a PR with the report."""
     import subprocess
     repo, name = target.resolve().parent, target.name
@@ -700,7 +734,10 @@ def open_pr(target: Path, out: Path):
     try:
         shutil.copy(out / name, repo / name)
         git("add", name)
-        git("commit", "-m", f"Fix WCAG violations in {name} (Jangkau)")
+        git("commit", "-m", f"Fix WCAG violations in {name} (Jangkau)\n\n{commit_trailers(provenance(s))}")
+        if not git("remote"):
+            log(f"no git remote: the fix is committed on local branch {branch}, no PR opened")
+            return
         git("push", "-u", "origin", branch)
         url = subprocess.run(["gh", "pr", "create", "--base", base, "--head", branch,
                               "--title", f"Accessibility fixes for {name}", "--body-file", str((out / "report.md").resolve())],
@@ -726,11 +763,23 @@ if __name__ == "__main__":
                     help="stop starting new rules once this page has cost this much (fair-use cap)")
     ap.add_argument("--crawl", type=int, metavar="N",
                     help="audit up to N same-origin pages reachable from the URL (audit only, no fixing)")
+    ap.add_argument("--explain", metavar="FILE_OR_URL",
+                    help="print which run fixed this page (its provenance stamp: trace, prompt, result), then exit")
     ap.add_argument("--sync-prompt", metavar="LABEL", nargs="?", const="production",
                     help="save the local system prompt to the neatlogs prompt registry under LABEL, then exit")
     a = ap.parse_args()
     SETTLE_MS = a.wait
     MAX_COST = a.max_cost
+    if a.explain:
+        src = a.explain
+        if re.match(r"https?://", src):
+            import urllib.request
+            text = urllib.request.urlopen(src, timeout=30).read().decode("utf-8", "replace")
+        else:
+            text = Path(src).read_text(encoding="utf-8", errors="replace")
+        m = STAMP.search(text)
+        print(m.group(0).strip()[len("<!-- Jangkau: "):-len(" -->")] if m else f"{src}: no Jangkau provenance stamp")
+        sys.exit(0 if m else 1)
     if a.sync_prompt:
         if not os.getenv("NEATLOGS_API_KEY"):
             sys.exit("--sync-prompt needs NEATLOGS_API_KEY")
@@ -769,7 +818,7 @@ if __name__ == "__main__":
             s = run(target, a.out, verify=not a.no_verify)
             log(f"done: {s['baseline']['nodes']} -> {s['final']['nodes']} failing nodes. report: {a.out / 'report.md'}")
             if a.pr and s["final"]["nodes"] < s["baseline"]["nodes"]:
-                open_pr(target, a.out)
+                open_pr(target, a.out, s)
             remaining = [v for v in s.get("violations", []) if s["final"]["by_rule"].get(v["id"])]
     neatlogs.flush()
     neatlogs.shutdown()

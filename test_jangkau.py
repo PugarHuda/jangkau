@@ -1,6 +1,7 @@
 import os
 
 os.environ["NEATLOGS_API_KEY"] = ""  # never export traces from tests (empty, so .env cannot refill it)
+os.environ["NEATLOGS_TRACE_URL"] = ""  # bare trace IDs, whatever the local .env links to
 os.environ.setdefault("LITELLM_API_KEY", "test")
 
 import pytest  # noqa: E402
@@ -100,3 +101,17 @@ def test_report_shows_gateway_cost_and_budget_stop(tmp_path):
     r = (tmp_path / "r.md").read_text(encoding="utf-8")
     assert "| Cost (reported by the LiteLLM gateway) | $0.0245 (claude-sonnet-4.6: 2 calls, $0.0245) |" in r
     assert "| Budget stop | after $0.0245 of $0.02, not attempted: region |" in r
+
+
+def test_provenance_stamp_and_trailers():
+    from jangkau import commit_trailers, provenance, stamp_html
+    s = {"trace_id": "abc123", "prompt": "jangkau-fixer-system@v1 (production)", "version": "v8",
+         "baseline": {"nodes": 47}, "final": {"nodes": 0}}
+    p = provenance(s)
+    page = "<!DOCTYPE html>\n<html><body>x</body></html>"
+    once = stamp_html(page, p)
+    assert once.startswith("<!DOCTYPE html>\n<!-- Jangkau: accessibility fixes, 47 -> 0 failing elements")
+    assert "neatlogs trace abc123, prompt jangkau-fixer-system@v1 (production), v8. -->" in once
+    assert stamp_html(once, p) == once  # a re-run replaces the stamp instead of adding another
+    assert commit_trailers(p) == ("Jangkau-Trace: abc123\nJangkau-Prompt: jangkau-fixer-system@v1 (production)\n"
+                                  "Jangkau-Result: 47 -> 0 failing elements")

@@ -277,28 +277,28 @@
  },
  {
   "name": "cfo",
-  "text": "And cfo.ai modeled the business: about six cents per page, an eighty-three percent gross margin, and a downside case that set our fair-use rule.",
-  "duration": 9.251,
+  "text": "And cfo.ai modeled the business on measured costs: about nine cents per page, an eighty-four percent gross margin, and a downside case that set our per-page spend cap.",
+  "duration": 10.979,
   "captions": [
    {
-    "text": "And cfo.ai modeled the business:",
+    "text": "And cfo.ai modeled the business on measured costs:",
     "start": 0.0,
-    "end": 2.496
+    "end": 3.797
    },
    {
-    "text": "about six cents per page,",
-    "start": 2.696,
-    "end": 4.147
+    "text": "about nine cents per page,",
+    "start": 3.997,
+    "end": 5.533
    },
    {
-    "text": "an eighty-three percent gross margin,",
-    "start": 4.267,
-    "end": 6.272
+    "text": "an eighty-four percent gross margin,",
+    "start": 5.653,
+    "end": 7.616
    },
    {
-    "text": "and a downside case that set our fair-use rule.",
-    "start": 6.392,
-    "end": 8.931
+    "text": "and a downside case that set our per-page spend cap.",
+    "start": 7.736,
+    "end": 10.659
    }
   ]
  },

@@ -100,11 +100,11 @@ real captures, script in `docs/demo-script.md`, sources in `video/`. Live site: 
 
 ## Submission
 Confirmed requirements (from https://neatlogs.com/hackathon and the organiser email):
-- [ ] Quote tweet of the official neatlogs post: team, name, project, public repo, demo
-      (Mon 12 Oct, 7:00–11:55 PM IST; final cutoff on Discord)
+- [x] Quote tweet of the official launch post with the demo video and all three tags: https://x.com/BangDropID/status/2109658097887400339
 - [x] neatlogs trace links/screenshots, plus before/after runs with the numbers (README evidence table, docs/incidents.md)
 - [x] Entire checkpoint link + checkpoint ID (`https://entire.io/gh/PugarHuda/jangkau/commit/<sha>`)
 - [x] cfo.ai business plan (pricing, costs, revenue, runway)
 - [x] A run showing failure and recovery
-- [ ] #neatHack build-in-public posts
+- [ ] #neatHack build-in-public posts (the submission post is one; a separate build-log post is drafted)
+- [ ] Submission form at https://neatlogs.com/submission
 - [x] Public repo with commits dated during the hackathon

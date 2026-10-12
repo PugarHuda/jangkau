@@ -67,7 +67,7 @@ python -m pytest -q
 |---|---|
 | The agent improved | Same page (`demo_site/toko.html`, 47 failing nodes), same model (claude-haiku), traced in neatlogs and filtered by tag `version:v1` / `version:v2` / `version:v4`. **v1** (no checks): 10 left, 14 LLM calls. **v2** (first verifier): 14 left, 18 calls. **v4**: **0 left**, 16 calls. Reports in `runs/ev-*/report.md`. Root causes are in [hackathon.md](hackathon.md) |
 | We used neatlogs | Each run is a `jangkau_run` workflow trace with `fix_rule` agent spans, `audit` / `apply_edits` / `visual_diff` tool spans and auto-captured LLM calls. Trace IDs: v1 `002efc98d1c3610e269f95108e5371d4`, v4 `8ad9968fc9a602e0dad474b24842835f`. SDK Doctor probe: PASS |
-| We used Entire | [Entire Graph impact + diff](docs/entire-graph.md) for the verifier changes. Checkpoints on `entire/checkpoints/v1`: _TODO link + ID_ |
+| We used Entire | [Entire Graph impact + diff](docs/entire-graph.md) for the verifier changes. Checkpoints (stored as git refs): recorded for every agent session since Oct 12; browse them at https://entire.io/gh/PugarHuda/jangkau |
 | We used cfo.ai | [BUSINESS.md](BUSINESS.md) + the cfo.ai model. _TODO: link/screenshot_ |
 | It works on real pages | [StartBootstrap Freelancer](https://github.com/StartBootstrap/startbootstrap-freelancer) (`dist/index.html`, unmodified): **33 → 0** failing nodes, 7 LLM calls, 40 s. Layout unchanged, brand teal darkened to pass contrast. Run in `runs/real-freelancer/` (`compare.png` before/after), trace `28e57df2617c4345e0f2679a1b99ed94` |
 | It opens real PRs | `--pr` on the coffee shop page: 25 → 0, [PR #1](https://github.com/PugarHuda/jangkau/pull/1) with the report as its description |

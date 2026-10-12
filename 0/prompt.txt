@@ -1,0 +1,5 @@
+In README.md, in the Evidence table row 'We used Entire', replace '_TODO link + ID_' with 'recorded for every agent session since Oct 12; browse them at https://entire.io/gh/PugarHuda/jangkau'. Edit only that. Do not commit yet.
+
+---
+
+Good catch: change 'Checkpoints on `entire/checkpoints/v1`' to 'Checkpoints (stored as git refs)' in that row. Then commit README.md with the message 'README: Entire checkpoint evidence'. Do not push.

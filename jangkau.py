@@ -70,6 +70,7 @@ VISUAL_LIMIT = 0.35
 CONTENT_TAGS = "a,button,input,select,textarea,img,h1,h2,h3,label,li"
 LANDMARKS = "main,nav,header,footer,aside,section,[role]"
 SETTLE_MS = 0  # --wait: let intro animations finish before auditing
+BYPASS_HOST = None  # host of the URL being audited: the only one that gets the Vercel bypass secret
 
 _llm = None
 
@@ -257,12 +258,20 @@ def new_page(pw):
     """One browser page for every audit, snapshot and crawl. With VERCEL_AUTOMATION_BYPASS_SECRET set,
     every request carries Vercel's protection-bypass header, so protected preview deployments can be
     audited from CI (Vercel: Deployment Protection > Protection Bypass for Automation)."""
-    headers = {}
-    if os.getenv("VERCEL_AUTOMATION_BYPASS_SECRET"):
-        headers = {"x-vercel-protection-bypass": os.environ["VERCEL_AUTOMATION_BYPASS_SECRET"],
-                   "x-vercel-set-bypass-cookie": "true"}
-    return pw.chromium.launch().new_context(viewport={"width": 1280, "height": 800},
-                                            extra_http_headers=headers).new_page()
+    ctx = pw.chromium.launch().new_context(viewport={"width": 1280, "height": 800})
+    secret = os.getenv("VERCEL_AUTOMATION_BYPASS_SECRET")
+    if secret and BYPASS_HOST:
+        from urllib.parse import urlparse
+
+        def add_bypass(route, request):
+            # only the audited deployment gets the secret, never fonts, CDNs or analytics it loads
+            if urlparse(request.url).hostname == BYPASS_HOST:
+                route.continue_(headers={**request.headers, "x-vercel-protection-bypass": secret,
+                                         "x-vercel-set-bypass-cookie": "true"})
+            else:
+                route.continue_()
+        ctx.route("**/*", add_bypass)
+    return ctx.new_page()
 
 
 @span(kind="TOOL", name="snapshot_url")
@@ -770,6 +779,9 @@ if __name__ == "__main__":
                     help="save the local system prompt to the neatlogs prompt registry under LABEL, then exit")
     a = ap.parse_args()
     SETTLE_MS = a.wait
+    if a.target and re.match(r"https?://", a.target):
+        from urllib.parse import urlparse
+        BYPASS_HOST = urlparse(a.target).hostname
     MAX_COST = a.max_cost
     if a.explain:
         src = a.explain

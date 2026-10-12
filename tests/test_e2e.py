@@ -205,10 +205,15 @@ def test_vercel_protection_bypass_header_reaches_the_server(tmp_path):
     import http.server
     import threading
 
+    seen = []  # (host, carried the secret) for every request the server got
+
     class Protected(http.server.BaseHTTPRequestHandler):
         def do_GET(self):
             ok = self.headers.get("x-vercel-protection-bypass") == "s3cret"
-            body = (b'<html lang="en"><head><title>app</title></head><body><main><h1>app</h1></main></body></html>'
+            seen.append((self.headers.get("host", "").split(":")[0], ok))
+            port = self.server.server_port
+            body = (b'<html lang="en"><head><title>app</title></head><body><main><h1>app</h1>'
+                    + f'<img alt="" src="http://localhost:{port}/third-party.png"></main></body></html>'.encode()
                     if ok else b"<html><body><img src=x.png> Log in to Vercel</body></html>")
             self.send_response(200)
             self.send_header("content-type", "text/html")
@@ -231,3 +236,5 @@ def test_vercel_protection_bypass_header_reaches_the_server(tmp_path):
     assert "Log in to Vercel" in (tmp_path / "a" / "source" / "index.html").read_text(encoding="utf-8")
     assert "<h1>app</h1>" in (tmp_path / "b" / "source" / "index.html").read_text(encoding="utf-8")
     assert "audit: 0 failing elements" in opened.stdout, opened.stdout[-400:] + locked.stdout[-200:]
+    # the secret went to the audited host only, never to the third-party host the page loads from
+    assert ("localhost", False) in seen and ("localhost", True) not in seen

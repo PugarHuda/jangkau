@@ -4,7 +4,7 @@
 
 **Jangkau is an agent that makes a web page accessible, and proves every fix.** · [Live demo](https://jangkau-jet.vercel.app)
 It audits the page against WCAG with axe-core, fixes one violation at a time,
-and only keeps a fix when three independent checks pass. Otherwise it rolls the
+and only keeps a fix when five independent checks pass. Otherwise it rolls the
 edit back and tries again with the reason it failed.
 
 About 1 in 6 people live with a disability, and the European Accessibility Act has
@@ -53,7 +53,7 @@ uv venv && uv pip install -r requirements.txt
 .venv/Scripts/python -m playwright install chromium   # macOS/Linux: .venv/bin/python
 cp .env.example .env    # LITELLM_API_KEY from neatlogs.com/hackathon/models + NEATLOGS_API_KEY
 
-python jangkau.py demo_site/index.html                  # verified agent (v2)
+python jangkau.py demo_site/index.html                  # verified agent (v5)
 JANGKAU_VERSION=v1 python jangkau.py demo_site/index.html --no-verify   # baseline, no checks
 python jangkau.py path/to/your/repo/index.html --pr    # fix a page in a git repo and open a PR (needs gh)
 python -m pytest -q
@@ -67,7 +67,7 @@ python -m pytest -q
 |---|---|
 | The agent improved | Same page (`demo_site/toko.html`, 47 failing nodes), same model (claude-haiku), traced in neatlogs and filtered by tag `version:v1` / `version:v2` / `version:v4`. **v1** (no checks): 10 left, 14 LLM calls. **v2** (first verifier): 14 left, 18 calls. **v4**: **0 left**, 16 calls. Reports in `runs/ev-*/report.md`. Root causes are in [hackathon.md](hackathon.md) |
 | We used neatlogs | Each run is a `jangkau_run` workflow trace with `fix_rule` agent spans, `audit` / `apply_edits` / `visual_diff` tool spans and auto-captured LLM calls. Trace IDs: v1 `002efc98d1c3610e269f95108e5371d4`, v4 `8ad9968fc9a602e0dad474b24842835f`. SDK Doctor probe: PASS |
-| We used Entire | [Entire Graph impact + diff](docs/entire-graph.md) for the verifier changes. Checkpoints (stored as git refs): checkpoint `01M4PZ7CYXWQQTTBCQ1QKJ075N` on commit [9713fcd](https://entire.io/gh/PugarHuda/jangkau/commit/9713fcd8e88c8a88519e718dc8e8ac2c7ea883f8); every agent session in `jangkau/` is recorded from Oct 12 |
+| We used Entire | [Entire Graph impact + diff](docs/entire-graph.md) for the verifier changes. Checkpoints (stored as git refs): checkpoint `01M4PZ7CYXWQQTTBCQ1QKJ075N` on commit [9713fcd](https://entire.io/gh/PugarHuda/jangkau/commit/9713fcd8e88c8a88519e718dc8e8ac2c7ea883f8); every agent session in `jangkau/` is recorded from Oct 12 ([repo on Entire](https://entire.io/gh/PugarHuda/jangkau)) |
 | We used cfo.ai | 24-month model with Base / Growth / Downside scenarios, built in cfo.ai through its MCP server ([view the model](https://cfo.ai/s/eaPiXgVJ6eZosuDO)). Base: ~100 customers, $6.0k MRR at month 12, 82.8% gross margin, cash never below the $10k start. Downside ($0.50/page, 40 customers): cash runs out Aug 2027, which sets the Agency fair-use rule. Numbers in [BUSINESS.md](BUSINESS.md#the-cfoai-model) |
 | It works on real pages | [StartBootstrap Freelancer](https://github.com/StartBootstrap/startbootstrap-freelancer) (`dist/index.html`, unmodified): **33 → 0** failing nodes, 7 LLM calls, 40 s. Layout unchanged, brand teal darkened to pass contrast. Run in `runs/real-freelancer/` (`compare.png` before/after), trace `28e57df2617c4345e0f2679a1b99ed94` |
 | It opens real PRs | `--pr` on the coffee shop page: 25 → 0, [PR #1](https://github.com/PugarHuda/jangkau/pull/1) with the report as its description |

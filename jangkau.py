@@ -383,6 +383,42 @@ Pages audited: **{len(results)}**, failing elements: **{sum(r['nodes'] for r in 
             "violations": [{"id": r["id"], "impact": r["impact"]} for r in top]}
 
 
+@span(kind="WORKFLOW", name="jangkau_site_fix")
+def fix_site(start: str, limit: int, out: Path) -> dict:
+    """Crawl a site and run the fixing agent on every page. --max-cost applies per page."""
+    pages = discover_pages(start, limit)
+    log(f"crawl: {len(pages)} page(s) from {start}, fixing each")
+    rows, remaining = [], {}
+    for i, url in enumerate(pages, 1):
+        d = out / "pages" / f"{i:02d}"
+        # per-page accounting, so the budget cap and the report are per page
+        usage.update(prompt_tokens=0, completion_tokens=0, llm_calls=0, cost_usd=0.0, by_model={})
+        log(f"page {i}/{len(pages)}: {url}")
+        s = run(snapshot_url(url, d / "source"), d, verify=True)
+        rows.append({"url": url, "dir": f"pages/{i:02d}", "before": s["baseline"]["nodes"], "after": s["final"]["nodes"],
+                     "cost": s["usage"]["cost_usd"], "calls": s["usage"]["llm_calls"], "trace": s.get("trace_id", "-"),
+                     "capped": bool(s.get("budget_stop")) or (MAX_COST is not None and s["usage"]["cost_usd"] >= MAX_COST)})
+        for v in s.get("violations", []):
+            if s["final"]["by_rule"].get(v["id"]):
+                remaining.setdefault(v["id"], v["impact"])
+    table = "\n".join(f"| [{r['url']}]({r['url']}) | {r['before']} → {r['after']} | {r['calls']} | ${r['cost']:.4f}"
+                      f"{' (capped)' if r['capped'] else ''} | [report]({r['dir']}/report.md) |" for r in rows)
+    before, after = sum(r["before"] for r in rows), sum(r["after"] for r in rows)
+    (out / "report.md").write_text(f"""# Jangkau site fix ({VERSION})
+
+Start: {start}
+Pages fixed: **{len(rows)}**, failing elements **{before} → {after}**, cost **${sum(r['cost'] for r in rows):.4f}**
+(reported by the LiteLLM gateway){f", cap ${MAX_COST} per page" if MAX_COST is not None else ""}
+neatlogs trace (one for the whole site run, a jangkau_run span per page): {trace_link(rows[0]['trace']) if rows else '-'}
+
+| Page | Failing elements | LLM calls | Cost | Details |
+|---|---|---|---|---|
+{table}
+""", encoding="utf-8")
+    return {"pages": rows, "before": before, "after": after,
+            "violations": [{"id": k, "impact": v} for k, v in remaining.items()]}
+
+
 @span(kind="WORKFLOW", name="jangkau_audit")
 def audit_only(target: Path, out: Path, sarif: "Path | None") -> dict:
     """Audit without fixing: no model key needed. Writes report.md and, optionally, SARIF."""
@@ -408,8 +444,10 @@ def audit_only(target: Path, out: Path, sarif: "Path | None") -> dict:
 
 SYSTEM = """You fix WCAG accessibility violations in an HTML file.
 Return ONLY JSON: {"reasoning": "...", "edits": [{"find": "<exact substring of the file>", "replace": "<new text>"}]}
+An edit to one of the page's own stylesheets adds "file": "<path shown>"; without it the edit applies to the HTML file.
 Rules:
 - `find` must be copied verbatim from the file and occur exactly once. Keep it short but unique.
+- When stylesheet excerpts are given, fix colours there (prefer the design token) rather than overriding in the HTML.
 - Fix the root cause (add labels, alt text, lang, roles, contrast colors in CSS...).
 - NEVER delete content, links, buttons, inputs or images to make a violation disappear.
 - Keep the visual design as close to the original as possible."""
@@ -444,9 +482,95 @@ def sync_prompt(label: str) -> str:
         h = neatlogs.create_prompt(name=PROMPT_NAME, prompt=SYSTEM, labels=[label], config={"temperature": 0},
                                    commit_message="System prompt of the fixing agent")
         return f"created {PROMPT_NAME}@v{h.version} ({label})"
-    v = neatlogs.save_as_version(prompt_name=PROMPT_NAME, content=SYSTEM, labels=[label],
-                                 commit_message=f"Sync from jangkau.py ({VERSION})")
-    return f"saved {PROMPT_NAME} version {v.get('version', '?')} ({label})"
+    neatlogs.save_as_version(prompt_name=PROMPT_NAME, content=SYSTEM, labels=[label],
+                             commit_message=f"Sync from jangkau.py ({VERSION})")
+    return f"saved {PROMPT_NAME}@v{neatlogs.get_prompt(PROMPT_NAME, label=label).version} ({label})"
+
+
+# Which rules in the page's own stylesheets give a failing element its colours, read from the CSSOM:
+# rules matching the element (or, for backgrounds, an ancestor) plus the custom properties they use.
+COLOUR_RULES_JS = """([targets, files]) => {
+  const own = ['color', 'background-color', 'background', 'background-image', 'opacity'];
+  // file:// stylesheets are cross-origin to the page, so their cssRules can't be read; Python passes
+  // their text and the browser parses it into constructable sheets with the same CSSOM.
+  const sheets = files.map(f => { const s = new CSSStyleSheet(); try { s.replaceSync(f.text); } catch (e) {}
+                                  return [f.href, s]; });
+  const flat = rs => rs.flatMap(r => (r instanceof CSSStyleRule) ? [r] : (r.cssRules ? flat([...r.cssRules]) : []));
+  const all = sheets.flatMap(([href, s]) => flat([...s.cssRules]).map(r => [href, r]));
+  const out = [], seen = new Set(), wanted = new Set(), matched = new Set();
+  const add = (href, r, decls) => { const k = href + '|' + r.selectorText + '|' + decls.join(';');
+    if (decls.length && !seen.has(k)) { seen.add(k); out.push({href, selector: r.selectorText, decls}); } };
+  for (const t of targets) {
+    let el = null; try { el = document.querySelector(t); } catch (e) {}
+    for (let depth = 0; el && depth < 5; depth++, el = el.parentElement) {
+      for (const [href, r] of all) {
+        let m = false; try { m = el.matches(r.selectorText); } catch (e) {}
+        if (!m) continue;
+        matched.add(r.selectorText);
+        const props = depth ? own.filter(p => p.startsWith('background') || p === 'opacity') : own;
+        const decls = props.filter(p => r.style.getPropertyValue(p)).map(p => p + ': ' + r.style.getPropertyValue(p).trim());
+        decls.forEach(d => (d.match(/--[\\w-]+/g) || []).forEach(v => wanted.add(v)));
+        add(href, r, decls);
+      }
+    }
+  }
+  for (let pass = 0; pass < 2; pass++)  // custom properties, and the ones they refer to
+    for (const [href, r] of all) for (const v of [...wanted]) {
+      const val = r.style.getPropertyValue(v).trim();
+      if (!val) continue;
+      (val.match(/--[\\w-]+/g) || []).forEach(x => wanted.add(x));
+      if (/:root|html/.test(r.selectorText) || matched.has(r.selectorText)) add(href, r, [v + ': ' + val]);
+    }
+  return out.slice(0, 14);
+}"""
+
+
+def stylesheet(html: Path, name: str) -> Path:
+    """A stylesheet the agent may edit: a .css file inside the page's folder, nothing else."""
+    root = html.parent.resolve()
+    p = (root / name).resolve()
+    if p.suffix != ".css" or root not in p.parents or not p.is_file():
+        raise ValueError(f"`file` must be a .css file inside the page's folder, got {name!r}")
+    return p
+
+
+@span(kind="TOOL", name="colour_sources")
+def colour_sources(page, html: Path, nodes: list) -> str:
+    """Excerpts of the local stylesheet rules behind failing contrast, so the fix lands in the CSS
+    (ideally on the design token) instead of an inline override. Empty when colours aren't local."""
+    from urllib.parse import unquote, urlparse
+    page.goto(html.resolve().as_uri())
+    targets = [n["target"][0] for n in nodes[:8] if n.get("target") and isinstance(n["target"][0], str)]
+    root = html.parent.resolve()
+
+    def local(href: str) -> "Path | None":  # a stylesheet file inside the page's folder, else None
+        if not href.startswith("file:"):
+            return None
+        path = unquote(urlparse(href).path)
+        p = Path(path.lstrip("/") if re.match(r"/[A-Za-z]:", path) else path).resolve()
+        return p if root in p.parents and p.suffix == ".css" and p.is_file() else None
+
+    hrefs = page.eval_on_selector_all("link[rel~=stylesheet][href]", "els => els.map(e => e.href)")
+    files = [{"href": h, "text": local(h).read_text(encoding="utf-8", errors="replace")} for h in hrefs if local(h)]
+    if not files:
+        return ""
+    found = page.evaluate(COLOUR_RULES_JS, [targets, files])
+    parts = []
+    for f in found:
+        p = local(f["href"])
+        text = p.read_text(encoding="utf-8", errors="replace")
+        i = text.find(f["selector"] + " {")
+        block = text[i:text.find("}", i) + 1] if i >= 0 else ""
+        if block and len(block) <= 700:
+            excerpt = block
+        else:  # a long rule such as :root: quote only the declaration lines, verbatim, so `find` can use them
+            lines = [m.group(0).strip() for d in f["decls"]
+                     for m in [re.search(rf"^[ \t]*{re.escape(d.split(':')[0])}\s*:[^;\n]*;?", block or text, re.M)] if m]
+            if not lines:
+                continue
+            excerpt = f"/* lines inside `{f['selector']}` */\n" + "\n".join(lines)
+        parts.append(f"`{p.relative_to(root).as_posix()}`:\n```css\n{excerpt}\n```")
+    return "\n".join(dict.fromkeys(parts))
 
 
 @span(kind="AGENT", name="fix_rule")
@@ -455,15 +579,30 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
     resolved; rejected edits are rolled back. Returns fixed / partial / gave-up."""
     rid, start_nodes, feedback = rule["id"], len(rule["nodes"]), ""
     budget, stuck, attempt = MAX_ATTEMPTS, 0, 0
+    changed = set()  # stylesheets this rule's accepted edits touched
+
+    def restore(originals: dict):
+        for path, text in originals.items():
+            path.write_text(text, encoding="utf-8", newline="\n")
     while attempt < budget:
+        if MAX_COST is not None and usage["cost_usd"] >= MAX_COST:
+            feedback = f"stopped: the page reached its ${MAX_COST} budget"  # no retry may overshoot the cap
+            break
         attempt += 1
         source = html.read_text(encoding="utf-8")
         nodes = "\n".join(f"- target {n['target']}: {n['html'][:300]}\n  {n['failureSummary'][:300]}"
                           for n in rule["nodes"][:15])
         prompt = (f"Violation `{rid}` ({rule['impact']}): {rule['help']}\n{rule['helpUrl']}\n"
                   f"Failing nodes:\n{nodes}\n\nFile `{html.name}`:\n```html\n{source}\n```")
+        sources = colour_sources(page, html, rule["nodes"]) if rid == "color-contrast" else ""
+        if sources:
+            prompt += ("\n\nThese colours come from the page's own stylesheets. Fix them there, not with an "
+                       "override in the HTML: give the edit \"file\": \"<path>\" and copy `find` from the "
+                       "excerpt. When a colour comes from a custom property (design token), change the token "
+                       "so every component using it stays consistent.\n" + sources)
         if feedback:
             prompt += f"\n\nFeedback on your previous attempt: {feedback}"
+        originals = {html: source}
         try:
             # escalate only when the cheap model is stuck: two failed or rejected attempts in a row
             model = ESCALATE_MODEL if stuck >= 2 else MODEL
@@ -482,11 +621,22 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
             m["calls"] += 1
             m["cost_usd"] += cost
             plan = parse_json(resp.choices[0].message.content or "")
-            patched, skipped = apply_valid_edits(source, plan.get("edits", []))
-            if patched == source:
+            groups = {}  # edits per file: the page itself, or a stylesheet next to it
+            for e in plan.get("edits", []):
+                groups.setdefault(e.get("file") or None, []).append(e)
+            skipped, touched = [], False
+            for name, edits in groups.items():
+                path = html if name in (None, html.name) else stylesheet(html, name)
+                text = originals.setdefault(path, path.read_text(encoding="utf-8"))
+                patched, errors = apply_valid_edits(text, edits)
+                skipped += [f"{path.name}: {err}" for err in errors]
+                if patched != text:
+                    path.write_text(patched, encoding="utf-8", newline="\n")
+                    touched = True
+            if not touched:
                 raise ValueError("no edit applied. " + "; ".join(skipped[:5]))
-            html.write_text(patched, encoding="utf-8", newline="\n")
         except Exception as e:  # bad JSON, no usable edit, API hiccup -> retry with feedback
+            restore(originals)
             stuck += 1
             feedback = f"it failed with {type(e).__name__}: {e}. Try again."
             log(f"  attempt {attempt} failed before audit: {e}")
@@ -533,13 +683,14 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
             log(f"  attempt {attempt} rejected, reverting: {'; '.join(problems)}")
             neatlogs.log("attempt {attempt} rejected and rolled back", level="warning", attempt=attempt,
                          rule=rid, nodes_left=left, visual_diff=round(vd, 4), problems=problems)
-            html.write_text(source, encoding="utf-8", newline="\n")  # recovery: roll back the bad edit
+            restore(originals)  # recovery: roll back the bad edit, in the page and any stylesheet
             stuck += 1
             continue
+        changed |= {p.relative_to(html.parent.resolve()).as_posix() for p in originals if p != html}
         neatlogs.log("attempt {attempt} accepted", attempt=attempt, rule=rid, nodes_left=left,
                      visual_diff=round(vd, 4), skipped_edits=len(skipped))
         if left == 0:
-            return {"rule": rid, "status": "fixed", "attempts": attempt}
+            return {"rule": rid, "status": "fixed", "attempts": attempt, **({"files": sorted(changed)} if changed else {})}
         # partial progress: keep the edit, retry the remaining nodes
         log(f"  attempt {attempt} accepted, {left} nodes left")
         before = after
@@ -552,7 +703,7 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
                          "of the current file: " + "; ".join(skipped[:5]))
     left = before["by_rule"].get(rid, 0)
     return {"rule": rid, "status": "partial" if left < start_nodes else "gave-up",
-            "attempts": attempt, "last_feedback": feedback}
+            "attempts": attempt, "last_feedback": feedback, **({"files": sorted(changed)} if changed else {})}
 
 
 def log(msg: str):
@@ -611,6 +762,8 @@ def run(target: Path, out: Path, verify: bool) -> dict:
             log(f"  -> {result['status']} after {result['attempts']} attempt(s)")
             state["done"].append(rule["id"])
             state["results"].append(result)
+            if result.get("files"):
+                state["files"] = sorted(set(state.get("files", [])) | set(result["files"]))
             state_file.write_text(json.dumps(state, indent=2))
 
         final = audit(page, html, out / "final.png")
@@ -696,6 +849,7 @@ neatlogs trace: {trace_link(s.get('trace_id', '-'))}
 
 {compliance_table(s)}
 {crosscheck_section(s)}
+Stylesheets changed at the source: {', '.join(f'`{f}`' for f in s.get('files', [])) or 'none (fixes are in the page)'}
 System prompt: `{s.get('prompt', 'local')}`  
 neatlogs delivery: `{json.dumps(s.get('delivery', {}))}`
 """ if b else "# Jangkau report\n\nNo violations found.\n", encoding="utf-8")
@@ -742,8 +896,10 @@ def open_pr(target: Path, out: Path, s: dict):
     base = git("rev-parse", "--abbrev-ref", "HEAD")
     git("switch", "-c", branch)
     try:
-        shutil.copy(out / name, repo / name)
-        git("add", name)
+        for f in [name, *s.get("files", [])]:  # the page and any stylesheet the fix changed
+            (repo / f).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy(out / f, repo / f)
+            git("add", f)
         git("commit", "-m", f"Fix WCAG violations in {name} (Jangkau)\n\n{commit_trailers(provenance(s))}")
         if not git("remote"):
             log(f"no git remote: the fix is committed on local branch {branch}, no PR opened")
@@ -772,7 +928,8 @@ if __name__ == "__main__":
     ap.add_argument("--max-cost", type=float, metavar="USD",
                     help="stop starting new rules once this page has cost this much (fair-use cap)")
     ap.add_argument("--crawl", type=int, metavar="N",
-                    help="audit up to N same-origin pages reachable from the URL (audit only, no fixing)")
+                    help="audit up to N pages under the start URL's directory (add --fix to fix each one)")
+    ap.add_argument("--fix", action="store_true", help="with --crawl: run the fixing agent on every crawled page")
     ap.add_argument("--explain", metavar="FILE_OR_URL",
                     help="print which run fixed this page (its provenance stamp: trace, prompt, result), then exit")
     ap.add_argument("--sync-prompt", metavar="LABEL", nargs="?", const="production",
@@ -804,9 +961,14 @@ if __name__ == "__main__":
         if not re.match(r"https?://", a.target):
             sys.exit("--crawl needs an http(s) URL")
         with neatlogs.identify(session_id=f"jangkau-{a.out.name}"):
-            s = audit_site(a.target, a.crawl, a.out, a.sarif)
-        log(f"site audit: {len(s['pages'])} pages, {sum(p['nodes'] for p in s['pages'])} failing elements. "
-            f"report: {a.out / 'report.md'}" + (f", sarif: {a.sarif}" if a.sarif else ""))
+            if a.fix:
+                s = fix_site(a.target, a.crawl, a.out)
+                log(f"site fix: {len(s['pages'])} pages, {s['before']} -> {s['after']} failing elements. "
+                    f"report: {a.out / 'report.md'}")
+            else:
+                s = audit_site(a.target, a.crawl, a.out, a.sarif)
+                log(f"site audit: {len(s['pages'])} pages, {sum(p['nodes'] for p in s['pages'])} failing elements. "
+                    f"report: {a.out / 'report.md'}" + (f", sarif: {a.sarif}" if a.sarif else ""))
         neatlogs.flush()
         neatlogs.shutdown()
         if a.fail_on != "never" and any(IMPACT.get(v["impact"], 9) <= IMPACT[a.fail_on] for v in s["violations"]):

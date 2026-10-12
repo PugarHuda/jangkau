@@ -94,9 +94,9 @@ Video (1:59, English, captions burned in, `video/jangkau-demo.srt` for platforms
 real captures, script in `docs/demo-script.md`, sources in `video/`. Live site: https://jangkau-jet.vercel.app
 
 ## Known limitations and next steps
-- Fixing is one page per run; `--crawl` audits many pages but does not fix them.
+- `--crawl N --fix` fixes pages one after another; there is no parallelism yet.
 - `--pr` handles one page per PR and needs `gh` logged in with push access to the repo.
-- Fixes land as an inline `<style>` override in the page, not in the source stylesheet or the build (Sass/templates).
+- Contrast fixes edit local `.css` files next to the page (design tokens first); build sources (Sass, templates) and remote stylesheets are not edited.
 
 ## Submission
 Confirmed requirements (from https://neatlogs.com/hackathon and the organiser email):

@@ -1,0 +1,262 @@
+{
+  "target": "C:\\Users\\pc\\AppData\\Local\\Temp\\claude\\C--Hackathons-Hackathon-neatlogs\\17763b5f-f1ab-4a15-b6ee-c88003ac10d5\\scratchpad\\startbootstrap-freelancer\\dist\\index.html",
+  "version": "v9-css",
+  "verify": true,
+  "done": [
+    "color-contrast",
+    "link-name",
+    "heading-order",
+    "landmark-one-main",
+    "region"
+  ],
+  "results": [
+    {
+      "rule": "color-contrast",
+      "status": "partial",
+      "attempts": 4,
+      "last_feedback": "it was rejected and rolled back: `color-contrast` still has 1 failing nodes after your edit. Measured on the rendered page: <button class=\"btn btn-primary btn-xl disabled\" id=\"submitButton\" type=\"submit\">Send</button> (Fix any of the following:\n  Element has insufficient color contrast of 3.22 (foreground color: #ffffff, background color: #599c83, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1). Check inherited styles (opacity, overlays, text-shadow) that change the rendered colour. Try a different fix.",
+      "files": [
+        "css/styles.css"
+      ]
+    },
+    {
+      "rule": "link-name",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "heading-order",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "landmark-one-main",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "region",
+      "status": "fixed",
+      "attempts": 1
+    }
+  ],
+  "prompt": "jangkau-fixer-system@v2 (production)",
+  "trace_id": "75f14833f5c11807a6e25d7b7ac853c0",
+  "crosscheck": {
+    "before": {
+      "errors": 15,
+      "items": [
+        {
+          "code": "1_4_3.G145",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 3:1, but text in this element has a contrast ratio of 2.41:1. Recommendation:  change background",
+          "html": "<h1 class=\"masthead-heading text-uppercase mb-0\">Start Bootstrap</h1>"
+        },
+        {
+          "code": "1_4_3.G145",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 3:1, but text in this element has a contrast ratio of 2.41:1. Recommendation:  change background",
+          "html": "<p class=\"masthead-subheading font-weight-light mb-0\">Graphic Artist - Web Designer - Illustrator</p>"
+        },
+        {
+          "code": "1_4_3.G145",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 3:1, but text in this element has a contrast ratio of 2.41:1. Recommendation:  change background",
+          "html": "<h2 class=\"page-section-heading text-center text-uppercase text-white\">About</h2>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.41:1. Recommendation:  change backgrou",
+          "html": "<p class=\"lead\">Freelancer is a free bootstrap theme created by Start Bootstrap. The download includes the complete source files including HTML, CSS, and JavaSc"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.41:1. Recommendation:  change backgrou",
+          "html": "<p class=\"lead\">You can create your own custom avatar for the masthead, change the icon in the dividers, and add your email address to the contact form to make "
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.29:1. Recommendation:  change backgrou",
+          "html": "<a class=\"btn btn-xl btn-outline-light\" href=\"https://startbootstrap.com/theme/freelancer/\">\n                        <svg class=\"svg-inline--fa fa-download me-2"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.41:1. Recommendation:  change backgrou",
+          "html": "<button class=\"btn btn-primary btn-xl disabled\" id=\"submitButton\" type=\"submit\">Send</button>"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "Anchor element found with a valid href attribute, but no link content has been supplied.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\"><svg class=\"svg-inline--fa fa-facebook-f fa-fw\" aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fab"
+        },
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"!\" within the document, but no anchor exists with that name.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\"><svg class=\"svg-inline--fa fa-facebook-f fa-fw\" aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fab"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "Anchor element found with a valid href attribute, but no link content has been supplied.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\"><svg class=\"svg-inline--fa fa-twitter fa-fw\" aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fab\" d"
+        },
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"!\" within the document, but no anchor exists with that name.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\"><svg class=\"svg-inline--fa fa-twitter fa-fw\" aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fab\" d"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "Anchor element found with a valid href attribute, but no link content has been supplied.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\"><svg class=\"svg-inline--fa fa-linkedin-in fa-fw\" aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fa"
+        },
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"!\" within the document, but no anchor exists with that name.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\"><svg class=\"svg-inline--fa fa-linkedin-in fa-fw\" aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fa"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "Anchor element found with a valid href attribute, but no link content has been supplied.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\"><svg class=\"svg-inline--fa fa-dribbble fa-fw\" aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fab\" "
+        },
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"!\" within the document, but no anchor exists with that name.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\"><svg class=\"svg-inline--fa fa-dribbble fa-fw\" aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fab\" "
+        }
+      ]
+    },
+    "after": {
+      "errors": 4,
+      "items": [
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"!\" within the document, but no anchor exists with that name.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\" aria-label=\"Facebook\"><svg class=\"svg-inline--fa fa-facebook-f fa-fw\" aria-hidden=\"true\" focusable=\"f"
+        },
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"!\" within the document, but no anchor exists with that name.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\" aria-label=\"Twitter\"><svg class=\"svg-inline--fa fa-twitter fa-fw\" aria-hidden=\"true\" focusable=\"false"
+        },
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"!\" within the document, but no anchor exists with that name.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\" aria-label=\"LinkedIn\"><svg class=\"svg-inline--fa fa-linkedin-in fa-fw\" aria-hidden=\"true\" focusable=\""
+        },
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"!\" within the document, but no anchor exists with that name.",
+          "html": "<a class=\"btn btn-outline-light btn-social mx-1\" href=\"#!\" aria-label=\"Dribbble\"><svg class=\"svg-inline--fa fa-dribbble fa-fw\" aria-hidden=\"true\" focusable=\"fal"
+        }
+      ]
+    }
+  },
+  "baseline": {
+    "nodes": 33,
+    "by_rule": {
+      "color-contrast": 7,
+      "heading-order": 1,
+      "landmark-one-main": 1,
+      "link-name": 4,
+      "region": 20
+    }
+  },
+  "violations": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "help": "Heading levels should only increase by one",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "landmark-one-main",
+      "impact": "moderate",
+      "help": "Document should have one main landmark",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "help": "Links must have discernible text",
+      "tags": [
+        "cat.name-role-value",
+        "wcag2a",
+        "wcag244",
+        "wcag412",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT6.a",
+        "EN-301-549",
+        "EN-9.2.4.4",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-6.2.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "help": "All page content should be contained by landmarks",
+      "tags": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "nodes": []
+    }
+  ],
+  "files": [
+    "css/styles.css"
+  ],
+  "final": {
+    "nodes": 1,
+    "by_rule": {
+      "color-contrast": 1
+    }
+  },
+  "seconds": 55.3,
+  "usage": {
+    "prompt_tokens": 68209,
+    "completion_tokens": 2843,
+    "llm_calls": 8,
+    "cost_usd": 0.11634480000000003,
+    "by_model": {
+      "claude-haiku": {
+        "calls": 7,
+        "cost_usd": 0.07782720000000001
+      },
+      "claude-sonnet-4.6": {
+        "calls": 1,
+        "cost_usd": 0.038517600000000006
+      }
+    }
+  }
+}

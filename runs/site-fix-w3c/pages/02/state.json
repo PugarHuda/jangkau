@@ -1,0 +1,123 @@
+{
+  "target": "runs\\site-fix-w3c\\pages\\02\\source\\index.html",
+  "version": "v8-site",
+  "verify": true,
+  "done": [
+    "landmark-one-main",
+    "region"
+  ],
+  "results": [
+    {
+      "rule": "landmark-one-main",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "region",
+      "status": "fixed",
+      "attempts": 1
+    }
+  ],
+  "prompt": "jangkau-fixer-system@v1 (production)",
+  "trace_id": "02115b3732468385dfad168829c2f061",
+  "crosscheck": {
+    "before": {
+      "errors": 4,
+      "items": [
+        {
+          "code": "1_3_1.H43,H63",
+          "msg": "The relationship between td elements and their associated th elements is not defined. Use either the scope attribute on th elements, or the headers attribute on td elements.",
+          "html": "<table id=\"p\" class=\"report script_on script_on\">\n          <caption>Conformance of Home Page to WCAG 2.0 - Perceivable</caption>\n          <colgroup><col>\n    "
+        },
+        {
+          "code": "1_3_1.H43,H63",
+          "msg": "The relationship between td elements and their associated th elements is not defined. Use either the scope attribute on th elements, or the headers attribute on td elements.",
+          "html": "<table id=\"o\" class=\"report script_on script_on\">\n          <caption>Conformance of Home Page to WCAG 2.0 - Operable</caption>\n          <colgroup><col>\n       "
+        },
+        {
+          "code": "1_3_1.H43,H63",
+          "msg": "The relationship between td elements and their associated th elements is not defined. Use either the scope attribute on th elements, or the headers attribute on td elements.",
+          "html": "<table id=\"u\" class=\"report script_on script_on\">\n          <caption>Conformance of Home Page to WCAG 2.0 - Understandable</caption>\n          <colgroup><col>\n "
+        },
+        {
+          "code": "1_3_1.H43,H63",
+          "msg": "The relationship between td elements and their associated th elements is not defined. Use either the scope attribute on th elements, or the headers attribute on td elements.",
+          "html": "<table id=\"r\" class=\"report script_on script_on\">\n          <caption>Conformance of Home Page to WCAG 2.0 - Robust</caption>\n          <colgroup><col>\n         "
+        }
+      ]
+    },
+    "after": {
+      "errors": 4,
+      "items": [
+        {
+          "code": "1_3_1.H43,H63",
+          "msg": "The relationship between td elements and their associated th elements is not defined. Use either the scope attribute on th elements, or the headers attribute on td elements.",
+          "html": "<table id=\"p\" class=\"report script_on script_on\">\n          <caption>Conformance of Home Page to WCAG 2.0 - Perceivable</caption>\n          <colgroup><col>\n    "
+        },
+        {
+          "code": "1_3_1.H43,H63",
+          "msg": "The relationship between td elements and their associated th elements is not defined. Use either the scope attribute on th elements, or the headers attribute on td elements.",
+          "html": "<table id=\"o\" class=\"report script_on script_on\">\n          <caption>Conformance of Home Page to WCAG 2.0 - Operable</caption>\n          <colgroup><col>\n       "
+        },
+        {
+          "code": "1_3_1.H43,H63",
+          "msg": "The relationship between td elements and their associated th elements is not defined. Use either the scope attribute on th elements, or the headers attribute on td elements.",
+          "html": "<table id=\"u\" class=\"report script_on script_on\">\n          <caption>Conformance of Home Page to WCAG 2.0 - Understandable</caption>\n          <colgroup><col>\n "
+        },
+        {
+          "code": "1_3_1.H43,H63",
+          "msg": "The relationship between td elements and their associated th elements is not defined. Use either the scope attribute on th elements, or the headers attribute on td elements.",
+          "html": "<table id=\"r\" class=\"report script_on script_on\">\n          <caption>Conformance of Home Page to WCAG 2.0 - Robust</caption>\n          <colgroup><col>\n         "
+        }
+      ]
+    }
+  },
+  "baseline": {
+    "nodes": 46,
+    "by_rule": {
+      "landmark-one-main": 1,
+      "region": 45
+    }
+  },
+  "violations": [
+    {
+      "id": "landmark-one-main",
+      "impact": "moderate",
+      "help": "Document should have one main landmark",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "help": "All page content should be contained by landmarks",
+      "tags": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "nodes": []
+    }
+  ],
+  "final": {
+    "nodes": 0,
+    "by_rule": {}
+  },
+  "seconds": 17.1,
+  "usage": {
+    "prompt_tokens": 53102,
+    "completion_tokens": 696,
+    "llm_calls": 2,
+    "cost_usd": 0.0622402,
+    "by_model": {
+      "claude-haiku": {
+        "calls": 2,
+        "cost_usd": 0.0622402
+      }
+    }
+  }
+}

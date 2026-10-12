@@ -1,0 +1,1 @@
+In hackathon.md, in the 2026-10-12 build log, add one bullet before the 'Pending:' line: '- Done: Entire checkpoints are recorded. Sessions now start inside jangkau/, so the Claude Code hooks fire (the earlier session ran from the parent folder, where the hooks never loaded).' Edit only that file. Do not commit.

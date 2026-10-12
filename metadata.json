@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4QPJ60S0F4GKH3QP9Y1PVJQ",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "jangkau.py",
+    "runs/provenance-demo",
+    "runs/provenance-demo/after.png",
+    "runs/provenance-demo/banana.jpg",
+    "runs/provenance-demo/baseline.png",
+    "runs/provenance-demo/before.png",
+    "runs/provenance-demo/final.png",
+    "runs/provenance-demo/ig.png",
+    "runs/provenance-demo/index.html",
+    "runs/provenance-demo/latte.jpg",
+    "runs/provenance-demo/logo.png",
+    "runs/provenance-demo/report.md",
+    "runs/provenance-demo/state.json",
+    "runs/provenance-demo/v60.jpg"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 0,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "api_call_count": 0
+  }
+}

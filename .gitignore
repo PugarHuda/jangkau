@@ -3,3 +3,6 @@
 __pycache__/
 .pytest_cache/
 .v2/
+runs/qa-*/
+jangkau-audit/
+*.sarif

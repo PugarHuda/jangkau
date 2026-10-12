@@ -17,12 +17,41 @@ for line in Path(".env").read_text().splitlines() if Path(".env").exists() else 
 
 import neatlogs  # must init before importing openai so calls get traced
 
-VERSION = os.getenv("JANGKAU_VERSION", "v2")
+VERSION = os.getenv("JANGKAU_VERSION", "v5")
+
+
+def slim_axe(value):
+    """Drop axe's bulky per-check detail (tags, any/all/none, relatedNodes, descriptions) and keep
+    what a reader of the trace needs: rule, impact, failing element and why it fails."""
+    if isinstance(value, dict):
+        out = {k: slim_axe(v) for k, v in value.items()
+               if k not in ("tags", "any", "all", "none", "relatedNodes", "description", "helpUrl")}
+        if "html" in out and isinstance(out["html"], str):
+            out["html"] = out["html"][:200]
+        return out
+    if isinstance(value, list):
+        return [slim_axe(v) for v in value]
+    return value
+
+
+def slim_span(span: dict) -> dict:
+    """neatlogs mask: an audit returns ~30 KB of axe JSON per call; keep the parts that explain
+    a decision. Applied at export, so the agent still sees the full result."""
+    for key, val in list((span.get("attributes") or {}).items()):
+        if isinstance(val, str) and len(val) > 2000 and '"violations"' in val:
+            try:
+                span["attributes"][key] = json.dumps(slim_axe(json.loads(val)))
+            except ValueError:
+                pass
+    return span
+
+
 neatlogs.init(
     workflow_name="jangkau",
     tags=[f"version:{VERSION}"],
     instrumentations=["openai"],
     disable_export=not os.getenv("NEATLOGS_API_KEY"),
+    mask=slim_span,
 )
 from neatlogs import span  # noqa: E402
 from openai import OpenAI  # noqa: E402
@@ -39,9 +68,19 @@ VISUAL_LIMIT = 0.35
 CONTENT_TAGS = "a,button,input,select,textarea,img,h1,h2,h3,label,li"
 LANDMARKS = "main,nav,header,footer,aside,section,[role]"
 
-llm = OpenAI(base_url=os.getenv("LITELLM_BASE_URL", "https://litellm.vision.aivar.app/v1"),
-             api_key=os.getenv("LITELLM_API_KEY")
-             or sys.exit("set LITELLM_API_KEY in .env (claim it at https://neatlogs.com/hackathon/models)"))
+_llm = None
+
+
+def llm() -> OpenAI:
+    """Created on first use, so audit-only runs (CI, no secrets) never need a model key."""
+    global _llm
+    if _llm is None:
+        _llm = OpenAI(base_url=os.getenv("LITELLM_BASE_URL", "https://litellm.vision.aivar.app/v1"),
+                      api_key=os.getenv("LITELLM_API_KEY")
+                      or sys.exit("set LITELLM_API_KEY in .env (claim it at https://neatlogs.com/hackathon/models)"))
+    return _llm
+
+
 axe = Axe()
 usage = {"prompt_tokens": 0, "completion_tokens": 0, "llm_calls": 0}
 
@@ -72,7 +111,8 @@ def visual_diff(a: Path, b: Path, layout: bool = False) -> float:
     """Share of pixels that changed noticeably, over the area both shots share.
     layout=True compares edge maps instead, so recolouring a section (the whole point of a
     contrast fix) passes while moved, hidden or overlapping elements still count."""
-    ia, ib = Image.open(a).convert("RGB"), Image.open(b).convert("RGB")
+    with Image.open(a) as fa, Image.open(b) as fb:  # close the files: Windows can't overwrite open ones
+        ia, ib = fa.convert("RGB"), fb.convert("RGB")
     w, h = min(ia.width, ib.width), min(ia.height, ib.height)
     ia, ib = ia.crop((0, 0, w, h)), ib.crop((0, 0, w, h))
     if layout:
@@ -102,6 +142,108 @@ def parse_json(text: str) -> dict:
     return json.loads(m.group(0))
 
 
+# ---------- standards and reporting ----------
+
+LEVELS = {"wcag2a": "A", "wcag21a": "A", "wcag22a": "A", "wcag2aa": "AA", "wcag21aa": "AA",
+          "wcag22aa": "AA", "wcag2aaa": "AAA", "best-practice": "best practice"}
+SARIF_LEVEL = {"critical": "error", "serious": "error", "moderate": "warning", "minor": "note"}
+
+
+def standards(tags: list) -> dict:
+    """axe tags -> WCAG success criteria, conformance level and EN 301 549 clauses (the standard
+    the European Accessibility Act points to). 'wcag1410' is SC 1.4.10, 'EN-9.1.4.3' is clause 9.1.4.3."""
+    sc = sorted({f"{t[4]}.{t[5]}.{t[6:]}" for t in tags if re.fullmatch(r"wcag\d{3,4}", t)})
+    en = sorted({t[3:] for t in tags if re.fullmatch(r"EN-\d+(\.\d+)+", t)})
+    level = next((LEVELS[t] for t in tags if t in LEVELS), "")
+    return {"wcag": sc, "level": level, "en301549": en}
+
+
+def find_line(source: str, snippet: str, nth: int = 0) -> int:
+    """1-based line of the nth occurrence of an element in the source: try its opening tag, then
+    shorter prefixes, since the browser re-serialises attributes. Line 1 for document-level rules."""
+    tag = snippet.split(">")[0]
+    m = re.match(r"<[\w-]+", tag)
+    if not m:
+        return 1
+    attrs = re.findall(r'\s+[^\s=>]+(?:="[^"]*")?', tag[m.end():])
+    # browsers add or reorder attributes (style="", re-quoted values): fall back to fewer of them
+    probes = [re.escape(tag + ">")] + [re.escape(m.group(0) + "".join(attrs[:k])) + r"(?=[\s/>])"
+                                       for k in range(len(attrs), -1, -1)]
+    for probe in probes:
+        hits = [m.start() for m in re.finditer(probe, source)]
+        if hits:
+            return source.count("\n", 0, hits[min(nth, len(hits) - 1)]) + 1
+    return 1
+
+
+def to_sarif(violations: list, source: str, uri: str) -> dict:
+    """SARIF 2.1.0, the format GitHub code scanning ingests: one rule per axe rule, one result per
+    failing element, with the WCAG / EN 301 549 mapping in properties."""
+    rules, results, seen = [], [], {}
+    for v in violations:
+        std = standards(v.get("tags", []))
+        rules.append({
+            "id": v["id"], "name": v["id"], "shortDescription": {"text": v["help"]},
+            "fullDescription": {"text": v.get("description", v["help"])}, "helpUri": v.get("helpUrl"),
+            "help": {"text": f"{v['help']}. WCAG {', '.join(std['wcag']) or '-'} ({std['level'] or '-'}); "
+                             f"EN 301 549 {', '.join(std['en301549']) or '-'}."},
+            "properties": {"tags": ["accessibility"] + std["wcag"], **std},
+        })
+        for n in v["nodes"]:
+            key = (v["id"], n["html"].split(">")[0])
+            seen[key] = nth = seen.get(key, -1) + 1
+            results.append({
+                "ruleId": v["id"], "level": SARIF_LEVEL.get(v["impact"], "warning"),
+                "message": {"text": f"{v['help']}: {n['html'][:200]}. {n['failureSummary'][:300]}"},
+                "locations": [{"physicalLocation": {
+                    "artifactLocation": {"uri": uri},
+                    "region": {"startLine": find_line(source, n["html"], nth)}}}],
+                "partialFingerprints": {"target": "|".join(map(str, n["target"]))},
+            })
+    return {"$schema": "https://json.schemastore.org/sarif-2.1.0.json", "version": "2.1.0",
+            "runs": [{"tool": {"driver": {"name": "Jangkau", "informationUri": "https://github.com/PugarHuda/jangkau",
+                                          "rules": rules}},
+                      "results": results}]}
+
+
+@span(kind="TOOL", name="snapshot_url")
+def snapshot_url(url: str, out: Path) -> Path:
+    """Save a live page as HTML with <base href> so its CSS, images and scripts still load from
+    the original site. The agent then works on the saved copy."""
+    out.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as pw:
+        page = pw.chromium.launch().new_page(viewport={"width": 1280, "height": 800})
+        page.goto(url, wait_until="networkidle", timeout=60000)
+        html, final_url = page.content(), page.url
+    base = f'<base href="{final_url}">'
+    if re.search(r"<head", html, re.I):
+        html = re.sub(r"<head([^>]*)>", lambda m: f"<head{m.group(1)}>{base}", html, count=1, flags=re.I)
+    else:
+        html = base + html
+    target = out / "index.html"
+    target.write_text(html, encoding="utf-8", newline="\n")
+    return target
+
+
+@span(kind="WORKFLOW", name="jangkau_audit")
+def audit_only(target: Path, out: Path, sarif: "Path | None") -> dict:
+    """Audit without fixing: no model key needed. Writes report.md and, optionally, SARIF."""
+    out.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as pw:
+        page = pw.chromium.launch().new_page(viewport={"width": 1280, "height": 800})
+        res = audit(page, target, out / "audit.png")
+    s = {"target": str(target), "version": VERSION, "verify": "audit-only", "results": [],
+         "baseline": {"nodes": res["nodes"], "by_rule": res["by_rule"]},
+         "final": {"nodes": res["nodes"], "by_rule": res["by_rule"]}, "violations": res["violations"]}
+    write_report(s, out / "report.md")
+    if sarif:
+        uri = os.path.relpath(target.resolve(), Path.cwd()).replace(os.sep, "/")
+        source = target.read_text(encoding="utf-8", errors="replace")
+        sarif.parent.mkdir(parents=True, exist_ok=True)
+        sarif.write_text(json.dumps(to_sarif(res["violations"], source, uri), indent=2), encoding="utf-8")
+    return s
+
+
 # ---------- agent ----------
 
 SYSTEM = """You fix WCAG accessibility violations in an HTML file.
@@ -127,7 +269,7 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
         if feedback:
             prompt += f"\n\nFeedback on your previous attempt: {feedback}"
         try:
-            resp = llm.chat.completions.create(
+            resp = llm().chat.completions.create(
                 model=ESCALATE_MODEL if attempt == MAX_ATTEMPTS else MODEL, temperature=0,
                 messages=[{"role": "system", "content": SYSTEM}, {"role": "user", "content": prompt}])
             usage["llm_calls"] += 1
@@ -139,6 +281,8 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
         except Exception as e:  # bad JSON, non-unique find, API hiccup -> retry with feedback
             feedback = f"it failed with {type(e).__name__}: {e}. Try again."
             log(f"  attempt {attempt} failed before audit: {e}")
+            neatlogs.log("attempt {attempt} failed before audit", level="warning",
+                         attempt=attempt, rule=rid, error=str(e)[:300])
             continue
 
         after = audit(page, html, work / "after.png")
@@ -178,8 +322,12 @@ def fix_rule(page, html: Path, work: Path, rule: dict, before: dict, verify: boo
         if problems:
             feedback = "it was rejected and rolled back: " + "; ".join(problems) + ". Try a different fix."
             log(f"  attempt {attempt} rejected, reverting: {'; '.join(problems)}")
+            neatlogs.log("attempt {attempt} rejected and rolled back", level="warning", attempt=attempt,
+                         rule=rid, nodes_left=left, visual_diff=round(vd, 4), problems=problems)
             html.write_text(source, encoding="utf-8", newline="\n")  # recovery: roll back the bad edit
             continue
+        neatlogs.log("attempt {attempt} accepted", attempt=attempt, rule=rid, nodes_left=left,
+                     visual_diff=round(vd, 4))
         if left == 0:
             return {"rule": rid, "status": "fixed", "attempts": attempt}
         # partial progress: keep the edit, retry the remaining nodes
@@ -219,6 +367,8 @@ def run(target: Path, out: Path, verify: bool) -> dict:
         if "baseline" not in state:
             base = audit(page, html, out / "baseline.png")
             state["baseline"] = {"nodes": base["nodes"], "by_rule": base["by_rule"]}
+            state["violations"] = [{"id": v["id"], "impact": v["impact"], "help": v["help"],
+                                    "tags": v.get("tags", []), "nodes": []} for v in base["violations"]]
         log(f"baseline: {state['baseline']['nodes']} failing nodes across "
             f"{len(state['baseline']['by_rule'])} rules")
 
@@ -241,12 +391,39 @@ def run(target: Path, out: Path, verify: bool) -> dict:
         state["seconds"] = round(time.time() - start, 1)
         state["usage"] = usage
         state_file.write_text(json.dumps(state, indent=2))
+    neatlogs.flush()
+    try:
+        state["delivery"] = {k: v for k, v in neatlogs.get_delivery_diagnostics().items()
+                             if isinstance(v, (int, float, str, bool))}
+    except Exception as e:  # diagnostics are informational; never fail a run on them
+        state["delivery"] = {"error": str(e)}
     write_report(state, out / "report.md")
     return state
 
 
+def compliance_table(s: dict) -> str:
+    """Per rule: WCAG SC, level, EN 301 549 clause and failing elements before -> after."""
+    lines = ["| Rule | Impact | WCAG SC | Level | EN 301 549 | Before | After |",
+             "|---|---|---|---|---|---|---|"]
+    for v in sorted(s.get("violations", []), key=lambda v: IMPACT.get(v["impact"], 9)):
+        std = standards(v.get("tags", []))
+        lines.append(f"| `{v['id']}` | {v['impact']} | {', '.join(std['wcag']) or '-'} | {std['level'] or '-'} | "
+                     f"{', '.join(std['en301549']) or '-'} | {s['baseline']['by_rule'].get(v['id'], 0)} | "
+                     f"{s['final']['by_rule'].get(v['id'], 0)} |")
+    return "\n".join(lines)
+
+
 def write_report(s: dict, path: Path):
     b, f = s["baseline"]["nodes"], s["final"]["nodes"]
+    if s.get("verify") == "audit-only":
+        path.write_text(f"""# Jangkau audit ({s['version']})
+
+Target: `{s['target']}`
+Failing elements: **{b}** across {len(s['baseline']['by_rule'])} rules
+
+{compliance_table(s)}
+""", encoding="utf-8")
+        return
     rows = "\n".join(f"| `{r['rule']}` | {r['status']} | {r['attempts']} | "
                      f"{s['baseline']['by_rule'].get(r['rule'], 0)} → {s['final']['by_rule'].get(r['rule'], 0)} |"
                      for r in s["results"])
@@ -267,6 +444,12 @@ neatlogs trace: `{s.get('trace_id', '-')}`
 | Rule | Status | Attempts | Nodes |
 |---|---|---|---|
 {rows}
+
+## Standards (WCAG 2.x, EN 301 549 for the European Accessibility Act)
+
+{compliance_table(s)}
+
+neatlogs delivery: `{json.dumps(s.get('delivery', {}))}`
 """ if b else "# Jangkau report\n\nNo violations found.\n", encoding="utf-8")
 
 
@@ -294,16 +477,37 @@ def open_pr(target: Path, out: Path):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Fix WCAG violations in an HTML page and prove each fix.")
-    ap.add_argument("target", type=Path, help="path to the HTML file to fix")
+    ap.add_argument("target", help="HTML file to fix, or an http(s) URL to snapshot first")
     ap.add_argument("--out", type=Path, default=Path("runs") / time.strftime("%Y%m%d-%H%M%S"))
     ap.add_argument("--no-verify", action="store_true", help="baseline mode: accept edits without checks")
     ap.add_argument("--pr", action="store_true", help="write the fix back into the target's git repo and open a PR")
+    ap.add_argument("--audit-only", action="store_true", help="audit and report, no fixes and no model key needed")
+    ap.add_argument("--sarif", type=Path, help="with --audit-only: write SARIF 2.1.0 for GitHub code scanning")
+    ap.add_argument("--fail-on", choices=["never", *IMPACT], default="never",
+                    help="exit 1 when a violation of this impact or worse remains (for CI)")
     a = ap.parse_args()
-    if not a.target.exists():
-        sys.exit(f"not found: {a.target}")
-    s = run(a.target, a.out, verify=not a.no_verify)
-    log(f"done: {s['baseline']['nodes']} -> {s['final']['nodes']} failing nodes. report: {a.out / 'report.md'}")
-    if a.pr and s["final"]["nodes"] < s["baseline"]["nodes"]:
-        open_pr(a.target, a.out)
+    if re.match(r"https?://", a.target):
+        if a.pr:
+            sys.exit("--pr needs a local file in a git repo, not a URL")
+        target = snapshot_url(a.target, a.out / "source")
+        log(f"snapshot of {a.target} saved to {target}")
+    else:
+        target = Path(a.target)
+        if not target.exists():
+            sys.exit(f"not found: {target}")
+    with neatlogs.identify(session_id=f"jangkau-{a.out.name}"):
+        if a.audit_only:
+            s = audit_only(target, a.out, a.sarif)
+            log(f"audit: {s['baseline']['nodes']} failing elements. report: {a.out / 'report.md'}"
+                + (f", sarif: {a.sarif}" if a.sarif else ""))
+            remaining = s["violations"]
+        else:
+            s = run(target, a.out, verify=not a.no_verify)
+            log(f"done: {s['baseline']['nodes']} -> {s['final']['nodes']} failing nodes. report: {a.out / 'report.md'}")
+            if a.pr and s["final"]["nodes"] < s["baseline"]["nodes"]:
+                open_pr(target, a.out)
+            remaining = [v for v in s.get("violations", []) if s["final"]["by_rule"].get(v["id"])]
     neatlogs.flush()
     neatlogs.shutdown()
+    if a.fail_on != "never" and any(IMPACT.get(v["impact"], 9) <= IMPACT[a.fail_on] for v in remaining):
+        sys.exit(1)

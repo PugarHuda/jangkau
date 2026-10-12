@@ -1,0 +1,50 @@
+name: Jangkau accessibility check
+description: Audit HTML pages against WCAG 2.x / EN 301 549 with axe-core and write SARIF for GitHub code scanning.
+branding:
+  icon: eye
+  color: yellow
+inputs:
+  pages:
+    description: Space-separated HTML files (relative to the repo) or http(s) URLs to audit.
+    required: true
+  sarif:
+    description: Where to write the SARIF file.
+    default: jangkau.sarif
+  fail-on:
+    description: Fail the step when a violation of this impact or worse is found (never, critical, serious, moderate, minor).
+    default: never
+outputs:
+  sarif:
+    description: Path of the SARIF file.
+    value: ${{ inputs.sarif }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install Jangkau
+      shell: bash
+      run: |
+        python -m pip install --quiet -r "${{ github.action_path }}/requirements.txt"
+        python -m playwright install --with-deps chromium > /dev/null
+    - name: Audit
+      shell: bash
+      env:
+        NEATLOGS_API_KEY: ""
+        PAGES: ${{ inputs.pages }}
+        SARIF: ${{ inputs.sarif }}
+        FAIL_ON: ${{ inputs.fail-on }}
+      run: |
+        status=0
+        i=0
+        files=()
+        for page in $PAGES; do
+          i=$((i + 1))
+          python "${{ github.action_path }}/jangkau.py" "$page" --audit-only \
+            --out "jangkau-audit/$i" --sarif "jangkau-audit/$i.sarif" --fail-on "$FAIL_ON" || status=1
+          files+=("jangkau-audit/$i.sarif")
+          cat "jangkau-audit/$i/report.md" >> "$GITHUB_STEP_SUMMARY"
+        done
+        python "${{ github.action_path }}/scripts/merge_sarif.py" "$SARIF" "${files[@]}"
+        exit $status

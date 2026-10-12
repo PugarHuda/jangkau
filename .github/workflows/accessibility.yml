@@ -1,0 +1,40 @@
+name: Accessibility
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The landing page must stay clean: any serious issue fails the build.
+      - name: Landing page
+        uses: ./
+        with:
+          pages: site/index.html
+          sarif: site.sarif
+          fail-on: serious
+      # The demo pages are broken on purpose; report them to code scanning without failing.
+      - name: Demo pages
+        uses: ./
+        with:
+          pages: demo_site/index.html demo_site/toko.html
+          sarif: demo.sarif
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: demo.sarif
+          category: jangkau-demo
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: site.sarif
+          category: jangkau-site

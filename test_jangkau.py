@@ -36,3 +36,37 @@ def test_visual_diff_layout_ignores_recolour_but_not_moves(tmp_path):
     assert visual_diff(a, recoloured) > 0.35            # raw pixels: recolour looks huge
     assert visual_diff(a, recoloured, layout=True) < 0.05
     assert visual_diff(a, moved, layout=True) > 0.005   # edges moved
+
+
+def test_standards_maps_axe_tags_to_wcag_and_en301549():
+    from jangkau import standards
+    tags = ["cat.color", "wcag2aa", "wcag143", "wcag1410", "EN-301-549", "EN-9.1.4.3", "ACT"]
+    assert standards(tags) == {"wcag": ["1.4.10", "1.4.3"], "level": "AA", "en301549": ["9.1.4.3"]}
+    assert standards(["best-practice"])["level"] == "best practice"
+
+
+def test_slim_span_keeps_decision_data_and_drops_bulk():
+    import json
+    from jangkau import slim_span
+    node = {"html": "<img src=x>" + "y" * 400, "target": ["img"], "failureSummary": "Fix any",
+            "any": [{"id": "has-alt", "relatedNodes": [], "message": "x" * 500}], "all": [], "none": []}
+    audit = {"violations": [{"id": "image-alt", "impact": "critical", "help": "Images need alt",
+                             "tags": ["wcag111"] * 50, "description": "d" * 300, "nodes": [node] * 5}],
+             "nodes": 5, "by_rule": {"image-alt": 5}}
+    raw = json.dumps(audit)
+    span = slim_span({"attributes": {"output": raw, "small": "keep"}})
+    slim = json.loads(span["attributes"]["output"])
+    assert len(span["attributes"]["output"]) < len(raw) / 3 and span["attributes"]["small"] == "keep"
+    v = slim["violations"][0]
+    assert v["id"] == "image-alt" and v["impact"] == "critical" and "tags" not in v
+    assert len(v["nodes"][0]["html"]) == 200 and v["nodes"][0]["target"] == ["img"] and "any" not in v["nodes"][0]
+    assert slim["by_rule"] == {"image-alt": 5}
+
+
+def test_find_line_handles_reserialised_and_repeated_elements():
+    from jangkau import find_line
+    src = '<p>\n<input type="email" id="e">\n<a href="#">x</a>\n<abbr>y</abbr>\n<a href="#">z</a>\n'
+    assert find_line(src, '<input type="email" id="e" style="">') == 2  # browser added style=""
+    assert find_line(src, '<a href="#">z</a>', nth=1) == 5
+    assert find_line(src, '<a class="new">') == 3  # bare tag fallback never matches <abbr>
+    assert find_line(src, "<html>") == 1

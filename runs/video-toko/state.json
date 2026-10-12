@@ -1,6 +1,6 @@
 {
   "target": "demo_site\\toko.html",
-  "version": "v6-video",
+  "version": "v7-video",
   "verify": true,
   "done": [
     "button-name",
@@ -84,7 +84,195 @@
       "attempts": 1
     }
   ],
-  "trace_id": "848da8cc19d5cbe2fa3a4f1128f8237e",
+  "prompt": "jangkau-fixer-system@v1 (production)",
+  "trace_id": "78afa669f1ae314cb5ae5b98d0f3944b",
+  "crosscheck": {
+    "before": {
+      "errors": 34,
+      "items": [
+        {
+          "code": "2_4_2.H25",
+          "msg": "A title should be provided for the document, using a non-empty title element in the head section.",
+          "html": "<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\">\n<style>\n  body { font-fami"
+        },
+        {
+          "code": "3_1_1.H57",
+          "msg": "The html element should have a lang or xml:lang attribute which describes the language of the document.",
+          "html": "<html><head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\">\n<style>\n  body { fon"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 4.29:1. Recommendation:  change backgrou",
+          "html": "<div class=\"top\">Free shipping on orders over $30</div>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"logo.png\" width=\"120\" height=\"32\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.66:1. Recommendation:  change text col",
+          "html": "<span onclick=\"location='#produk'\">Shop</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.66:1. Recommendation:  change text col",
+          "html": "<span onclick=\"location='#ukuran'\">Size guide</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.66:1. Recommendation:  change text col",
+          "html": "<span onclick=\"location='#kontak'\">Contact</span>"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"#keranjang\"><img src=\"ig.png\" width=\"20\" height=\"20\"></a>"
+        },
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"keranjang\" within the document, but no anchor exists with that name.",
+          "html": "<a href=\"#keranjang\"><img src=\"ig.png\" width=\"20\" height=\"20\"></a>"
+        },
+        {
+          "code": "1_4_3.G145",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 3:1, but text in this element has a contrast ratio of 2.58:1. Recommendation:  change background",
+          "html": "<div class=\"banner\">Hand-drawn Pekalongan batik, 30% off</div>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"kopi-susu.jpg\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.89:1. Recommendation:  change text col",
+          "html": "<span class=\"old\">$45</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.25:1. Recommendation:  change text col",
+          "html": "<span class=\"new\">$31.50</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.9:1. Recommendation:  change text colo",
+          "html": "<span class=\"badge\">In stock</span>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"v60.jpg\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.89:1. Recommendation:  change text col",
+          "html": "<span class=\"old\">$42</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.25:1. Recommendation:  change text col",
+          "html": "<span class=\"new\">$29.40</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.9:1. Recommendation:  change text colo",
+          "html": "<span class=\"badge\">In stock</span>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"pisang.jpg\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.89:1. Recommendation:  change text col",
+          "html": "<span class=\"old\">$60</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.25:1. Recommendation:  change text col",
+          "html": "<span class=\"new\">$42</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.9:1. Recommendation:  change text colo",
+          "html": "<span class=\"badge\">2 left</span>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"kopi-susu.jpg\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.89:1. Recommendation:  change text col",
+          "html": "<span class=\"old\">$25</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 2.25:1. Recommendation:  change text col",
+          "html": "<span class=\"new\">$17.50</span>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.9:1. Recommendation:  change text colo",
+          "html": "<span class=\"badge\">In stock</span>"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "This emailinput element does not have a name available to an accessibility API. Valid names are: label element, title undefined, aria-label undefined, aria-labelledby undefined.",
+          "html": "<input type=\"email\" id=\"email\" style=\"\">"
+        },
+        {
+          "code": "4_1_1.F77",
+          "msg": "Duplicate id attribute value \"email\" found on the web page.",
+          "html": "<input type=\"text\" id=\"email\" style=\"\">"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "This textinput element does not have a name available to an accessibility API. Valid names are: label element, title undefined, aria-label undefined, aria-labelledby undefined.",
+          "html": "<input type=\"text\" id=\"email\" style=\"\">"
+        },
+        {
+          "code": "1_3_1.F68",
+          "msg": "This form field should be labelled in some way. Use the label element (either with a \"for\" attribute or wrapped around the form field), or \"title\", \"aria-label\" or \"aria-labelledby\" attributes as appr",
+          "html": "<input type=\"text\" id=\"email\" style=\"\">"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "This textarea element does not have a name available to an accessibility API. Valid names are: label element, title undefined, aria-label undefined, aria-labelledby undefined.",
+          "html": "<textarea style=\"\"></textarea>"
+        },
+        {
+          "code": "1_3_1.F68",
+          "msg": "This form field should be labelled in some way. Use the label element (either with a \"for\" attribute or wrapped around the form field), or \"title\", \"aria-label\" or \"aria-labelledby\" attributes as appr",
+          "html": "<textarea style=\"\"></textarea>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.83:1. Recommendation:  change text col",
+          "html": "<p class=\"muted\">We reply within one business day.</p>"
+        },
+        {
+          "code": "2_4_1.H64",
+          "msg": "Iframe element requires a non-empty title attribute that identifies the frame.",
+          "html": "<iframe src=\"about:blank\" width=\"300\" height=\"120\"></iframe>"
+        }
+      ]
+    },
+    "after": {
+      "errors": 1,
+      "items": [
+        {
+          "code": "2_4_1.G1,G123,G124",
+          "msg": "This link points to a named anchor \"keranjang\" within the document, but no anchor exists with that name.",
+          "html": "<a href=\"#keranjang\"><img src=\"ig.png\" width=\"20\" height=\"20\" alt=\"Shopping cart\"></a>"
+        }
+      ]
+    }
+  },
   "baseline": {
     "nodes": 47,
     "by_rule": {
@@ -341,10 +529,10 @@
     "nodes": 0,
     "by_rule": {}
   },
-  "seconds": 76.2,
+  "seconds": 71.6,
   "usage": {
-    "prompt_tokens": 30433,
-    "completion_tokens": 5457,
+    "prompt_tokens": 28804,
+    "completion_tokens": 3868,
     "llm_calls": 15
   }
 }

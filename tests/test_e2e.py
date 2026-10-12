@@ -66,7 +66,7 @@ def test_before_after_toggle(browser):
     assert frame.get_attribute("src") == "after/toko.html" and "fixed by Jangkau" in frame.get_attribute("title")
     page.wait_for_timeout(800)
     fixed = page.frame_locator("#shop").locator("html")
-    assert fixed.get_attribute("lang") == "id"  # the fixed page really loaded
+    assert fixed.get_attribute("lang") == "en"  # the fixed page really loaded
     before.click()
     assert frame.get_attribute("src") == "before/toko.html"
 

@@ -1,7 +1,7 @@
-# Jangkau report (v6-video, verify=True)
+# Jangkau report (v7-video, verify=True)
 
 Target: `demo_site\toko.html`  
-neatlogs trace: `848da8cc19d5cbe2fa3a4f1128f8237e`
+neatlogs trace: `78afa669f1ae314cb5ae5b98d0f3944b`
 
 | Metric | Value |
 |---|---|
@@ -9,8 +9,8 @@ neatlogs trace: `848da8cc19d5cbe2fa3a4f1128f8237e`
 | Failing nodes after | 0 |
 | Reduction | 100% |
 | LLM calls | 15 |
-| Tokens (in/out) | 30433 / 5457 |
-| Wall time | 76.2s |
+| Tokens (in/out) | 28804 / 3868 |
+| Wall time | 71.6s |
 
 | Rule | Status | Attempts | Nodes |
 |---|---|---|---|
@@ -47,4 +47,13 @@ neatlogs trace: `848da8cc19d5cbe2fa3a4f1128f8237e`
 | `page-has-heading-one` | moderate | - | best practice | - | 1 | 0 |
 | `region` | moderate | - | best practice | - | 10 | 0 |
 
+## Independent cross-check (HTML_CodeSniffer, WCAG2AA)
+
+A second engine, the one behind Pa11y, so a fix that only satisfies axe shows up here. HTML_CodeSniffer errors: **34 → 1**
+
+| Technique | Message | Element |
+|---|---|---|
+| `2_4_1.G1,G123,G124` | This link points to a named anchor "keranjang" within the document, but no anchor exists with that name. | `<a href="#keranjang"><img src="ig.png" width="20" height="20" alt="Shopping cart"></a>` |
+
+System prompt: `jangkau-fixer-system@v1 (production)`  
 neatlogs delivery: `{"span_queue_drops": 0, "log_queue_drops": 0, "span_export_failures": 0, "log_export_failures": 0, "masked_span_drops": 0, "masked_log_drops": 0, "span_capture_truncations": 0, "log_capture_truncations": 0, "span_overflow_exports": 0, "span_overflow_failures": 0, "span_overflow_unavailable": 0, "log_overflow_exports": 0, "log_overflow_failures": 0, "log_overflow_unavailable": 0, "span_upload_authority_available": false, "log_upload_authority_available": false, "span_upload_authority_reason": "backend_upload_contract_unavailable", "log_upload_authority_reason": "backend_upload_contract_unavailable", "span_media_uploads": 0, "span_media_upload_failures": 0, "log_media_uploads": 0, "log_media_upload_failures": 0, "upload_last_failure_reason": ""}`

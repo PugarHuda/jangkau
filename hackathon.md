@@ -76,6 +76,8 @@ Ampun (Pugar Huda Mantoro)
   PIL kept screenshots open so Windows could not overwrite them (crashed URL runs); CI audited the landing page before its animation.
 - W3C BAD demo (live URL): 67 → 26 exposed partial-batch loss and a too-short retry cap. Fixed → 67 → 4.
 - neatlogs: verifier decisions are `neatlogs.log` events, each run has a session id, axe payloads are slimmed by an export mask.
+- Done: neatlogs detections for the agent (custom "Rule left unfixed" + built-in "Execution Failed"); incident write-up in docs/incidents.md.
+  W3C `region` (4 nodes, table layout) is still open: a landmark-map prompt was tried, measured no better, and reverted.
 - Pending: confirm the traces in the dashboard and add share links; Entire checkpoint link + ID; cfo.ai model; tweets; demo video.
 
 ## Demo

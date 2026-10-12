@@ -1,0 +1,394 @@
+{
+  "target": "C:\\Users\\pc\\AppData\\Local\\Temp\\prov-repo\\index.html",
+  "version": "v8",
+  "verify": true,
+  "done": [
+    "button-name",
+    "image-alt",
+    "select-name",
+    "color-contrast",
+    "document-title",
+    "html-has-lang",
+    "heading-order",
+    "landmark-one-main"
+  ],
+  "results": [
+    {
+      "rule": "button-name",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "image-alt",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "select-name",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "color-contrast",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "document-title",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "html-has-lang",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "heading-order",
+      "status": "fixed",
+      "attempts": 1
+    },
+    {
+      "rule": "landmark-one-main",
+      "status": "fixed",
+      "attempts": 1
+    }
+  ],
+  "prompt": "jangkau-fixer-system@v1 (production)",
+  "trace_id": "f2f86bd3797d9b2144cdee031a3a694c",
+  "crosscheck": {
+    "before": {
+      "errors": 21,
+      "items": [
+        {
+          "code": "2_4_2.H25",
+          "msg": "A title should be provided for the document, using a non-empty title element in the head section.",
+          "html": "<head>\n<meta charset=\"utf-8\">\n<style>\n  body { font-family: system-ui, sans-serif; margin: 0; background: #fffaf3; color: #3b2a1a; }\n  header { background: #6b3"
+        },
+        {
+          "code": "3_1_1.H57",
+          "msg": "The html element should have a lang or xml:lang attribute which describes the language of the document.",
+          "html": "<html><head>\n<meta charset=\"utf-8\">\n<style>\n  body { font-family: system-ui, sans-serif; margin: 0; background: #fffaf3; color: #3b2a1a; }\n  header { background"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"logo.png\" width=\"120\" height=\"32\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.54:1. Recommendation:  change text col",
+          "html": "<a href=\"#menu\">Menu</a>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.54:1. Recommendation:  change text col",
+          "html": "<a href=\"#order\">Order</a>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.54:1. Recommendation:  change text col",
+          "html": "<a href=\"#\">Location</a>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.86:1. Recommendation:  change text col",
+          "html": "<p>Brewed slowly, enjoyed slowly. Open daily, 7 am to 10 pm.</p>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"latte.jpg\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.89:1. Recommendation:  change text col",
+          "html": "<p class=\"price\">$2.20</p>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"v60.jpg\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.89:1. Recommendation:  change text col",
+          "html": "<p class=\"price\">$2.80</p>"
+        },
+        {
+          "code": "1_1_1.H37",
+          "msg": "Img element missing an alt attribute. Use the alt attribute to specify a short text alternative.",
+          "html": "<img src=\"banana.jpg\">"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.89:1. Recommendation:  change text col",
+          "html": "<p class=\"price\">$1.80</p>"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "This textinput element does not have a name available to an accessibility API. Valid names are: label element, title undefined, aria-label undefined, aria-labelledby undefined.",
+          "html": "<input type=\"text\" placeholder=\"Name\" style=\"\">"
+        },
+        {
+          "code": "1_3_1.F68",
+          "msg": "This form field should be labelled in some way. Use the label element (either with a \"for\" attribute or wrapped around the form field), or \"title\", \"aria-label\" or \"aria-labelledby\" attributes as appr",
+          "html": "<input type=\"text\" placeholder=\"Name\" style=\"\">"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "This telinput element does not have a name available to an accessibility API. Valid names are: label element, title undefined, aria-label undefined, aria-labelledby undefined.",
+          "html": "<input type=\"tel\" placeholder=\"WhatsApp number\" style=\"\">"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "This select element does not have a name available to an accessibility API. Valid names are: label element, title undefined, aria-label undefined, aria-labelledby undefined.",
+          "html": "<select>\n    <option>Palm sugar iced latte</option>\n    <option>V60 Gayo</option>\n  </select>"
+        },
+        {
+          "code": "1_3_1.F68",
+          "msg": "This form field should be labelled in some way. Use the label element (either with a \"for\" attribute or wrapped around the form field), or \"title\", \"aria-label\" or \"aria-labelledby\" attributes as appr",
+          "html": "<select>\n    <option>Palm sugar iced latte</option>\n    <option>V60 Gayo</option>\n  </select>"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "This button element does not have a name available to an accessibility API. Valid names are: title undefined, element content, aria-label undefined, aria-labelledby undefined.",
+          "html": "<button class=\"icon-btn\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><path d=\"M2 8h12M9 3l5 5-5 5\" stroke=\"#fff\" fill=\"none\"></path></svg></button>"
+        },
+        {
+          "code": "1_4_3.G18",
+          "msg": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1.4:1. Recommendation:  change text colo",
+          "html": "<p>\u00a9 2026 Senja Coffee \u00b7 12 Braga Street, Bandung</p>"
+        },
+        {
+          "code": "1_1_1.H30",
+          "msg": "Img element is the only content of the link, but is missing alt text. The alt text should describe the purpose of the link.",
+          "html": "<a href=\"https://instagram.com\"><img src=\"ig.png\" width=\"24\" height=\"24\"></a>"
+        }
+      ]
+    },
+    "after": {
+      "errors": 3,
+      "items": [
+        {
+          "code": "4_1_2.H91",
+          "msg": "This textinput element does not have a name available to an accessibility API. Valid names are: label element, title undefined, aria-label undefined, aria-labelledby undefined.",
+          "html": "<input type=\"text\" placeholder=\"Name\" style=\"\">"
+        },
+        {
+          "code": "1_3_1.F68",
+          "msg": "This form field should be labelled in some way. Use the label element (either with a \"for\" attribute or wrapped around the form field), or \"title\", \"aria-label\" or \"aria-labelledby\" attributes as appr",
+          "html": "<input type=\"text\" placeholder=\"Name\" style=\"\">"
+        },
+        {
+          "code": "4_1_2.H91",
+          "msg": "This telinput element does not have a name available to an accessibility API. Valid names are: label element, title undefined, aria-label undefined, aria-labelledby undefined.",
+          "html": "<input type=\"tel\" placeholder=\"WhatsApp number\" style=\"\">"
+        }
+      ]
+    }
+  },
+  "baseline": {
+    "nodes": 25,
+    "by_rule": {
+      "button-name": 1,
+      "color-contrast": 8,
+      "document-title": 1,
+      "heading-order": 1,
+      "html-has-lang": 1,
+      "image-alt": 5,
+      "landmark-one-main": 1,
+      "link-name": 1,
+      "region": 5,
+      "select-name": 1
+    }
+  },
+  "violations": [
+    {
+      "id": "button-name",
+      "impact": "critical",
+      "help": "Buttons must have discernible text",
+      "tags": [
+        "cat.name-role-value",
+        "wcag2a",
+        "wcag412",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT6.a",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-11.9.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "document-title",
+      "impact": "serious",
+      "help": "Documents must have <title> element to aid in navigation",
+      "tags": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag242",
+        "TTv5",
+        "TT12.a",
+        "EN-301-549",
+        "EN-9.2.4.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-8.5.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "help": "Heading levels should only increase by one",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "html-has-lang",
+      "impact": "serious",
+      "help": "<html> element must have a lang attribute",
+      "tags": [
+        "cat.language",
+        "wcag2a",
+        "wcag311",
+        "TTv5",
+        "TT11.a",
+        "EN-301-549",
+        "EN-9.3.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-8.3.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "help": "Images must have alternative text",
+      "tags": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag111",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT7.a",
+        "TT7.b",
+        "EN-301-549",
+        "EN-9.1.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-1.1.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "landmark-one-main",
+      "impact": "moderate",
+      "help": "Document should have one main landmark",
+      "tags": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "help": "Links must have discernible text",
+      "tags": [
+        "cat.name-role-value",
+        "wcag2a",
+        "wcag244",
+        "wcag412",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT6.a",
+        "EN-301-549",
+        "EN-9.2.4.4",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-6.2.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "help": "All page content should be contained by landmarks",
+      "tags": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "nodes": []
+    },
+    {
+      "id": "select-name",
+      "impact": "critical",
+      "help": "Select element must have an accessible name",
+      "tags": [
+        "cat.forms",
+        "wcag2a",
+        "wcag412",
+        "section508",
+        "section508.22.n",
+        "TTv5",
+        "TT5.c",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-11.1.1"
+      ],
+      "nodes": []
+    }
+  ],
+  "final": {
+    "nodes": 0,
+    "by_rule": {}
+  },
+  "seconds": 32.0,
+  "usage": {
+    "prompt_tokens": 11492,
+    "completion_tokens": 2193,
+    "llm_calls": 8,
+    "cost_usd": 0.0247027,
+    "by_model": {
+      "claude-haiku": {
+        "calls": 8,
+        "cost_usd": 0.0247027
+      }
+    }
+  }
+}

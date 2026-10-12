@@ -559,7 +559,8 @@ def run(target: Path, out: Path, verify: bool) -> dict:
         state = json.loads(state_file.read_text())
         log(f"resuming run: {len(state['done'])} rules already handled")
     else:
-        shutil.copytree(target.parent, out, dirs_exist_ok=True)
+        # the page's assets come along; the repo's .git (and other VCS folders) must not
+        shutil.copytree(target.parent, out, dirs_exist_ok=True, ignore=shutil.ignore_patterns(".git", ".hg", ".svn"))
         state = {"target": str(target), "version": VERSION, "verify": verify, "done": [], "results": []}
     PROMPT.update(load_prompt())
     state["prompt"] = PROMPT["ref"]

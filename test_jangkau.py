@@ -1,6 +1,6 @@
 import os
 
-os.environ.pop("NEATLOGS_API_KEY", None)  # never export traces from tests
+os.environ["NEATLOGS_API_KEY"] = ""  # never export traces from tests (empty, so .env cannot refill it)
 os.environ.setdefault("LITELLM_API_KEY", "test")
 
 import pytest  # noqa: E402

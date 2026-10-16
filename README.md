@@ -86,6 +86,19 @@ steps:
 
 `demo_site/` is a small coffee shop page with 25 failing nodes across 10 WCAG rules.
 
+### Locally with neatroots
+
+[neatroots](https://github.com/neatlogs/neatroots) checks Jangkau's runs on your machine, with no cloud account.
+`.neatroots/checks/jangkau.yaml` adds two rules on top of its library: a WCAG rule left unfixed
+(the same as the Neatlogs Cloud detection), and an LLM key the gateway rejected.
+
+```bash
+neatroots start
+NEATLOGS_ENDPOINT=http://localhost:4100 NEATLOGS_API_KEY=neatroots-local python jangkau.py demo_site/index.html
+neatroots export <trace-id> -o runs/bad-run.json        # keep a run that went wrong
+neatroots check runs/bad-run.json --checks .neatroots/checks   # exit 1 while it still fails
+```
+
 ## Evidence for judges
 
 | Claim | Evidence |

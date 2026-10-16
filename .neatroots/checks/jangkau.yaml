@@ -1,0 +1,28 @@
+# Jangkau's own checks for neatroots (https://github.com/neatlogs/neatroots).
+# neatroots loads <repo>/.neatroots/checks/ automatically. Validate: neatroots checks validate <this file>
+
+# Same rule as the "Rule left unfixed" detection on Neatlogs Cloud: a fix_rule ended
+# partial or gave-up (the verifier kept rejecting edits, or attempts ran out).
+- id: jangkau-rule-left-unfixed
+  kind: rule
+  title: A WCAG rule was left unfixed
+  rule:
+    type: match
+    span: { name: fix_rule }
+    field: output
+    pattern: '"status"\s*:\s*"(partial|gave-up)"'
+  guidance: >-
+    {span} ended without fixing the rule. Read last_feedback in its output: it says which
+    verifier check rejected the edit. Try a different edit that addresses that reason.
+
+# Every attempt failed before the audit even ran (bad key, gateway down): retrying is pointless.
+- id: jangkau-llm-auth-failed
+  kind: rule
+  title: The LLM gateway rejected the key
+  rule:
+    type: match
+    span: { type: llm }
+    field: error
+    pattern: '\b(401|403)\b|Authentication Error|Key is blocked|invalid api key'
+    flags: i
+  guidance: The LLM gateway rejected the API key. Stop retrying and report that the key needs fixing.
